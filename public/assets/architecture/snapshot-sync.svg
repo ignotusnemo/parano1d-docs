@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 760" role="img"
+     aria-labelledby="title description">
+  <title id="title">ParanO(1)d authenticated snapshot synchronization</title>
+  <desc id="description">
+    A joining node validates permanent headers, authenticates a finalized
+    boundary with a recursive terminal, verifies a manifest and exact state
+    segments in scratch storage, atomically installs the state, then applies
+    at most eighteen recent complete blocks.
+  </desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111522"/>
+      <stop offset=".55" stop-color="#0c111c"/>
+      <stop offset="1" stop-color="#080b13"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151a27"/>
+      <stop offset="1" stop-color="#10141e"/>
+    </linearGradient>
+    <radialGradient id="sceneGlow">
+      <stop offset="0" stop-color="#344866" stop-opacity=".16"/>
+      <stop offset=".58" stop-color="#26364f" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#090c14" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M34 0H0V34" fill="none" stroke="#9db2d4"
+            stroke-opacity=".045"/>
+    </pattern>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="15" stdDeviation="18"
+                    flood-color="#02040a" flood-opacity=".65"/>
+    </filter>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="8"
+            refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#67d7f6"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8"
+            refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#34e06f"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="760" rx="24" fill="url(#bg)"/>
+  <rect width="1440" height="760" rx="24" fill="url(#grid)"/>
+  <ellipse cx="745" cy="410" rx="650" ry="330" fill="url(#sceneGlow)"/>
+
+  <g font-family="Inter, Noto Sans, ui-sans-serif, system-ui, sans-serif">
+    <text x="56" y="55" fill="#f6f7fa" font-size="21" font-weight="650"
+          letter-spacing="2.7">AUTHENTICATED SNAPSHOT SYNC</text>
+    <text x="56" y="85" fill="#9299ad" font-size="14">
+      Peers supply bytes. Commitments, proofs and deterministic rules decide whether those bytes become state.
+    </text>
+    <text x="1384" y="57" fill="#34e06f" font-size="15" text-anchor="end"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      ParanO(1)d
+    </text>
+
+    <!-- permanent header rail -->
+    <rect x="56" y="118" width="1328" height="135" rx="16"
+          fill="#111622" stroke="#596078" stroke-opacity=".52"/>
+    <text x="80" y="147" fill="#67d7f6" font-size="11" font-weight="700"
+          letter-spacing="1.7">01 · PERMANENT HEADER CHAIN</text>
+    <text x="1360" y="147" fill="#8991a5" font-size="12" text-anchor="end">
+      parent links · timestamps · exact ASERT targets · Poseidon2b PoW · accumulated work
+    </text>
+    <path d="M92 204H1296" stroke="#4d596f" stroke-width="2"/>
+    <g fill="#18202e" stroke="#67d7f6" stroke-opacity=".62">
+      <rect x="80" y="179" width="66" height="50" rx="8"/>
+      <rect x="168" y="179" width="66" height="50" rx="8"/>
+      <rect x="256" y="179" width="66" height="50" rx="8"/>
+      <rect x="344" y="179" width="66" height="50" rx="8"/>
+      <rect x="432" y="179" width="66" height="50" rx="8"/>
+      <rect x="520" y="179" width="66" height="50" rx="8"/>
+      <rect x="608" y="179" width="66" height="50" rx="8"/>
+      <rect x="696" y="179" width="66" height="50" rx="8"/>
+      <rect x="784" y="179" width="66" height="50" rx="8"/>
+      <rect x="872" y="179" width="66" height="50" rx="8"/>
+      <rect x="960" y="179" width="66" height="50" rx="8"/>
+      <rect x="1048" y="179" width="66" height="50" rx="8"/>
+      <rect x="1136" y="179" width="66" height="50" rx="8"/>
+      <rect x="1224" y="179" width="66" height="50" rx="8"/>
+    </g>
+    <g fill="#9cdff0" font-size="10"
+       font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+       text-anchor="middle">
+      <text x="113" y="209">0</text><text x="201" y="209">1</text>
+      <text x="289" y="209">2</text><text x="377" y="209">…</text>
+      <text x="465" y="209">F−2</text><text x="553" y="209">F−1</text>
+      <text x="641" y="209">F</text><text x="729" y="209">F+1</text>
+      <text x="817" y="209">F+2</text><text x="905" y="209">…</text>
+      <text x="993" y="209">T−3</text><text x="1081" y="209">T−2</text>
+      <text x="1169" y="209">T−1</text><text x="1257" y="209">TIP</text>
+    </g>
+    <path d="M641 169V237" stroke="#ce58d6" stroke-width="2.5"/>
+    <text x="641" y="165" fill="#e17ce7" font-size="10" font-weight="700"
+          text-anchor="middle" letter-spacing="1">FINALIZED BOUNDARY</text>
+    <path d="M684 239H1294" stroke="#34e06f" stroke-opacity=".38"
+          stroke-width="6" stroke-linecap="round"/>
+    <text x="989" y="247" fill="#7eeaa2" font-size="9" text-anchor="middle"
+          letter-spacing="1.1">RETAINED COMPLETE SUFFIX · AT MOST 18</text>
+
+    <!-- terminal -->
+    <g filter="url(#shadow)">
+      <rect x="56" y="298" width="286" height="265" rx="17"
+            fill="url(#panel)" stroke="#ce58d6" stroke-opacity=".52"/>
+    </g>
+    <text x="80" y="329" fill="#ce58d6" font-size="11" font-weight="700"
+          letter-spacing="1.5">02 · VALIDITY TERMINAL</text>
+    <text x="80" y="368" fill="#f6f7fa" font-size="22" font-weight="650">
+      Authenticate F
+    </text>
+    <circle cx="199" cy="438" r="55" fill="#24182b"
+            stroke="#ce58d6" stroke-opacity=".65"/>
+    <path d="M166 438L189 461L234 411" fill="none" stroke="#ce58d6"
+          stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="199" y="518" fill="#abb0c0" font-size="12" text-anchor="middle">
+      recursive HistoryStep
+    </text>
+    <text x="199" y="539" fill="#7f879b" font-size="11" text-anchor="middle">
+      constant verification work
+    </text>
+
+    <!-- manifest + segments -->
+    <g filter="url(#shadow)">
+      <rect x="389" y="298" width="360" height="265" rx="17"
+            fill="url(#panel)" stroke="#67d7f6" stroke-opacity=".52"/>
+    </g>
+    <text x="413" y="329" fill="#67d7f6" font-size="11" font-weight="700"
+          letter-spacing="1.5">03 · COMMITTED STATE PAYLOAD</text>
+    <text x="413" y="368" fill="#f6f7fa" font-size="22" font-weight="650">
+      Manifest + segments
+    </text>
+    <rect x="413" y="395" width="135" height="130" rx="10"
+          fill="#172432" stroke="#67d7f6" stroke-opacity=".50"/>
+    <text x="480.5" y="422" fill="#8de2f7" font-size="11"
+          text-anchor="middle" font-weight="700">MANIFEST</text>
+    <g fill="#8993a8" font-size="10"
+       font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      <text x="431" y="450">height</text>
+      <text x="431" y="470">state_root</text>
+      <text x="431" y="490">counters</text>
+      <text x="431" y="510">segment roots</text>
+    </g>
+    <g transform="translate(575 397)">
+      <g fill="#16202d" stroke="#5f7189" stroke-opacity=".72">
+        <rect x="0" y="0" width="64" height="54" rx="7"/>
+        <rect x="73" y="0" width="64" height="54" rx="7"/>
+        <rect x="0" y="65" width="64" height="54" rx="7"/>
+        <rect x="73" y="65" width="64" height="54" rx="7"/>
+      </g>
+      <g fill="#34e06f">
+        <rect x="12" y="12" width="40" height="7" rx="3"/>
+        <rect x="85" y="12" width="31" height="7" rx="3"/>
+        <rect x="12" y="77" width="34" height="7" rx="3"/>
+        <rect x="85" y="77" width="41" height="7" rx="3"/>
+      </g>
+      <g fill="#303b50">
+        <rect x="12" y="27" width="28" height="6" rx="3"/>
+        <rect x="85" y="27" width="40" height="6" rx="3"/>
+        <rect x="12" y="92" width="40" height="6" rx="3"/>
+        <rect x="85" y="92" width="25" height="6" rx="3"/>
+      </g>
+    </g>
+
+    <!-- stage -->
+    <g filter="url(#shadow)">
+      <rect x="796" y="298" width="262" height="265" rx="17"
+            fill="url(#panel)" stroke="#e7da3d" stroke-opacity=".48"/>
+    </g>
+    <text x="820" y="329" fill="#e7da3d" font-size="11" font-weight="700"
+          letter-spacing="1.5">04 · SCRATCH DATABASE</text>
+    <text x="820" y="368" fill="#f6f7fa" font-size="22" font-weight="650">
+      Verify, then stage
+    </text>
+    <path d="M850 425H1004V513H850Z" fill="#242518"
+          stroke="#e7da3d" stroke-opacity=".50"/>
+    <path d="M850 425L884 397H970L1004 425" fill="#292a1a"
+          stroke="#e7da3d" stroke-opacity=".50"/>
+    <g fill="#cac58d" font-size="11" text-anchor="middle">
+      <text x="927" y="456">root + lengths</text>
+      <text x="927" y="477">boundary counters</text>
+      <text x="927" y="498">all segment bytes</text>
+    </g>
+    <text x="927" y="539" fill="#8c93a6" font-size="10" text-anchor="middle">
+      failure leaves canonical state untouched
+    </text>
+
+    <!-- canonical -->
+    <g filter="url(#shadow)">
+      <rect x="1105" y="298" width="279" height="265" rx="17"
+            fill="url(#panel)" stroke="#34e06f" stroke-opacity=".55"/>
+    </g>
+    <text x="1129" y="329" fill="#34e06f" font-size="11" font-weight="700"
+          letter-spacing="1.5">05 · ATOMIC INSTALL</text>
+    <text x="1129" y="368" fill="#f6f7fa" font-size="22" font-weight="650">
+      Resume at the tip
+    </text>
+    <rect x="1140" y="400" width="209" height="88" rx="12"
+          fill="#152a21" stroke="#34e06f" stroke-opacity=".58"/>
+    <text x="1244.5" y="433" fill="#84efa8" font-size="12"
+          text-anchor="middle" font-weight="700">CANONICAL STATE @ F</text>
+    <text x="1244.5" y="460" fill="#b8c7bd" font-size="11"
+          text-anchor="middle">single MDBX transaction</text>
+    <path d="M1173 517H1316" stroke="#34e06f" stroke-width="3"
+          marker-end="url(#arrowGreen)"/>
+    <text x="1244.5" y="542" fill="#86dba1" font-size="10"
+          text-anchor="middle">verify + apply recent suffix</text>
+
+    <!-- connecting arrows -->
+    <path d="M342 430H378" stroke="#67d7f6" stroke-width="2.2"
+          marker-end="url(#arrowCyan)"/>
+    <path d="M749 430H785" stroke="#67d7f6" stroke-width="2.2"
+          marker-end="url(#arrowCyan)"/>
+    <path d="M1058 430H1094" stroke="#34e06f" stroke-width="2.2"
+          marker-end="url(#arrowGreen)"/>
+
+    <!-- invariant band -->
+    <rect x="56" y="605" width="1328" height="91" rx="14"
+          fill="#10151f" stroke="#596078" stroke-opacity=".45"/>
+    <text x="80" y="636" fill="#ce58d6" font-size="11" font-weight="700"
+          letter-spacing="1.5">ACCEPTANCE INVARIANT</text>
+    <text x="80" y="671" fill="#c5c9d5" font-size="15">
+      boundary header + terminal + manifest + reconstructed state root + counters must agree before installation
+    </text>
+    <text x="1360" y="654" fill="#34e06f" font-size="12" text-anchor="end"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      no historical execution replay
+    </text>
+  </g>
+</svg>

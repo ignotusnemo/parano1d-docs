@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 660" role="img"
+     aria-labelledby="title description">
+  <title id="title">ParanO(1)d proof-native block flow</title>
+  <desc id="description">
+    A wallet proves private ownership, the mempool verifies the transaction
+    intent, a miner proves the public state transition and searches the nonce,
+    and full nodes verify the block and apply the proven writes. The resulting
+    terminal is used by the next block.
+  </desc>
+
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111522"/>
+      <stop offset="0.52" stop-color="#0d111c"/>
+      <stop offset="1" stop-color="#090c14"/>
+    </linearGradient>
+    <linearGradient id="walletHead" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ce58d6" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#ce58d6" stop-opacity=".03"/>
+    </linearGradient>
+    <linearGradient id="poolHead" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#67d7f6" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#67d7f6" stop-opacity=".03"/>
+    </linearGradient>
+    <linearGradient id="minerHead" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e7da3d" stop-opacity=".20"/>
+      <stop offset="1" stop-color="#e7da3d" stop-opacity=".03"/>
+    </linearGradient>
+    <linearGradient id="nodeHead" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#34e06f" stop-opacity=".20"/>
+      <stop offset="1" stop-color="#34e06f" stop-opacity=".03"/>
+    </linearGradient>
+    <radialGradient id="centerGlow">
+      <stop offset="0" stop-color="#34415e" stop-opacity=".27"/>
+      <stop offset=".58" stop-color="#1a2032" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#0a0c14" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#9db2d4"
+            stroke-opacity=".045" stroke-width="1"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18"
+                    flood-color="#02040a" flood-opacity=".58"/>
+    </filter>
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="8"
+            refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#67d7f6"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8"
+            refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#34e06f"/>
+    </marker>
+    <marker id="arrowProof" markerWidth="10" markerHeight="10" refX="8"
+            refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#ce58d6"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="660" rx="24" fill="url(#panel)"/>
+  <rect width="1440" height="660" rx="24" fill="url(#grid)"/>
+  <ellipse cx="720" cy="315" rx="620" ry="330" fill="url(#centerGlow)"/>
+  <path d="M48 111H1392" stroke="#d6e0ff" stroke-opacity=".11"/>
+
+  <g font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+    <text x="56" y="54" fill="#f6f7fa" font-size="21" font-weight="650"
+          letter-spacing="2.8">PROOF-NATIVE BLOCK FLOW</text>
+    <text x="56" y="84" fill="#9096aa" font-size="14">
+      Private authorization and public execution are proved at different boundaries.
+    </text>
+    <text x="1384" y="57" fill="#34e06f" font-size="15" text-anchor="end"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      ParanO(1)d
+    </text>
+
+    <!-- phase glows -->
+    <rect x="70" y="152" width="252" height="288" rx="20" fill="#ce58d6"
+          fill-opacity=".06" filter="url(#softGlow)"/>
+    <rect x="397" y="152" width="236" height="288" rx="20" fill="#67d7f6"
+          fill-opacity=".06" filter="url(#softGlow)"/>
+    <rect x="713" y="152" width="274" height="288" rx="20" fill="#e7da3d"
+          fill-opacity=".05" filter="url(#softGlow)"/>
+    <rect x="1063" y="152" width="308" height="288" rx="20" fill="#34e06f"
+          fill-opacity=".06" filter="url(#softGlow)"/>
+
+    <!-- wallet -->
+    <g filter="url(#shadow)">
+      <rect x="56" y="142" width="280" height="314" rx="16"
+            fill="#121622" stroke="#ce58d6" stroke-opacity=".40"/>
+      <path d="M72 142H320A16 16 0 0 1 336 158V222H56V158A16 16 0 0 1 72 142Z"
+            fill="url(#walletHead)"/>
+    </g>
+    <text x="78" y="170" fill="#ce58d6" font-size="11" font-weight="700"
+          letter-spacing="1.8">01 · PRIVATE WITNESS</text>
+    <text x="78" y="205" fill="#f6f7fa" font-size="24" font-weight="650">Wallet</text>
+    <circle cx="290" cy="184" r="15" fill="none" stroke="#ce58d6"
+            stroke-width="2"/>
+    <circle cx="290" cy="184" r="4" fill="#ce58d6"/>
+    <path d="M275 198L257 216M263 210L270 217M256 217L250 211"
+          fill="none" stroke="#ce58d6" stroke-linecap="round"
+          stroke-width="2"/>
+
+    <g fill="#c3c6d3" font-size="14">
+      <rect x="78" y="255" width="5" height="5" rx="1" fill="#ce58d6"/>
+      <text x="96" y="261">Hold the 256-bit secret</text>
+      <rect x="78" y="296" width="5" height="5" rx="1" fill="#ce58d6"/>
+      <text x="96" y="302">Select owned UTXOs</text>
+      <rect x="78" y="337" width="5" height="5" rx="1" fill="#ce58d6"/>
+      <text x="96" y="343">Build one logical PagedSpend</text>
+      <rect x="78" y="378" width="5" height="5" rx="1" fill="#ce58d6"/>
+      <text x="96" y="384">Prove ownership locally</text>
+    </g>
+    <rect x="78" y="414" width="236" height="25" rx="6"
+          fill="#29182f" stroke="#ce58d6" stroke-opacity=".22"/>
+    <text x="196" y="431" fill="#e488e9" font-size="12" text-anchor="middle"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      secret never leaves
+    </text>
+
+    <!-- mempool -->
+    <g filter="url(#shadow)">
+      <rect x="385" y="142" width="260" height="314" rx="16"
+            fill="#121622" stroke="#67d7f6" stroke-opacity=".40"/>
+      <path d="M401 142H629A16 16 0 0 1 645 158V222H385V158A16 16 0 0 1 401 142Z"
+            fill="url(#poolHead)"/>
+    </g>
+    <text x="407" y="170" fill="#67d7f6" font-size="11" font-weight="700"
+          letter-spacing="1.8">02 · ADMISSION</text>
+    <text x="407" y="205" fill="#f6f7fa" font-size="24" font-weight="650">Mempool</text>
+    <g fill="none" stroke="#67d7f6" stroke-width="1.7">
+      <rect x="588" y="170" width="27" height="19" rx="4" opacity=".45"/>
+      <rect x="581" y="177" width="27" height="19" rx="4" opacity=".72"/>
+      <rect x="574" y="184" width="27" height="19" rx="4"/>
+    </g>
+    <g fill="#c3c6d3" font-size="14">
+      <rect x="407" y="255" width="5" height="5" rx="1" fill="#67d7f6"/>
+      <text x="425" y="261">Verify authorization capsule</text>
+      <rect x="407" y="296" width="5" height="5" rx="1" fill="#67d7f6"/>
+      <text x="425" y="302">Check structure and fees</text>
+      <rect x="407" y="337" width="5" height="5" rx="1" fill="#67d7f6"/>
+      <text x="425" y="343">Reserve input and output slots</text>
+      <rect x="407" y="378" width="5" height="5" rx="1" fill="#67d7f6"/>
+      <text x="425" y="384">Relay an admissible intent</text>
+    </g>
+    <rect x="407" y="414" width="216" height="25" rx="6"
+          fill="#142832" stroke="#67d7f6" stroke-opacity=".22"/>
+    <text x="515" y="431" fill="#8ce5fb" font-size="12" text-anchor="middle"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      verified before relay
+    </text>
+
+    <!-- miner -->
+    <g filter="url(#shadow)">
+      <rect x="700" y="142" width="300" height="314" rx="16"
+            fill="#121622" stroke="#e7da3d" stroke-opacity=".38"/>
+      <path d="M716 142H984A16 16 0 0 1 1000 158V222H700V158A16 16 0 0 1 716 142Z"
+            fill="url(#minerHead)"/>
+    </g>
+    <text x="722" y="170" fill="#e7da3d" font-size="11" font-weight="700"
+          letter-spacing="1.8">03 · PUBLIC WITNESS</text>
+    <text x="722" y="205" fill="#f6f7fa" font-size="24" font-weight="650">Miner</text>
+    <path d="M945 171L966 183L945 195L924 183Z" fill="none"
+          stroke="#e7da3d" stroke-width="1.8"/>
+    <path d="M934 183H956M945 176V190" stroke="#e7da3d"
+          stroke-linecap="round" stroke-width="1.6"/>
+    <g fill="#c3c6d3" font-size="14">
+      <rect x="722" y="255" width="5" height="5" rx="1" fill="#e7da3d"/>
+      <text x="740" y="261">Select non-conflicting intents</text>
+      <rect x="722" y="296" width="5" height="5" rx="1" fill="#e7da3d"/>
+      <text x="740" y="302">Prove exact state transition</text>
+      <rect x="722" y="337" width="5" height="5" rx="1" fill="#e7da3d"/>
+      <text x="740" y="343">Verify the preceding terminal</text>
+      <rect x="722" y="378" width="5" height="5" rx="1" fill="#e7da3d"/>
+      <text x="740" y="384">Search the fixed header nonce</text>
+    </g>
+    <rect x="722" y="414" width="256" height="25" rx="6"
+          fill="#292818" stroke="#e7da3d" stroke-opacity=".20"/>
+    <text x="850" y="431" fill="#f1e970" font-size="12" text-anchor="middle"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      transition + HistoryStep + PoW
+    </text>
+
+    <!-- nodes -->
+    <g filter="url(#shadow)">
+      <rect x="1050" y="142" width="334" height="314" rx="16"
+            fill="#121622" stroke="#34e06f" stroke-opacity=".40"/>
+      <path d="M1066 142H1368A16 16 0 0 1 1384 158V222H1050V158A16 16 0 0 1 1066 142Z"
+            fill="url(#nodeHead)"/>
+    </g>
+    <text x="1072" y="170" fill="#34e06f" font-size="11" font-weight="700"
+          letter-spacing="1.8">04 · INDEPENDENT VERIFICATION</text>
+    <text x="1072" y="205" fill="#f6f7fa" font-size="24" font-weight="650">Full nodes</text>
+    <g fill="#0d111a" stroke="#34e06f" stroke-width="1.7">
+      <circle cx="1338" cy="172" r="8"/>
+      <circle cx="1316" cy="198" r="8"/>
+      <circle cx="1358" cy="201" r="8"/>
+      <path d="M1333 179L1321 191M1344 179L1353 194M1324 199H1350"
+            fill="none"/>
+    </g>
+    <g fill="#c3c6d3" font-size="14">
+      <rect x="1072" y="255" width="5" height="5" rx="1" fill="#34e06f"/>
+      <text x="1090" y="261">Verify HistoryStep and PoW</text>
+      <rect x="1072" y="296" width="5" height="5" rx="1" fill="#34e06f"/>
+      <text x="1090" y="302">Check parent and cumulative work</text>
+      <rect x="1072" y="337" width="5" height="5" rx="1" fill="#34e06f"/>
+      <text x="1090" y="343">Apply the proven slot writes</text>
+      <rect x="1072" y="378" width="5" height="5" rx="1" fill="#34e06f"/>
+      <text x="1090" y="384">Advance the live UTXO state</text>
+    </g>
+    <rect x="1072" y="414" width="290" height="25" rx="6"
+          fill="#14281d" stroke="#34e06f" stroke-opacity=".22"/>
+    <text x="1217" y="431" fill="#6ceb96" font-size="12" text-anchor="middle"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      verify proof · do not re-execute
+    </text>
+
+    <!-- forward arrows -->
+    <path d="M346 299H374" stroke="#67d7f6" stroke-width="2"
+          marker-end="url(#arrowCyan)"/>
+    <text x="360" y="282" fill="#8c93a8" font-size="10" text-anchor="middle"
+          letter-spacing="1.1">ZK AUTH</text>
+    <path d="M655 299H689" stroke="#67d7f6" stroke-width="2"
+          marker-end="url(#arrowCyan)"/>
+    <text x="672" y="282" fill="#8c93a8" font-size="10" text-anchor="middle"
+          letter-spacing="1.1">INTENT</text>
+    <path d="M1010 299H1039" stroke="#34e06f" stroke-width="2"
+          marker-end="url(#arrowGreen)"/>
+    <text x="1025" y="272" fill="#8c93a8" font-size="10" text-anchor="middle"
+          letter-spacing="1.1">BLOCK</text>
+    <text x="1025" y="285" fill="#8c93a8" font-size="10" text-anchor="middle"
+          letter-spacing="1.1">+ TERMINAL</text>
+
+    <!-- recursive terminal loop -->
+    <path d="M1220 466C1220 531 1174 559 1104 559H906C862 559 850 535 850 467"
+          fill="none" stroke="#ce58d6" stroke-width="2"
+          stroke-dasharray="5 7" marker-end="url(#arrowProof)"/>
+    <circle cx="1220" cy="466" r="4" fill="#34e06f"/>
+    <rect x="872" y="531" width="326" height="57" rx="12"
+          fill="#0d111c" stroke="#ce58d6" stroke-opacity=".28"/>
+    <text x="1035" y="554" fill="#ce58d6" font-size="11" text-anchor="middle"
+          font-weight="700" letter-spacing="1.5">RECURSIVE CONTINUITY</text>
+    <text x="1035" y="574" fill="#a7abba" font-size="12" text-anchor="middle">
+      T[h] becomes the preceding terminal for block h+1
+    </text>
+
+    <text x="56" y="621" fill="#747b90" font-size="12"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      work is performed once · validity is verified everywhere
+    </text>
+    <text x="1384" y="621" fill="#747b90" font-size="12" text-anchor="end"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      private witness ≠ public state witness
+    </text>
+  </g>
+</svg>

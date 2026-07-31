@@ -1,0 +1,154 @@
+# Hardware and capacity
+
+ParanO(1)d does not make chain age a permanent execution requirement, but a
+node still needs enough CPU for proof verification, enough memory for bounded
+network work and enough disk for the current live state. Check the actual
+machine exposed to the process; a provider's physical CPU model is not proof
+that a virtual guest receives the required instructions.
+
+## Production instruction floor
+
+A production binary accepts either:
+
+| Architecture | Required instructions |
+|---|---|
+| x86-64 | SSE4.1 and PCLMULQDQ |
+| ARM64 | NEON and PMULL |
+
+The scalar implementation is a test oracle, not a production fallback. An
+unsupported host exits before opening the wallet or chain database.
+
+Run the preflight on the intended host:
+
+```sh
+parano1d --check-hardware
+parano1d-miner --check-hardware
+```
+
+A successful node report ends with:
+
+```text
+NODE READY
+```
+
+The report also names the selected runtime backend. On x86-64, wider
+PCLMULQDQ, AVX2 with VPCLMULQDQ and AVX-512 paths are chosen automatically.
+On ARM64, the production path uses NEON with PMULL.
+
+## Virtual machines
+
+Some hypervisors mask PCLMULQDQ or advertise a generic legacy CPU even when
+the physical host is newer. Before committing to a virtual server:
+
+1. confirm that the guest is 64-bit;
+2. request host-passthrough or a modern virtual CPU profile when available;
+3. boot the exact plan and run `--check-hardware`;
+4. reject the plan if the process reports `CPU UNSUPPORTED`.
+
+On Linux x86-64, the relevant guest-visible flags can be inspected with:
+
+```sh
+grep -m1 '^flags' /proc/cpuinfo \
+  | tr ' ' '\n' \
+  | grep -E '^(sse4_1|pclmulqdq|avx2|vpclmulqdq|avx512)'
+```
+
+The production preflight remains authoritative because it checks the same
+runtime path the node will use.
+
+## Practical starting points
+
+The following are operational starting points, not consensus minima:
+
+| Role | CPU | Memory | Storage |
+|---|---|---:|---|
+| Wallet or ordinary node | 2 or more modern vCPUs | 4 GiB | SSD, 20 GiB free to start |
+| Public seed/full node | 4 or more modern vCPUs | 8 GiB | SSD or NVMe with monitored headroom |
+| B64 miner | 12 or more modern logical CPUs | 8 GiB or more | SSD or NVMe |
+| B255 miner | Benchmark the exact host | 16 GiB or more | NVMe preferred |
+
+CPU generation, clock, memory bandwidth and the selected carry-less
+multiplication backend matter more than a provider's vCPU label. Mining
+capacity must be measured on the final host. The reference launch measurement
+for saturated B64 preparation is 14.387 seconds at p95 on a 12-thread Intel
+Core i7-1365U. The full tables and measurement boundaries are in
+[Performance measurements](../reference/performance.md).
+
+An ordinary node does not continuously build block proofs, but it still
+verifies wallet authorizations and incoming `HistoryStep` terminals. Avoid
+severely oversubscribed instances whose CPU availability changes by an order
+of magnitude under load.
+
+## Memory behavior
+
+The implementation bounds major untrusted pools:
+
+- at most 1,024 mempool transactions and 384 MiB of serialized intents;
+- at most 128 MiB of retained orphan bundles;
+- one authenticated snapshot segment is decoded at a time, with an 8 MiB
+  segment cap;
+- snapshot payload work is serialized;
+- the recent complete-block and undo windows are fixed.
+
+Those are protocol-process ceilings, not a promise that total RSS equals their
+sum. Proof matrices, proving workspaces, database pages, networking and the
+operating system also consume memory. Leave headroom and do not configure a
+service limit equal to the observed idle RSS.
+
+Internal mining uses one shared thread budget for proof construction and nonce
+search. Set `--cpu-threads` to the logical CPUs actually assigned to the
+service, not the physical host's advertised total.
+
+## Disk behavior
+
+There is no honest fixed disk figure for the lifetime of a node. Persistent
+storage contains:
+
+- permanent compact headers;
+- the exact current sparse UTXO state and owner index;
+- the latest 18 complete blocks;
+- 36 blocks of state undo data;
+- peer identity and peer store;
+- proof cache and temporary snapshot staging;
+- wallet keys, metadata and receipts when used.
+
+Historical transaction bodies do not accumulate forever. Current live UTXOs
+do: disk use follows state occupancy and the distribution of occupied
+segments. MDBX grows in 64 MiB steps as needed.
+
+Monitor the real path:
+
+```sh
+du -sh ~/.parano1d/data
+parano1d-cli state
+```
+
+Snapshot synchronization requires temporary space for a complete candidate
+state before atomic installation. Keep enough free disk for the installed
+state plus one staged replacement and normal database growth.
+
+## Network
+
+Allow persistent outbound TCP connections and, for a public node, inbound TCP
+`9400`. A 100 Mbit/s unmetered connection is a sensible baseline. Latency is
+less important than stability and the absence of aggressive connection or
+traffic caps.
+
+RPC on TCP `9401` is an administrative interface. Keep it on loopback unless a
+private or authenticated transport protects it.
+
+## Capacity checks
+
+Revisit capacity after material changes in live state or traffic:
+
+```sh
+parano1d-cli status
+parano1d-cli state
+parano1d-cli peers
+du -sh ~/.parano1d/data
+```
+
+Alert on low disk space, repeated peer loss, sustained synchronization lag and
+service restarts. For deployment, continue with
+[Run a node on Linux](node.md). For mining-specific CPU planning, see
+[Internal mining](internal-mining.md).

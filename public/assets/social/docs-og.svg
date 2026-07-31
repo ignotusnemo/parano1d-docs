@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="canvas" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f8f8"/>
+      <stop offset="1" stop-color="#eef2f0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#27ce72"/>
+      <stop offset="1" stop-color="#159b51"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="26" flood-color="#1d2520" flood-opacity=".11"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#canvas)"/>
+  <circle cx="1060" cy="80" r="240" fill="#19ad5d" opacity=".035"/>
+  <circle cx="1060" cy="80" r="160" fill="none" stroke="#19ad5d" stroke-width="2" opacity=".08"/>
+  <circle cx="1060" cy="80" r="96" fill="none" stroke="#19ad5d" stroke-width="2" opacity=".11"/>
+
+  <rect x="64" y="58" width="1072" height="514" rx="32" fill="#fff" filter="url(#shadow)"/>
+  <rect x="64" y="58" width="1072" height="8" rx="4" fill="url(#accent)"/>
+
+  <image href="../icons/parano1d.png" x="112" y="112" width="82" height="82"/>
+  <text x="220" y="166" fill="#171a1f" font-family="Inter, Noto Sans, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="-1.2">
+    Paran<tspan fill="#19ad5d">O(1)</tspan>d
+  </text>
+
+  <text x="112" y="290" fill="#171a1f" font-family="Inter, Noto Sans, Arial, sans-serif" font-size="62" font-weight="700" letter-spacing="-2">
+    Technical documentation
+  </text>
+  <text x="112" y="352" fill="#525a64" font-family="Inter, Noto Sans, Arial, sans-serif" font-size="25">
+    Protocol · Architecture · Wallet · Mining · Node · API
+  </text>
+
+  <rect x="112" y="430" width="250" height="54" rx="27" fill="#e8f6ed"/>
+  <circle cx="143" cy="457" r="6" fill="#19ad5d"/>
+  <text x="162" y="465" fill="#126f40" font-family="Inter, Noto Sans, Arial, sans-serif" font-size="19" font-weight="600">
+    docs.parano1d.org
+  </text>
+
+  <text x="1088" y="525" text-anchor="end" fill="#90979f" font-family="Noto Sans Mono, monospace" font-size="15">
+    THE PRESENT PROVES ITSELF
+  </text>
+</svg>

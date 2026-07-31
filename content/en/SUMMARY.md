@@ -1,0 +1,80 @@
+# ParanO(1)d documentation
+
+- [Overview](index.md)
+
+## Start
+
+- [Install and use the wallet](getting-started/wallet.md)
+- [Run Core locally](getting-started/core.md)
+
+## Concepts
+
+- [A proof-native statechain](concepts/proof-native-statechain.md)
+- [Signatureless ownership](concepts/signatureless-ownership.md)
+- [Receipts and pruned history](concepts/receipts.md)
+
+## Architecture
+
+- [System overview](architecture/overview.md)
+- [Transactions](architecture/transactions.md)
+- [Live state](architecture/state.md)
+- [Synchronization](architecture/synchronization.md)
+- [Networking](architecture/networking.md)
+- [Proof stack](architecture/proof-stack.md)
+
+## Mining
+
+- [Mining overview](mining/index.md)
+- [Block production](architecture/mining.md)
+- [Internal miner](operate/internal-mining.md)
+- [External miner](operate/external-miner.md)
+- [Mining in the wallet](wallet/mining.md)
+
+## Protocol
+
+- [Consensus](protocol/consensus.md)
+- [Transaction protocol](protocol/transactions.md)
+- [Blocks and headers](protocol/blocks.md)
+- [State transition](protocol/state.md)
+- [Proof of work](protocol/proof-of-work.md)
+- [Network economics](protocol/economics.md)
+- [Consensus invariants](protocol/invariants.md)
+- [Security model](protocol/security-model.md)
+- [Consensus parameters](protocol/parameters.md)
+
+## Wallet
+
+- [Wallet overview](wallet/index.md)
+- [First run and the master secret](wallet/first-run.md)
+- [Photo-derived key](wallet/photo-key.md)
+- [Addresses](wallet/addresses.md)
+- [Send NOID](wallet/send.md)
+- [Receipts](wallet/receipts.md)
+- [Consolidation](wallet/consolidation.md)
+- [Scope](wallet/scope.md)
+- [Settings](wallet/settings.md)
+- [Backup and recovery](wallet/backup-recovery.md)
+
+## Operate
+
+- [Hardware and capacity](operate/hardware.md)
+- [Run a node on Linux](operate/node.md)
+- [Configuration](operate/configuration.md)
+- [Maintenance](operate/maintenance.md)
+- [Troubleshooting](operate/troubleshooting.md)
+
+## Develop
+
+- [Build from source](developers/build.md)
+- [Workspace map](developers/workspace.md)
+- [Testing](developers/testing.md)
+- [Release engineering](developers/releases.md)
+
+## Reference
+
+- [Command-line interface](reference/cli.md)
+- [JSON-RPC API](reference/rpc.md)
+- [Files, ports and limits](reference/files-and-ports.md)
+- [Protocol parameters](reference/parameters.md)
+- [Performance measurements](reference/performance.md)
+- [Glossary](reference/glossary.md)

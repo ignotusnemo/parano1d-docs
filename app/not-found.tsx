@@ -1,0 +1,15 @@
+import Link from "next/link";
+
+export default function NotFound() {
+  return (
+    <main className="not-found">
+      <span>404 / DOCUMENT NOT FOUND</span>
+      <h1>The requested page is not in this documentation set.</h1>
+      <p>
+        The path may have changed, or the document may only exist in a newer
+        source snapshot.
+      </p>
+      <Link href="/">Return to the documentation index</Link>
+    </main>
+  );
+}

@@ -1,0 +1,269 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 760" role="img"
+     aria-labelledby="title description">
+  <title id="title">ParanO(1)d proof stack</title>
+  <desc id="description">
+    A private wallet authorization path and a public HistoryStep transition
+    path share Poseidon2b and binary-field arithmetic. FROST-GKR reduces
+    committed execution columns to batched sumcheck relations, which are
+    closed by zerocheck, lincheck and FRI-Binius BaseFold.
+  </desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111522"/>
+      <stop offset=".55" stop-color="#0c111c"/>
+      <stop offset="1" stop-color="#080b13"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#171c29"/>
+      <stop offset="1" stop-color="#10141e"/>
+    </linearGradient>
+    <radialGradient id="sceneGlow">
+      <stop offset="0" stop-color="#344866" stop-opacity=".16"/>
+      <stop offset=".58" stop-color="#26364f" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#090c14" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M34 0H0V34" fill="none" stroke="#9db2d4"
+            stroke-opacity=".045"/>
+    </pattern>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="15" stdDeviation="18"
+                    flood-color="#02040a" flood-opacity=".65"/>
+    </filter>
+    <marker id="magentaArrow" markerWidth="10" markerHeight="10" refX="8"
+            refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#ce58d6"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8"
+            refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#34e06f"/>
+    </marker>
+    <marker id="cyanArrow" markerWidth="10" markerHeight="10" refX="8"
+            refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L10 5L0 10Z" fill="#67d7f6"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="760" rx="24" fill="url(#bg)"/>
+  <rect width="1440" height="760" rx="24" fill="url(#grid)"/>
+  <ellipse cx="742" cy="430" rx="620" ry="340" fill="url(#sceneGlow)"/>
+
+  <g font-family="Inter, Noto Sans, ui-sans-serif, system-ui, sans-serif">
+    <text x="56" y="55" fill="#f6f7fa" font-size="21" font-weight="650"
+          letter-spacing="2.7">ONE BINARY PROOF STACK</text>
+    <text x="56" y="85" fill="#9299ad" font-size="14">
+      Private ownership and public state execution use different relations over the same arithmetic foundation.
+    </text>
+    <text x="1384" y="57" fill="#34e06f" font-size="15" text-anchor="end"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      ParanO(1)d
+    </text>
+
+    <!-- foundation -->
+    <rect x="56" y="118" width="1328" height="90" rx="15"
+          fill="#111722" stroke="#596078" stroke-opacity=".52"/>
+    <text x="80" y="148" fill="#67d7f6" font-size="11" font-weight="700"
+          letter-spacing="1.6">SHARED FOUNDATION</text>
+    <text x="80" y="181" fill="#f6f7fa" font-size="18" font-weight="650">
+      GF(2^128) binary tower field
+    </text>
+    <path d="M382 139V187" stroke="#596078" stroke-opacity=".75"/>
+    <text x="414" y="160" fill="#e5e8ee" font-size="16" font-weight="650">
+      Poseidon2b
+    </text>
+    <text x="414" y="184" fill="#8f97aa" font-size="12">
+      width 4 · x^7 · 8 full + 58 partial rounds
+    </text>
+    <path d="M754 139V187" stroke="#596078" stroke-opacity=".75"/>
+    <text x="786" y="160" fill="#e5e8ee" font-size="16" font-weight="650">
+      Typed domains
+    </text>
+    <text x="786" y="184" fill="#8f97aa" font-size="12">
+      addresses · transactions · Merkle nodes · state · PoW · transcripts
+    </text>
+
+    <!-- inputs -->
+    <g filter="url(#shadow)">
+      <rect x="56" y="258" width="262" height="175" rx="17"
+            fill="url(#panel)" stroke="#ce58d6" stroke-opacity=".54"/>
+    </g>
+    <text x="80" y="289" fill="#ce58d6" font-size="11" font-weight="700"
+          letter-spacing="1.5">PRIVATE AUTHORIZATION</text>
+    <text x="80" y="327" fill="#f6f7fa" font-size="21" font-weight="650">
+      Wallet witness
+    </text>
+    <g fill="#b8bdca" font-size="13">
+      <circle cx="83" cy="359" r="3" fill="#ce58d6"/>
+      <text x="96" y="364">256-bit owner secret</text>
+      <circle cx="83" cy="389" r="3" fill="#ce58d6"/>
+      <text x="96" y="394">logical transaction ID</text>
+    </g>
+    <text x="80" y="417" fill="#7e8598" font-size="10"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      no signature · no state path
+    </text>
+
+    <g filter="url(#shadow)">
+      <rect x="56" y="466" width="262" height="175" rx="17"
+            fill="url(#panel)" stroke="#34e06f" stroke-opacity=".54"/>
+    </g>
+    <text x="80" y="497" fill="#34e06f" font-size="11" font-weight="700"
+          letter-spacing="1.5">PUBLIC STATE TRANSITION</text>
+    <text x="80" y="535" fill="#f6f7fa" font-size="21" font-weight="650">
+      Miner witness
+    </text>
+    <g fill="#b8bdca" font-size="13">
+      <circle cx="83" cy="567" r="3" fill="#34e06f"/>
+      <text x="96" y="572">selected block intents</text>
+      <circle cx="83" cy="597" r="3" fill="#34e06f"/>
+      <text x="96" y="602">touched state segments</text>
+      <circle cx="83" cy="627" r="3" fill="#34e06f"/>
+      <text x="96" y="632">previous terminal</text>
+    </g>
+
+    <!-- committed columns -->
+    <g filter="url(#shadow)">
+      <rect x="390" y="258" width="300" height="383" rx="17"
+            fill="url(#panel)" stroke="#67d7f6" stroke-opacity=".54"/>
+    </g>
+    <text x="414" y="289" fill="#67d7f6" font-size="11" font-weight="700"
+          letter-spacing="1.5">COMMITTED EXECUTION COLUMNS</text>
+    <text x="414" y="327" fill="#f6f7fa" font-size="23" font-weight="650">
+      FROST-GKR
+    </text>
+    <text x="414" y="353" fill="#969daf" font-size="12">
+      Global relations over batched traces
+    </text>
+    <g transform="translate(414 383)">
+      <g fill="#172332" stroke="#61728b" stroke-opacity=".70">
+        <rect x="0" y="0" width="48" height="190" rx="8"/>
+        <rect x="61" y="0" width="48" height="190" rx="8"/>
+        <rect x="122" y="0" width="48" height="190" rx="8"/>
+        <rect x="183" y="0" width="48" height="190" rx="8"/>
+      </g>
+      <g fill="#67d7f6" fill-opacity=".80">
+        <rect x="10" y="16" width="28" height="7" rx="3"/>
+        <rect x="71" y="31" width="28" height="7" rx="3"/>
+        <rect x="132" y="47" width="28" height="7" rx="3"/>
+        <rect x="193" y="22" width="28" height="7" rx="3"/>
+      </g>
+      <g stroke="#3d4c62" stroke-width="1">
+        <path d="M10 45H38M10 65H38M10 85H38M10 105H38M10 125H38M10 145H38M10 165H38"/>
+        <path d="M71 45H99M71 65H99M71 85H99M71 105H99M71 125H99M71 145H99M71 165H99"/>
+        <path d="M132 65H160M132 85H160M132 105H160M132 125H160M132 145H160M132 165H160"/>
+        <path d="M193 45H221M193 65H221M193 85H221M193 105H221M193 125H221M193 145H221M193 165H221"/>
+      </g>
+    </g>
+    <g fill="#aeb4c2" font-size="11" text-anchor="middle">
+      <text x="438" y="595">trace</text>
+      <text x="499" y="595">Merkle</text>
+      <text x="560" y="595">state</text>
+      <text x="621" y="595">rounds</text>
+    </g>
+    <rect x="414" y="610" width="252" height="16" rx="5"
+          fill="#142832" stroke="#67d7f6" stroke-opacity=".25"/>
+    <text x="540" y="622" fill="#85dff6" font-size="9" text-anchor="middle"
+          letter-spacing=".9">BATCHED DEGREE-SEVEN RELATIONS</text>
+
+    <!-- closure -->
+    <g filter="url(#shadow)">
+      <rect x="762" y="258" width="302" height="383" rx="17"
+            fill="url(#panel)" stroke="#e7da3d" stroke-opacity=".49"/>
+    </g>
+    <text x="786" y="289" fill="#e7da3d" font-size="11" font-weight="700"
+          letter-spacing="1.5">POLYNOMIAL REDUCTION</text>
+    <text x="786" y="327" fill="#f6f7fa" font-size="23" font-weight="650">
+      Close the relation
+    </text>
+    <g>
+      <rect x="786" y="371" width="254" height="50" rx="9"
+            fill="#242518" stroke="#e7da3d" stroke-opacity=".35"/>
+      <text x="913" y="401" fill="#e9df78" font-size="14" text-anchor="middle">
+        batched sumcheck
+      </text>
+      <path d="M913 421V443" stroke="#8c895b" stroke-width="2"/>
+      <rect x="786" y="443" width="254" height="50" rx="9"
+            fill="#242518" stroke="#e7da3d" stroke-opacity=".35"/>
+      <text x="913" y="473" fill="#e9df78" font-size="14" text-anchor="middle">
+        zerocheck + lincheck
+      </text>
+      <path d="M913 493V515" stroke="#8c895b" stroke-width="2"/>
+      <rect x="786" y="515" width="254" height="50" rx="9"
+            fill="#242518" stroke="#e7da3d" stroke-opacity=".35"/>
+      <text x="913" y="545" fill="#e9df78" font-size="14" text-anchor="middle">
+        FRI-Binius / BaseFold
+      </text>
+    </g>
+    <text x="913" y="601" fill="#9a9fac" font-size="11" text-anchor="middle">
+      transparent · no trusted setup
+    </text>
+    <text x="913" y="622" fill="#727b8f" font-size="10" text-anchor="middle">
+      canonical B64 + B255 matrix packs
+    </text>
+
+    <!-- outputs -->
+    <g filter="url(#shadow)">
+      <rect x="1136" y="258" width="248" height="175" rx="17"
+            fill="url(#panel)" stroke="#ce58d6" stroke-opacity=".54"/>
+    </g>
+    <text x="1160" y="289" fill="#ce58d6" font-size="11" font-weight="700"
+          letter-spacing="1.5">WALLET RESULT</text>
+    <text x="1160" y="327" fill="#f6f7fa" font-size="21" font-weight="650">
+      Authorization
+    </text>
+    <text x="1160" y="357" fill="#b8bdca" font-size="13">
+      witness-hiding proof
+    </text>
+    <text x="1160" y="381" fill="#b8bdca" font-size="13">
+      bound to the transaction
+    </text>
+    <text x="1160" y="414" fill="#e58ee9" font-size="10"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      verified before relay
+    </text>
+
+    <g filter="url(#shadow)">
+      <rect x="1136" y="466" width="248" height="175" rx="17"
+            fill="url(#panel)" stroke="#34e06f" stroke-opacity=".54"/>
+    </g>
+    <text x="1160" y="497" fill="#34e06f" font-size="11" font-weight="700"
+          letter-spacing="1.5">CONSENSUS RESULT</text>
+    <text x="1160" y="535" fill="#f6f7fa" font-size="21" font-weight="650">
+      HistoryStep
+    </text>
+    <text x="1160" y="565" fill="#b8bdca" font-size="13">
+      exact post-state terminal
+    </text>
+    <text x="1160" y="589" fill="#b8bdca" font-size="13">
+      recursive chain continuity
+    </text>
+    <text x="1160" y="622" fill="#79e89e" font-size="10"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      constant verification work
+    </text>
+
+    <!-- arrows -->
+    <path d="M318 346H378" stroke="#ce58d6" stroke-width="2.3"
+          marker-end="url(#magentaArrow)"/>
+    <path d="M318 553H378" stroke="#34e06f" stroke-width="2.3"
+          marker-end="url(#greenArrow)"/>
+    <path d="M690 449H750" stroke="#67d7f6" stroke-width="2.3"
+          marker-end="url(#cyanArrow)"/>
+    <path d="M1064 346H1124" stroke="#ce58d6" stroke-width="2.3"
+          marker-end="url(#magentaArrow)"/>
+    <path d="M1064 553H1124" stroke="#34e06f" stroke-width="2.3"
+          marker-end="url(#greenArrow)"/>
+
+    <!-- floor -->
+    <rect x="56" y="686" width="1328" height="42" rx="11"
+          fill="#111722" stroke="#596078" stroke-opacity=".42"/>
+    <text x="80" y="712" fill="#9299ad" font-size="12">
+      Complete consensus proof pipeline
+    </text>
+    <text x="1360" y="713" fill="#34e06f" font-size="15" font-weight="700"
+          text-anchor="end"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+      PROVEN 79-BIT POST-QUANTUM ENGINEERING SECURITY FLOOR
+    </text>
+  </g>
+</svg>
