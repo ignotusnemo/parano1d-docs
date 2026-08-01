@@ -458,27 +458,19 @@ export default function SiteChrome({
   return (
     <div className={`docs-app ${sidebarCollapsed ? "is-sidebar-collapsed" : ""}`}>
       <header className="topbar">
+        <div className="topbar-brand">
+          <Link href={pathForLocale(locale, "")} className="brand-link">
+            <BrandMark />
+            <Brand />
+          </Link>
+        </div>
+
         <div className="mobile-language">
           <LanguageSwitcher
             locale={locale}
             currentSlug={currentSlug}
             label={copy.language}
           />
-        </div>
-
-        <div className="topbar-brand">
-          <button
-            className="icon-button mobile-menu-button"
-            type="button"
-            aria-label={copy.openNavigation}
-            onClick={openNavigation}
-          >
-            <MenuGlyph />
-          </button>
-          <Link href={pathForLocale(locale, "")} className="brand-link">
-            <BrandMark />
-            <Brand />
-          </Link>
         </div>
 
         <button
@@ -502,6 +494,15 @@ export default function SiteChrome({
             label={copy.externalLinks}
           />
         </div>
+
+        <button
+          className="icon-button mobile-menu-button"
+          type="button"
+          aria-label={copy.openNavigation}
+          onClick={openNavigation}
+        >
+          <MenuGlyph />
+        </button>
       </header>
 
       <div

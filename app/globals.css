@@ -2556,6 +2556,7 @@ kbd {
   .mobile-language {
     display: block;
     flex: 0 0 auto;
+    margin-left: auto;
   }
 
   .mobile-language .language-switcher summary {
@@ -2568,8 +2569,8 @@ kbd {
   }
 
   .mobile-language .language-menu {
-    right: auto;
-    left: 0;
+    right: 0;
+    left: auto;
   }
 
   .mobile-menu-button {
@@ -2590,6 +2591,7 @@ kbd {
   .search-trigger {
     width: 36px;
     height: 34px;
+    margin-left: 0;
     padding: 0;
     display: grid;
     place-items: center;
