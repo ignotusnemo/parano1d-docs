@@ -1,6 +1,6 @@
 # Network economics
 
-ParanO(1)d ties issuance to live-state capacity and prices persistent state
+ParanO(1)d ties issuance to Live State capacity and prices persistent State
 growth separately from ordinary transaction work.
 
 ## Unit
@@ -14,7 +14,7 @@ All consensus amounts are integers in μNOID.
 
 ## Block reward
 
-The starting subsidy is 50 NOID. It halves whenever the state domain expands
+The starting subsidy is 50 NOID. It halves whenever the State domain expands
 and never falls below 1 NOID:
 
 | `log_slots` | Capacity | Block reward |
@@ -29,7 +29,7 @@ and never falls below 1 NOID:
 
 Expansion requires sustained 75% occupancy in a hard-finalized window. The
 network therefore moves to a lower inflation tier only after materially using
-the current state capacity.
+the current State capacity.
 
 ## Launch development allocation
 
@@ -37,7 +37,7 @@ For the first three target-time years, each block subsidy is divided:
 
 - 90% to the miner;
 - 5% to the O(1) Network Fund;
-- 5% to O(1) Lab.
+- 5% to ParanO(1)d Lab.
 
 There is no premine. After height 6,307,200, the complete block subsidy goes to
 the miner.
@@ -45,7 +45,7 @@ the miner.
 To avoid creating two extra live UTXOs in every block, the two development
 shares are paid in one mandatory two-output system record every 5,760 target
 blocks. The amount uses the reward tier active at that payout boundary. If the
-state expands during the interval, the resulting difference remains unissued.
+State expands during the interval, the resulting difference remains unissued.
 
 The payout schedule, recipients and amounts are derived statelessly from height
 and `log_slots` and are proved inside `HistoryStep`. A miner cannot omit,
@@ -62,25 +62,25 @@ The minimum transaction fee consists of:
 
 Pressure multipliers are:
 
-| Parent-state occupancy | Multiplier |
+| Parent-State occupancy | Multiplier |
 |---:|---:|
 | Below 50% | 1× |
 | 50% to below 75% | 2× |
 | 75% to below 90% | 4× |
 | 90% and above | 8× |
 
-The state-growth component is burned. Base, input, output and voluntary tip
+The State-growth component is burned. Base, input, output and voluntary tip
 components are claimable by the miner.
 
-A consolidation that turns several inputs into one output shrinks state and
+A consolidation that turns several inputs into one output shrinks State and
 pays no growth burn.
 
 ## Dynamic relay floor
 
 The default mempool relays a transaction only when its fee satisfies both
 consensus minimum and current relay policy. The dynamic floor is the greater
-of 5,000 μNOID and 90% of the median fee among the last 50 accepted
-transactions.
+of 5,000 μNOID and 90% of the median fee among the last 50 transactions
+admitted to that node's mempool.
 
 This relay floor is local policy. Consensus fee accounting remains
-deterministic from the transaction shape and parent-state occupancy.
+deterministic from the transaction shape and parent-State occupancy.

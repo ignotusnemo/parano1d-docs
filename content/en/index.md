@@ -11,16 +11,17 @@ ParanO(1)d removes that requirement.
 
 Validity is established once, where the complete information already exists.
 The wallet proves authorization with its private witness. The miner proves the
-public transaction logic and the exact state transition. The network verifies
+public transaction logic and the exact State transition. The network verifies
 those proofs instead of repeating the same execution.
 
-Every accepted block carries a recursive `HistoryStep` that binds the block,
-its new UTXO root and the validity of the preceding statechain. A new node can
-authenticate the current state and verify the recent reorg suffix without
+Every accepted block carries a recursive `HistoryStep` that proves the block's
+exact State transition, including its new UTXO root, and verifies the preceding
+`HistoryStep` terminal. A new node can authenticate the current State and verify
+the recent reorg suffix without
 executing the chain from genesis.
 
-Once the present state carries its own proof, spent state can be deleted and
-reused. Ownership no longer needs a public key or digital signature. State
+Once the present State carries its own proof, spent records can be deleted and
+their slots reused. Ownership no longer needs a public key or digital signature. State
 growth can be priced directly. Proof of work can order transitions whose
 validity is already established. The age of the network does not become a
 hardware requirement.
@@ -30,11 +31,11 @@ hardware requirement.
 | | Conventional blockchain | ParanO(1)d |
 |---|---|---|
 | Validation | Every full node re-executes | The witness holder proves; the network verifies |
-| Bootstrap | Rebuild state from genesis | Authenticate current state and verify the recent suffix |
+| Bootstrap | Rebuild state from genesis | Authenticate current State and verify the recent suffix |
 | Ownership | Public-key signature | Fresh ZK proof of a Poseidon2b preimage |
-| State | Derived from accumulated history | Exact live UTXO state is a consensus object |
+| State | Derived from accumulated history | Exact Live State is a consensus object |
 | Spent outputs | Remain part of required history | Slots are cleared and safely reused |
-| Proof of work | Orders an execution log | Orders proof-valid state transitions |
+| Proof of work | Orders an execution log | Orders proof-valid State transitions |
 | Post-quantum migration | Replace the ownership scheme | No elliptic-curve transaction scheme to replace |
 
 ## One transition, proved once
@@ -45,12 +46,12 @@ for `{logical_txid, input_owner}`. The 256-bit spending secret never leaves the
 wallet.
 
 The authorization is stateless: it contains no UTXO Merkle path and is not
-tied to one state root. The miner holds the public state witness and proves
+tied to one State root. The miner holds the public State witness and proves
 separately that every input exists, every output slot is empty, values balance,
-fees are correct and the resulting state root is exact.
+fees are correct and the resulting State root is exact.
 
 The mempool verifies a complete transaction intent before relaying it. The
-miner combines accepted intents, the exact state transition and the preceding
+miner combines accepted intents, the exact State transition and the preceding
 terminal into the next `HistoryStep`. It proves the nonce-independent block
 before searching for a PoW nonce.
 
@@ -60,11 +61,12 @@ They materialize the result without re-executing the transaction logic.
 
 [See the complete proof and block flow →](architecture/overview.md)
 
-## Mining is stateful
+## Mining requires State
 
-**Hashpower alone cannot produce blocks. Mining is stateful and proof-gated.**
+**Hashpower alone cannot produce blocks. Mining requires State; nonce search
+begins only after the proof is complete.**
 
-An independent miner follows the canonical chain, holds the live UTXO state,
+An independent miner follows the canonical chain, holds the current State,
 selects transactions and proves the exact next `HistoryStep`. Only after that
 proof is complete can an internal or external worker search the immutable
 Poseidon2b header nonce. A standalone hash engine cannot originate a block or
@@ -82,14 +84,14 @@ Each `HistoryStep` proves the current block relation and verifies the previous
 terminal inside the same relation. Proof size and verification work do not
 increase with block height.
 
-An active node keeps the exact live state, compact headers for cumulative work
+An active node keeps the exact Live State, compact headers for cumulative work
 and the latest 18 complete blocks for competing miners and reorgs. A joining
-node authenticates a finalized state with its matching terminal, then verifies
+node authenticates a finalized State with its matching terminal, then verifies
 the recent suffix normally.
 
-ParanO(1)d is history-stateless, not state-free. State transfer scales with the
+ParanO(1)d is history-stateless, not state-free. `State` transfer scales with the
 live UTXO set. What no longer scales with chain age is the execution required
-to prove why that state is valid.
+to prove why that State is valid.
 
 ## Signatureless ownership
 
@@ -104,60 +106,60 @@ elliptic curves. The Ed25519 key used by libp2p identifies a peer only and has
 no spending or consensus authority.
 
 ParanO(1)d is transparent, not a privacy chain. Values, owners and relayed
-transactions are public. Zero knowledge protects the spending witness;
-privacy from transaction history comes from non-retention rather than
-concealment.
+transactions are public. Zero knowledge protects the spending witness.
+Protocol storage reduces routine transaction-body retention, but it cannot
+prevent third parties from archiving public transactions.
 
-## A living UTXO state
+## Live State
 
 State is an exact sparse vector of indexed UTXOs. Spending clears a slot, and
-the allocator reuses empty positions before opening new state. Every output
+the allocator reuses empty positions before opening new State capacity. Every output
 has a fresh `creation_id`, so reusing an index can never revive an old
 reference.
 
 The vector is divided into `2^16`-slot segments. Empty segments are virtual and
 a segment disappears when its last UTXO is spent. The slot domain begins at
-`2^24` and can expand without copying state, migrating outputs or pausing the
+`2^24` and can expand without copying State, migrating outputs or pausing the
 network.
 
-Fees distinguish ordinary I/O from net-new state. The state-growth component
+Fees distinguish ordinary I/O from net-new State. The State-growth component
 rises with occupancy and is burned; consolidation pays no growth burn. The
-block reward halves when the state domain expands, with a permanent 1 NOID
+block reward halves when the State domain expands, with a permanent 1 NOID
 floor.
 
 ## One binary proof stack
 
 The protocol is built over the binary tower field `GF(2^128)`. Poseidon2b is
-the common permutation for addresses, transactions, Merkle trees, state roots,
+the common permutation for addresses, transactions, Merkle trees, State roots,
 transcripts, block identifiers and proof of work.
 
-FROST-GKR packs Poseidon2b batches and Merkle paths into direct degree-seven
+[FROST-GKR](research/frost-gkr.md) packs Poseidon2b batches and Merkle paths into direct degree-seven
 relations over shared Boolean hypercubes. Batched sumchecks, zerocheck,
 lincheck and FRI-Binius close the binary R1CS relation without a trusted setup.
-Wallet authorization, exact state transition and recursive chain verification
+Wallet authorization, exact State transition and recursive chain verification
 therefore compose inside one arithmetic system instead of separate proof
 systems joined afterward.
 
-## A quantified post-quantum floor
+## Industry proof-security profile
 
-Post-quantum security is treated as a property of the complete protocol, not a
-label inherited from one signature scheme or proof primitive. The
-security-critical components are accounted for separately and composed by
-taking the weakest bound:
+ParanO(1)d reports proof security using the scoped conventions published by
+established FRI and STARK projects. Under the literal Toy Problem convention
+used by Plonky2 and RISC Zero, the production wallet and `HistoryStep`
+parameters each reach the `GF(2^128)` field cap: **128 bits of conjectured FRI
+security**.
 
-| Component | Post-quantum security |
-|---|---:|
-| Wallet authorization | 79 bits |
-| Recursive `HistoryStep` | 83 bits |
-| Poseidon2b collision resistance | 85 bits |
-| Poseidon2b preimage resistance | 128 bits |
-| **Complete protocol floor** | **79 bits** |
+| Published system and metric | Published value | ParanO(1)d under the corresponding metric |
+|---|---:|---:|
+| [Plonky2 default FRI](https://github.com/0xPolygonZero/plonky2#security), Toy Problem conjecture | 100 bits conjectured | 128 bits conjectured |
+| [RISC Zero soundness calculator](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35), Toy Problem conjecture | 97 bits at `2^20`; 95 bits at `2^24`, conjectured | 128 bits conjectured |
+| [ethSTARK / StarkWare](https://www.starknet.io/blog/safe-and-sound-a-deep-dive-into-stark-security/), RBR and `t/e(t)` analysis | 96-bit RBR premise; 95-bit compiled-STARK result | 96.047-bit wallet generalized-RBR bound; 95.022-bit fixed-invalid-block work score |
 
-The result is a **proven 79-bit post-quantum engineering security floor across
-the complete consensus proof pipeline**. The calculation is pinned in the
-executable
-[soundness ledger](https://github.com/ignotusnemo/parano1d/blob/main/noid_gkr/src/zk_auth_qrom.rs)
-so protocol changes cannot silently alter the published figure.
+The metrics retain their original labels because they describe different
+security games. The complete [security model](protocol/security-model.md)
+defines each ParanO(1)d value and links the reproducible formulas and tests.
+In the terminology used for transparent STARK and FRI systems, the
+transaction proof stack is post-quantum resistant: it is hash-based, requires
+no trusted setup and contains no elliptic-curve transaction signature.
 
 ## Protocol profile
 
@@ -179,7 +181,7 @@ so protocol changes cannot silently alter the published figure.
   [latest release](https://github.com/ignotusnemo/parano1d/releases). It
   includes and supervises its own full node.
 - Read the [architecture overview](architecture/overview.md) to follow a
-  transaction from the wallet to accepted state.
+  transaction from the wallet to accepted State.
 - [Run an ordinary node on Linux](operate/node.md).
 - [Run an internal or external miner](mining/index.md).
 - Inspect or build the

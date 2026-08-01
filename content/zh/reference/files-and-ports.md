@@ -6,14 +6,14 @@
 |---|---|---|
 | `~/.parano1d/parano1d.toml` | Core 配置 | 运营者 |
 | `~/.parano1d/gui-settings.json` | GUI 偏好 | 本地 UI |
-| `~/.parano1d/data/` | Core 与 GUI 节点默认数据 | 共识状态 |
+| `~/.parano1d/data/` | Core 与 GUI 节点默认数据 | 共识数据 |
 | `DATA_DIR/wallet.key` | 256 位钱包主密钥 | 花费权限 |
 | `DATA_DIR/wallet.receipts` | 已保存的外发收据 | 本地付款证据 |
 | `DATA_DIR/wallet.history` | 本地钱包历史 | 本地展示 |
 | `DATA_DIR/p2p_identity.key` | 稳定 libp2p Ed25519 身份 | 仅网络身份 |
 | `DATA_DIR/peers.json` | 成功连接过的公网出站节点 | 发现提示 |
 | `DATA_DIR/history-step-cache/` | 派生的本地证明矩阵缓存 | 可重建 |
-| `DATA_DIR/snapshot-staging/` | 接收快照临时数据 | 永不作为规范状态 |
+| `DATA_DIR/snapshot-staging/` | 接收快照临时数据 | 永不作为规范 State |
 | `DATA_DIR/parano1d-gui.toml` | GUI 管理的节点配置 | 私有节点 |
 | `DATA_DIR/parano1d-node.log` | GUI 管理的节点日志 | 诊断 |
 
@@ -36,7 +36,7 @@ Unix 上，`wallet.key` 和 `p2p_identity.key` 仅允许所有者访问。前者
 
 | 项目 | 值 |
 |---|---|
-| Network magic | `NOID` |
+| 网络魔数（network magic） | `NOID` |
 | libp2p 协议 | `/noid/mainnet/1.0.0` |
 | 交易与区块 gossip | GossipSub |
 | 发现 | DNS 种子、Kademlia、mDNS |
@@ -47,10 +47,10 @@ Unix 上，`wallet.key` 和 `p2p_identity.key` 仅允许所有者访问。前者
 |---|---:|
 | 区块头 | 永久 |
 | 完整已接受区块 | 18 |
-| 可重组 suffix | 18 |
+| 可重组后缀 | 18 |
 | 最大重组 | 17 |
-| Undo 记录 | 36 |
-| 交易 epoch | 144 |
+| 撤销数据（undo data） | 36 |
+| 交易周期（epoch） | 144 |
 
 收据可在区块体保留窗口之外保存特定付款的纳入证据。
 
@@ -58,24 +58,34 @@ Unix 上，`wallet.key` 和 `p2p_identity.key` 仅允许所有者访问。前者
 
 | 资源 | 限制 |
 |---|---:|
-| Mempool 逻辑交易 | 1,024 |
-| Mempool intent 字节 | 384 MiB |
-| Peer store 条目 | 500 |
-| 每个已保存 peer 的地址数 | 8 |
-| 启动 peer anchor | 8 |
-| 每个网络组的公网出站 peer | 2 |
-| 每个 IP 的公网入站 peer | 8 |
-| 每个网络组的公网入站 peer | 32 |
-| 区块头批量 | 512 |
-| 同时导出的快照 | 2 |
-| 待处理状态段请求 | 64 |
+| 内存池逻辑交易 | 1,024 |
+| 内存池交易意图字节数 | 384 MiB |
+| 内存池同步响应 | 128 笔交易意图 / 16 MiB |
+| 暂存的孤立已接受区块包 | 36 个 / 128 MiB |
+| 对等节点存储条目 | 500 |
+| 每个已保存对等节点的地址数 | 8 |
+| 自动出站连接目标 | 12 个对等节点身份 |
+| 已建立的入站传输连接 | 128 |
+| 已建立的出站传输连接 | 64 |
+| 待建立的入站 / 出站传输连接 | 64 / 32 |
+| 每个对等节点身份已建立的传输连接 | 2 |
+| 每个网络组的公网出站对等节点 | 2 |
+| 单个 IP 的公网入站对等节点身份 | 32 |
+| 每个网络组的公网入站连接 | 96 |
+| 常规同步的区块头请求 | 512 个区块头 |
+| 区块头协议批量上限 | 4,096 个区块头 |
+| 并发快照生成任务 | 1 |
+| 无活跃租约时保留的快照版本 | 2 |
+| 快照导出租约的空闲期限 | 15 分钟 |
+| 并行传输的快照 State 分段 | 8 |
+| State 分段请求关联表条目 | 64 |
 | 外部模板生命周期 | 30 秒 |
 
 ## RPC 边界
 
 | 操作 | 上限 |
 |---|---:|
-| 状态 atlas | 256 buckets |
+| Live State 图谱 | 256 个分桶 |
 | 返回的槽位提示 | 256 |
 | 近期交易页 | 32 行 |
 | 收据页 | 50 行 |

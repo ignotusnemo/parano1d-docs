@@ -5,7 +5,7 @@
 - Core 压缩包：节点、CLI 和外部矿工；
 - GUI 安装包：钱包应用和私有节点。
 
-发布文件从现有的 annotated 版本标签以及一份认证 HistoryStep pack 构建。
+发布文件从现有的带注释版本标签以及一份经过认证的 HistoryStep 矩阵包构建。
 
 ## 支持目标
 
@@ -17,22 +17,22 @@
 | macOS Apple 芯片 | `.tar.gz` | `.dmg` |
 | macOS Intel | `.tar.gz` | `.dmg` |
 
-所有包均使用 `Cargo.toml` 中的 workspace 版本。
+所有包均使用 `Cargo.toml` 中的工作区版本。
 
 ## 源码准备
 
 创建标签前：
 
-1. 更新 workspace 版本和发布说明；
-2. 运行格式检查、workspace 检查及变更 crate 测试；
-3. 运行适用的 live 场景；
-4. 认证规范矩阵 pack；
-5. 确认 diff 干净且每项变化都有意为之；
-6. 创建 annotated `vMAJOR.MINOR.PATCH` 标签。
+1. 更新工作区版本和发布说明；
+2. 运行格式检查、工作区检查及已变更 crate 的测试；
+3. 运行适用的真实进程测试场景；
+4. 认证规范矩阵包；
+5. 确认差异中没有无关改动；
+6. 创建带注释的 `vMAJOR.MINOR.PATCH` 标签。
 
 标签与包版本必须完全一致。
 
-## 矩阵 pack
+## 矩阵包
 
 发布使用一个名为以下内容的归档：
 
@@ -40,43 +40,43 @@
 history-step-pack-v1.tar.gz
 ```
 
-它的 SHA-256 摘要是 workflow 的显式输入。每个原生 runner 都独立解压并
-认证 pack；运行时元数据和两个矩阵 leaf digest 必须等于 `pins.env`。
+它的 SHA-256 摘要是工作流的显式输入。每个原生运行器都独立解压并
+认证矩阵包；运行时元数据和两个矩阵叶节点摘要必须等于 `pins.env`。
 
 发布构建把这些已认证字节嵌入 `parano1d`，安装后首次启动无需下载矩阵。
 
 ## 平台验证
 
-在带标签的 commit 上手动运行 **Platform CI** workflow。它检查：
+在带标签的提交上手动运行 **Platform CI** 工作流。它检查：
 
 - 可移植构建标志；
-- 完整 workspace 编译；
+- 完整工作区编译；
 - 原生二进制链接；
 - 硬件检查行为；
-- GUI self-check；
-- 每种支持架构上的正式证明 kernel；
+- GUI 自检；
+- 每种支持架构上的生产用证明内核；
 - 对不支持的旧 x86 虚拟 CPU 作出干净拒绝。
 
-记录成功 run ID 和准确的 head commit。
+记录成功的运行 ID 和准确的头部提交。
 
-## Draft release
+## 发布草稿
 
-为标签创建 GitHub draft release，并附上已认证矩阵 pack。原生 workflow
+为标签创建 GitHub 发布草稿，并附上已认证矩阵包。原生工作流
 完成前不要公开。
 
 启动 **Native Release** 时传入：
 
 - 已存在的标签；
-- 矩阵 pack SHA-256；
-- 成功的 Platform CI run ID；
+- 矩阵包 SHA-256；
+- 成功的 Platform CI 运行 ID；
 - `stable` 发布频道。
 
-Preflight 要求标签经过 annotated 且版本匹配、release 仍为 draft、
-Platform CI 成功修订完全一致、pack 摘要有效。
+预检要求标签带注释且版本匹配、发布仍处于草稿状态、
+Platform CI 成功运行所对应的修订完全一致，并且矩阵包摘要有效。
 
 ## 原生构建
 
-每个 runner 调用：
+每个运行器调用：
 
 ```sh
 ./scripts/build_release.sh \
@@ -85,20 +85,20 @@ Platform CI 成功修订完全一致、pack 摘要有效。
   --skip-tests
 ```
 
-完整源码测试已经在同一带标签修订上通过。每个 job 仍会认证 pack、编译
-完整目标、执行原生 smoke test、打包两条产品线并上传到 draft。
+完整源码测试已经在同一带标签修订上通过。每个任务仍会认证矩阵包、编译
+完整目标、执行原生冒烟测试、打包两条产品线并上传到发布草稿。
 
 ## 发布
 
-最终 job 从 draft 下载每个预期文件，验证矩阵 pack 摘要，生成统一的
-`SHA256SUMS` 并上传，之后才公开 release。
+最终任务从发布草稿下载每个预期文件，验证矩阵包摘要，生成统一的
+`SHA256SUMS` 并上传，之后才公开发布。
 
 平台文件不完整时绝不发布。
 
 ## 签名状态
 
-打包流水线支持可选的 macOS Developer ID identity。没有项目签名凭据时，
-macOS 使用 ad-hoc 应用签名，Windows 则没有 Authenticode。启用正式签名
+打包流水线支持可选的 macOS Developer ID 身份。没有项目签名凭据时，
+macOS 使用临时应用签名，Windows 则没有 Authenticode 签名。启用正式签名
 前，用户文档必须说明首次运行警告，并要求校验 SHA-256。
 
 ## 发布后验证
@@ -111,4 +111,4 @@ macOS 使用 ad-hoc 应用签名，Windows 则没有 Authenticode。启用正式
 4. 运行 Core 硬件检查和帮助命令；
 5. 用全新数据目录启动节点；
 6. 检查 P2P 同步、钱包发送、收据恢复和正常关闭；
-7. 将构建日志和准确的矩阵 pack 摘要与发布记录一同保存。
+7. 将构建日志和准确的矩阵包摘要与发布记录一同保存。

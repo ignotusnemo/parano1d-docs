@@ -25,7 +25,7 @@ dialog locks and displays the forging animation while the proof is built and
 the intent is submitted.
 
 Because the number of outputs is smaller than the number of inputs,
-consolidation has no state-growth burn. It still pays base, input and output
+consolidation has no State-growth burn. It still pays base, input and output
 fees.
 
 ## No receipt
@@ -40,5 +40,5 @@ node to inspect every address that the master secret might derive.
 
 Consolidation is optional. It is useful before a future large payment when an
 address has accumulated many small outputs. The current fee preview is exact
-for the current state; a change in inputs, epoch or tip may require rebuilding
+for the current State; a change in inputs, epoch or tip may require rebuilding
 the intent.

@@ -1,13 +1,13 @@
 # 外部矿工
 
-外部挖矿把 PoW nonce 搜索与节点分离。Mempool、交易选择、状态转换、
+外部挖矿把 PoW nonce 搜索与节点分离。内存池、交易选择、State 转换、
 `HistoryStep` 证明、模板以及区块中继仍由节点掌控。
 
-Worker 不会收到区块体或证明 witness。
+外部挖矿进程不会收到区块体或证明见证数据。
 
-## 本地 worker
+## 本地挖矿进程
 
-使用 bearer token 以外部矿工模式启动节点：
+使用 Bearer 令牌以外部矿工模式启动节点：
 
 ```sh
 parano1d --mode extminer --mining-key 'LONG-RANDOM-TOKEN'
@@ -21,20 +21,20 @@ parano1d-miner \
   --key 'LONG-RANDOM-TOKEN'
 ```
 
-如果节点使用 `--mining-key` 启动，即使通过 loopback 连接也必须提供
+如果节点使用 `--mining-key` 启动，即使通过回环地址连接也必须提供
 token。
 
-需要时可限制 worker 线程：
+需要时可限制挖矿进程的线程数：
 
 ```sh
 parano1d-miner --key 'LONG-RANDOM-TOKEN' --threads 8
 ```
 
-## 远程 worker
+## 远程挖矿进程
 
-切勿把未加密的 bearer token 和通用 RPC 接口直接暴露到互联网。
+切勿把未加密的 Bearer 令牌和通用 RPC 接口直接暴露到互联网。
 
-应把 worker 与节点放在经过认证的私有网络中，或由反向代理终止 TLS 并
+应把挖矿进程与节点放在经过认证的私有网络中，或由反向代理终止 TLS 并
 限制暴露路径。只有安全传输就绪后才绑定公网 RPC：
 
 ```sh
@@ -44,13 +44,13 @@ parano1d \
   --mining-key 'LONG-RANDOM-TOKEN'
 ```
 
-防火墙应只允许指定 worker 或代理访问该端口。
+防火墙应只允许指定挖矿进程或代理访问该端口。
 
 ## 奖励地址
 
 模板默认使用节点配置的奖励地址，这是更安全的单机挖矿方式。
 
-若允许 worker 请求自己的奖励地址，节点运营者必须显式启用：
+若允许挖矿进程请求自己的奖励地址，节点运营者必须显式启用：
 
 ```sh
 parano1d \
@@ -59,7 +59,7 @@ parano1d \
   --allow-custom-coinbase
 ```
 
-此后 worker 可以使用：
+此后挖矿进程可以使用：
 
 ```sh
 parano1d-miner \
@@ -67,17 +67,17 @@ parano1d-miner \
   --coinbase o1...
 ```
 
-自定义 coinbase 只改变证明构建前嵌入的奖励地址，worker 仍无法修改已经
+自定义 coinbase 只改变证明构建前嵌入的奖励地址，挖矿进程仍无法修改已经
 证明的模板。
 
 ## 模板生命周期
 
-`getBlockTemplate` 返回不透明的一次性 ID、16 字段 PoW schedule、
-nonce 索引和 target。Worker 搜索随机且互不重叠的 nonce 范围，再通过
-`submitBlock` 提交恰好 16 个 little-endian nonce 字节。
+`getBlockTemplate` 返回不透明的一次性 ID、16 字段 PoW 输入序列、
+nonce 索引和目标值。挖矿进程搜索随机且互不重叠的 nonce 范围，再通过
+`submitBlock` 提交恰好 16 个小端序 nonce 字节。
 
 模板在 30 秒后过期；规范链尖变化、成功提交或节点主动取消也会使其失效。
-结果过期是正常现象，worker 会在下一次轮询时请求新模板。
+结果过期是正常现象，挖矿进程会在下一次轮询时请求新模板。
 
 ## 诊断
 

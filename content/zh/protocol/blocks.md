@@ -1,12 +1,12 @@
 # 区块与区块头
 
-被接受的区块是一个原子对：
+[被接受的区块包](../reference/glossary.md#accepted-block-bundle)是一个原子对：
 
 ```text
-{canonical block bytes, matching HistoryStep terminal}
+{规范区块字节, 匹配的 HistoryStep 终端证明}
 ```
 
-区块包含固定区块头和最多 256 个固定交易主体。终端证明无 nonce 语义区块头及完整状态转换。
+区块包含固定区块头和最多 256 个固定交易物理页。[终端证明](../reference/glossary.md#terminal)绑定不含 [nonce](../reference/glossary.md#nonce) 的语义区块头及完整 State 转换。
 
 ## 区块内容
 
@@ -14,53 +14,53 @@
 
 | 限制 | 数值 |
 |---|---:|
-| 固定主体总数，含系统记录 | 256 |
+| 固定物理页总数，含系统记录 | 256 |
 | 无计划付款时的用户页位置 | 255 |
 | 有计划付款时的用户页位置 | 254 |
-| 活用户输入 | 1,020 |
-| 活用户输出 | 510 |
-| 活用户动作 | 1,530 |
-| 触及的不同状态段 | 256 |
+| 有效用户输入 | 1,020 |
+| 有效用户输出 | 510 |
+| 有效用户操作 | 1,530 |
+| 触及的不同 State 分段 | 256 |
 
-解码器会在分配内存或解码 payload 前拒绝超限计数。
+解码器会在分配内存或解码载荷前拒绝超限计数。
 
 ## 交易根
 
-每个主体占据通用 256 叶交易树中的一个叶子。未使用位置具有唯一规范空值。交易根域还绑定精确主体数量，因此添加或删除外观为空的叶子不能产生等价区块。
+每个物理页占据通用 256 叶交易树中的一个叶子。未使用位置具有唯一规范空值。交易根的域分离上下文还绑定精确物理页数量，因此添加或删除外观为空的叶子不能产生等价区块。
 
 收据使用该树中的八层包含路径。一个逻辑 `PagedSpend` 可以占据多个连续叶子；收据绑定其逻辑位置与页面数量。
 
 ## 规范区块头
 
-区块头采用固定 212 字节 little-endian 编码：
+区块头采用固定 212 字节小端序编码：
 
 | 字段 | 大小 | 含义 |
 |---|---:|---|
 | `prev_block_hash` | 32 | 父区块含 nonce 的区块 ID |
-| `state_root` | 32 | 精确的转换后 UTXO 状态根 |
+| `state_root` | 32 | 精确的转换后 UTXO State 根 |
 | `tx_root` | 32 | 绑定数量的交易根 |
 | `timestamp` | 8 | Unix 秒时间 |
 | `height` | 8 | 子区块高度 |
 | `miner_address` | 32 | 主要奖励接收者 |
 | `nonce` | 16 | Poseidon2b PoW nonce |
-| `difficulty_target` | 32 | 精确 little-endian ASERT target |
+| `difficulty_target` | 32 | 精确的小端序 ASERT 目标值 |
 | `log_slots` | 4 | 槽位域指数 |
-| `active_slot_count` | 8 | 转换后活 UTXO 数量 |
+| `active_slot_count` | 8 | 转换后未花费 UTXO 数量 |
 | `alloc_counter` | 8 | 转换后分配计数器 |
 
 字段顺序由共识锁定，未来格式不能重排现有字段。
 
 ## 两种区块头标识
 
-含 nonce 的区块 ID 在 `BLOCKHDR` 域下哈希全部字段。它用于父链接、交易 epoch anchor 和规范区块身份。
+含 nonce 的[区块 ID](../reference/glossary.md#block-id) 在 `BLOCKHDR` 域分离上下文下哈希全部字段。它用于父链接、交易周期锚点和规范区块身份。
 
-语义区块头 ID 以相同顺序哈希同一组字段，但跳过 nonce，并使用 `SEMHDR__` 域。`HistoryStep` 绑定该投影，使矿工可以改变 nonce，而无需重建转换证明。
+[语义区块头 ID](../reference/glossary.md#semantic-header-id) 以相同顺序哈希同一组字段，但跳过 nonce，并使用 `SEMHDR__` 域分离上下文。`HistoryStep` 绑定该投影，使矿工可以改变 nonce，而无需重建转换证明。
 
 接受节点要求终端与原生含 nonce 区块头引用完全相同的非 nonce 字段。
 
 ## 主要奖励
 
-区块中恰好有一个活主要奖励输出，其 `creation_id` 使用与普通分配分离、带高度标签的命名空间：
+区块中恰好有一个有效的主要奖励输出，其 `creation_id` 使用与普通分配分离、带高度标签的命名空间：
 
 ```text
 2^63 | block_height
@@ -68,7 +68,7 @@
 
 普通输出分配始终低于 `2^63`，因此奖励记录不会与用户分配标识冲突。
 
-主要奖励只能领取当前矿工补贴以及矿工可领取手续费，不能取回已销毁的状态增长部分。
+主要奖励只能领取当前矿工补贴以及矿工可领取手续费，不能取回已销毁的 [State 增长费](../reference/glossary.md#state-growth-fee)。
 
 ## 接受包
 

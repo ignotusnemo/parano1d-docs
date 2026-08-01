@@ -20,7 +20,7 @@ representing 32 bytes.
 
 After import, the wallet checks derived addresses in order. Discovery stops at
 the first address with no live UTXO or after 20 funded addresses, whichever
-comes first. This contiguous-prefix rule avoids an unbounded state scan.
+comes first. This contiguous-prefix rule avoids an unbounded address scan of State.
 
 Addresses beyond the first unused index are not found automatically. Generate
 or inspect them explicitly if the previous wallet used a non-contiguous address

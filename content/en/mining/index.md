@@ -1,10 +1,11 @@
 # Mining
 
-**Hashpower alone cannot produce blocks. Mining is stateful and proof-gated.**
+**Hashpower alone cannot produce blocks. Mining requires State; nonce search
+begins only after the proof is complete.**
 
 Proof of work in ParanO(1)d orders transitions whose validity has already been
 established. Before searching a nonce, a block producer must follow the
-canonical chain, hold the current UTXO state, construct the exact next
+canonical chain, hold the current State, construct the exact next
 transition and complete its recursive `HistoryStep`.
 
 This makes the proving full node—not an individual hash worker—the unit of
@@ -19,7 +20,7 @@ A mining node owns the block. It:
 - follows and independently validates the canonical statechain;
 - verifies transaction intents before they enter its mempool;
 - selects a non-conflicting transaction set;
-- fixes the payout, fees, slot writes and post-state root;
+- fixes the payout, fees, slot writes and post-State root;
 - proves the nonce-independent block and preceding terminal;
 - validates the winning nonce;
 - commits and broadcasts the complete `{block, HistoryStep terminal}` bundle.
@@ -31,8 +32,8 @@ worker has a much narrower role:
 - search independent values of its 128-bit nonce;
 - return a candidate nonce to the node.
 
-The worker does not receive the block body, state witness or `HistoryStep`
-witness. It cannot replace transactions, alter the state root or modify a
+The worker does not receive the block body, State witness or `HistoryStep`
+witness. It cannot replace transactions, alter the State root or modify a
 template after proof construction.
 
 ## One block attempt
@@ -41,7 +42,7 @@ Block production proceeds in this order:
 
 1. The node waits until it is synchronized and has the required authenticated
    peer quorum.
-2. It reads its canonical tip, current state and admissible mempool intents.
+2. It reads its canonical tip, current State and admissible mempool intents.
 3. It selects the B64 or B255 proof class and fixes every semantic field of the
    candidate block except its nonce.
 4. It computes the exact slot writes and resulting UTXO root.
@@ -53,7 +54,7 @@ Block production proceeds in this order:
    atomically and announces it to peers.
 
 A new canonical tip makes unfinished work stale. The node discards that attempt
-and starts from the new state; it never moves an old proof onto a different
+and starts from the new State; it never moves an old proof onto a different
 parent or transaction set.
 
 Peers accept the result only after independently checking the parent,
@@ -199,7 +200,7 @@ ASERT adjusts the Poseidon2b target to maintain the 15-second mean interval.
 The chain with the greatest cumulative valid work wins; an equal-work tie uses
 the canonical block-hash tie-break.
 
-The current reward follows the active state level and is displayed by:
+The current reward follows the active State level and is displayed by:
 
 ```sh
 parano1d-cli mining
@@ -207,7 +208,7 @@ parano1d-cli mining
 
 During the three-year development allocation, the miner receives 90% of newly
 issued block rewards. Claimable transaction fees also belong to the miner
-after the consensus state-growth burn. After the allocation ends, 100% of each
+after the consensus State-growth burn. After the allocation ends, 100% of each
 new block reward goes to the miner.
 
 A locally found block is not an immediate final balance. Its confirmation depth
@@ -217,7 +218,7 @@ can replace it inside the retained competition window.
 ## Mining and decentralization
 
 An autonomous miner cannot operate from hashpower alone. Its node must remain
-current, validate incoming work, construct the next state and prove it before
+current, validate incoming work, construct and prove the next exact State transition before
 any nonce engine receives useful work. When that node accepts inbound P2P
 connections, the same infrastructure also relays transactions and blocks and
 serves synchronization data.

@@ -35,7 +35,7 @@ Public daemon options are:
 | `--log LEVEL` | Tracing filter such as `error`, `warn`, `info` or `debug` |
 | `--mining-key TOKEN` | Require a bearer token on RPC |
 | `--allow-custom-coinbase` | Permit an authenticated external worker to request its payout |
-| `--purge-state` | Clear volatile state and synchronize it again from peers |
+| `--purge-state` | Clear the complete chain database and synchronize it again from peers |
 | `--check-hardware` | Report production CPU support and exit without touching node data |
 
 Mode-specific options are rejected when they cannot apply. `--cpu-threads`
@@ -44,8 +44,10 @@ belongs to internal miner mode. External-miner mode requires
 and that key.
 
 `--purge-state` is a repair and upgrade tool, not a routine start option. It
-preserves the wallet, permanent headers and peer identity while forcing live
-state to be acquired and authenticated again.
+removes headers, chain indexes, retained blocks, undo data and Live State from
+the chain database. Wallet files, receipts and peer identity are stored
+separately and remain; the node then authenticates the chain and State again
+from peers.
 
 Examples:
 
@@ -116,7 +118,7 @@ places:
 
 | Command | Arguments | Result |
 |---|---|---|
-| `status` | — | Tip, hash, difficulty and active-state summary |
+| `status` | — | Tip, hash, difficulty and active State summary |
 | `block-hash` | `HEIGHT` | Permanent nonce-bearing block ID |
 | `block-header` | `HEIGHT` | Structured permanent header |
 | `header` | `HEIGHT` | Raw canonical 212-byte header hex |
@@ -125,7 +127,7 @@ places:
 | `tx` | `TXID` | Permanent confirmation location |
 | `slot` | `INDEX` | Current slot contents |
 | `utxos-of` | `o1…` | Current UTXOs owned by an address |
-| `state` | — | Capacity, occupancy and encoded state size |
+| `state` | — | Capacity, occupancy and encoded State size |
 | `epoch` | — | Current 144-block user transaction anchor |
 
 Examples:

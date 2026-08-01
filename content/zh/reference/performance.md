@@ -13,24 +13,24 @@ OS        Linux 6.17 x86-64
 Rust      1.96.0
 ```
 
-每张表都报告预热后 20 个实测样本，p95 使用 nearest-rank estimator。
+每张表都报告预热后的 20 个实测样本，p95 使用最近秩估计法（nearest-rank estimator）。
 
 ## 钱包授权路径
 
-钱包 benchmark 包含页面构建、逻辑哈希、一份授权 capsule、完整 intent
-编码/解码，以及本地 capsule 准入；不包含网络延迟和区块 `HistoryStep`
+钱包基准测试包含页面构建、逻辑哈希、一份授权证明封装、完整交易意图的
+编码与解码，以及本地授权证明封装准入；不包含网络延迟和区块 `HistoryStep`
 证明。
 
-| 场景 | 页数 | 总 p50 | 总 p95 | Proof / intent 大小 |
+| 场景 | 页数 | 总 p50 | 总 p95 | 证明 / 交易意图大小 |
 |---|---:|---:|---:|---:|
 | 1 个输入 | 1 | 228.30 ms | 352.47 ms | 56.49 / 56.81 KiB |
 | 100 个输入 | 13 | 217.32 ms | 255.46 ms | 56.58 / 60.69 KiB |
 | 1,020 个输入 | 128 | 233.06 ms | 285.81 ms | 56.11 / 96.50 KiB |
 
-1,020 输入场景仍只生成一份授权 capsule。更多输入会增加页面哈希和序列化
-intent 大小，但不会增加钱包证明数量。
+1,020 输入场景仍只生成一份授权证明封装。更多输入会增加页面哈希和序列化
+交易意图的大小，但不会增加钱包证明数量。
 
-复现 harness：
+复现实验：
 
 ```sh
 NOID_WALLET_BENCH_SAMPLES=20 cargo run --release \
@@ -40,39 +40,39 @@ NOID_WALLET_BENCH_SAMPLES=20 cargo run --release \
 
 ## HistoryStep 类别
 
-完整准备时间包含 assembly 与 proving。验证时间测量完整节点使用的
-terminal verifier。
+完整准备时间包含见证组装与证明生成。验证时间测量完整节点对终端证明的
+验证耗时。
 
-| 类别 | 有效行 | 准备 p50 / p95 | 验证 p50 / p95 | Terminal |
+| 类别 | 有效行 | 准备 p50 / p95 | 验证 p50 / p95 | 终端证明 |
 |---|---:|---:|---:|---:|
 | B64, `m=23` | 5,705,307 | 11.472 / 14.387 s | 0.666 / 0.720 s | 766,549 B |
 | B255, `m=24` | 15,368,233 | 24.189 / 29.755 s | 0.770 / 1.012 s | 807,189 B |
 
 在该主机上，B64 以 613 ms 余量通过严格的 15 秒 p95 准备门槛。B255
-没有通过，因此正式容量 selector 正确地让矿工保持在 B64。相比生成证明，
+没有通过，因此生产用容量选择器正确地让矿工保持在 B64。相比生成证明，
 普通节点验证两类证明的成本都很低。
 
-Benchmark 使用 Thin LTO、一个 codegen unit 和 `target-cpu=native` 来测量
-实际主机。官方二进制保留可移植进程 baseline，并在运行时选择证明与 PoW
-kernel，因此也必须在目标机器上检查发布包速度。
+基准测试使用 Thin LTO、单个代码生成单元和 `target-cpu=native` 来测量
+实际主机。发布版二进制文件保留可移植的指令集基线，并在运行时选择证明与 PoW
+内核，因此也必须在目标机器上检查发布包的速度。
 
 ## 如何理解数据
 
 钱包表测量本地授权，不是确认时间。HistoryStep 表测量区块准备，不是预期
-proof-of-work 搜索时间。网络传播与 nonce 搜索独立变化。
+PoW 搜索时间。网络传播与 nonce 搜索独立变化。
 
 矿工应评估完整路径：
 
 ```text
-select intents
-  + assemble witness
-  + prove HistoryStep
-  + search nonce
-  + submit and accept block
+选择交易意图
+  + 组装见证数据
+  + 生成 HistoryStep 证明
+  + 搜索 nonce
+  + 提交并接受区块
 ```
 
 如果完整准备无法满足目标区块间隔，只优化一个内部阶段不足以启用更大的
 证明类别。
 
-源码仓库在 `research/two_class/results/` 中保存了带命令行、commit、矩阵
-digest 和原始样本的归档报告。
+源码仓库在 `research/two_class/results/` 中保存了带命令行、Git 提交、矩阵
+摘要和原始样本的归档报告。

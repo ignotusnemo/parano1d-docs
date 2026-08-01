@@ -2,7 +2,7 @@
 
 ParanO(1)d does not make chain age a permanent execution requirement, but a
 node still needs enough CPU for proof verification, enough memory for bounded
-network work and enough disk for the current live state. Check the actual
+network work and enough disk for the current Live State. Check the actual
 machine exposed to the process; a provider's physical CPU model is not proof
 that a virtual guest receives the required instructions.
 
@@ -84,7 +84,7 @@ of magnitude under load.
 The implementation bounds major untrusted pools:
 
 - at most 1,024 mempool transactions and 384 MiB of serialized intents;
-- at most 128 MiB of retained orphan bundles;
+- at most 36 retained orphan bundles and 128 MiB of their encoded bytes;
 - one authenticated snapshot segment is decoded at a time, with an 8 MiB
   segment cap;
 - snapshot payload work is serialized;
@@ -105,15 +105,15 @@ There is no honest fixed disk figure for the lifetime of a node. Persistent
 storage contains:
 
 - permanent compact headers;
-- the exact current sparse UTXO state and owner index;
+- the exact current sparse UTXO State and owner index;
 - the latest 18 complete blocks;
-- 36 blocks of state undo data;
+- 36 blocks of State undo data;
 - peer identity and peer store;
 - proof cache and temporary snapshot staging;
 - wallet keys, metadata and receipts when used.
 
 Historical transaction bodies do not accumulate forever. Current live UTXOs
-do: disk use follows state occupancy and the distribution of occupied
+do: disk use follows State occupancy and the distribution of occupied
 segments. MDBX grows in 64 MiB steps as needed.
 
 Monitor the real path:
@@ -124,8 +124,8 @@ parano1d-cli state
 ```
 
 Snapshot synchronization requires temporary space for a complete candidate
-state before atomic installation. Keep enough free disk for the installed
-state plus one staged replacement and normal database growth.
+State before atomic installation. Keep enough free disk for the installed
+State plus one staged replacement and normal database growth.
 
 ## Network
 
@@ -139,7 +139,7 @@ private or authenticated transport protects it.
 
 ## Capacity checks
 
-Revisit capacity after material changes in live state or traffic:
+Revisit capacity after material changes in Live State or traffic:
 
 ```sh
 parano1d-cli status

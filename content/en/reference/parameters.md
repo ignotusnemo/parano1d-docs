@@ -47,7 +47,9 @@ full rounds              8
 partial rounds           58
 B64                      m=23, up to 64 positions
 B255                     m=24, up to 255 positions
-post-quantum floor       79 bits
+FRI security score       128 bits conjectured (Toy Problem)
+wallet generalized RBR   96.047 bits classical
+fixed-block work score   95.022 bits classical
 ```
 
 ## Monetary

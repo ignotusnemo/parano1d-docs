@@ -35,8 +35,13 @@ type SiteChromeProps = {
   children: React.ReactNode;
 };
 
-const SIDEBAR_SCROLL_KEY = "parano1d-docs:sidebar-scroll";
 const sidebarScrollMemory = new Map<Locale, number>();
+const openGroupMemory = new Map<Locale, Set<string>>();
+let desktopSidebarCollapsedMemory = false;
+
+function navigationGroupKey(group: NavGroup, index: number): string {
+  return `${index}:${group.items[0]?.slug ?? group.label}`;
+}
 
 function Brand() {
   return (
@@ -75,11 +80,157 @@ function MenuGlyph({ close = false }: { close?: boolean }) {
   );
 }
 
+function ChevronGlyph({
+  direction = "down"
+}: {
+  direction?: "down" | "left" | "right";
+}) {
+  const path =
+    direction === "left"
+      ? "m14.5 5-7 7 7 7"
+      : direction === "right"
+        ? "m9.5 5 7 7-7 7"
+        : "m5 9.5 7 7 7-7";
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d={path} />
+    </svg>
+  );
+}
+
+function FolderGlyph({ open }: { open: boolean }) {
+  return (
+    <svg
+      className={`folder-glyph ${open ? "is-open" : ""}`}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      {open ? (
+        <>
+          <path className="folder-shadow" d="M3.2 7.2h17.6v11.4H3.2z" />
+          <path className="folder-tab" d="M4.2 5.2h6l1.8 2.2h7.8v8.8H4.2z" />
+          <path className="folder-tab-highlight" d="M5 6h4.8l1.6 1.9h7.5" />
+          <path className="folder-face" d="M2.8 9.1h18.4l-2.3 9.7H5.1z" />
+          <path className="folder-face-highlight" d="M4.1 10.2h15.7" />
+          <path className="folder-slot" d="M9.1 12.4h5.8" />
+        </>
+      ) : (
+        <>
+          <path className="folder-shadow" d="M3.2 6.7h17.6v12H3.2z" />
+          <path className="folder-tab" d="M4.1 5.1h6.1l1.8 2.2h7.9v10.9H4.1z" />
+          <path className="folder-tab-highlight" d="M5 5.9h4.8l1.7 2h7.5" />
+          <path className="folder-face" d="M3.2 8.5h17.6v10.2H3.2z" />
+          <path className="folder-face-highlight" d="M4.2 9.5h15.6" />
+          <path className="folder-slot" d="M9.2 12.2h5.6" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+function FileGlyph() {
+  return (
+    <svg className="file-glyph" viewBox="0 0 24 24" aria-hidden="true">
+      <path className="file-shadow" d="M6.1 3.4h8l4.8 4.9v12.8H6.1z" />
+      <path className="file-page" d="M5.2 2.5h8.1l5.5 5.6v12.6H5.2z" />
+      <path className="file-fold" d="M13.3 2.5v5.6h5.5" />
+      <path className="file-highlight" d="M6.3 3.7v15.8" />
+      <path className="file-line" d="M8 11.4h8M8 14.2h8M8 17h6.4" />
+    </svg>
+  );
+}
+
 function ExternalGlyph() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M8 16 16 8M10 8h6v6" />
     </svg>
+  );
+}
+
+function GitHubGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="currentColor"
+        stroke="none"
+        d="M12 2.4a9.8 9.8 0 0 0-3.1 19.1c.5.1.7-.2.7-.5v-1.9c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 0 1.6 1.1 1.6 1.1.9 1.6 2.4 1.1 2.9.8.1-.7.4-1.1.6-1.3-2.3-.3-4.6-1.1-4.6-4.9 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.8-2.3 4.6-4.6 4.9.4.3.7 1 .7 2V21c0 .3.2.6.7.5A9.8 9.8 0 0 0 12 2.4Z"
+      />
+    </svg>
+  );
+}
+
+function ExternalLinks({
+  className,
+  label
+}: {
+  className: string;
+  label: string;
+}) {
+  return (
+    <nav className={className} aria-label={label}>
+      <a href="https://parano1d.org" target="_blank" rel="noopener noreferrer">
+        <span>ParanO(1)d</span>
+        <ExternalGlyph />
+      </a>
+      <a
+        href="https://lab.parano1d.org"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>Lab</span>
+        <ExternalGlyph />
+      </a>
+      <a
+        className="github-link"
+        href="https://github.com/ignotusnemo/parano1d"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <GitHubGlyph />
+        <span>GitHub</span>
+      </a>
+    </nav>
+  );
+}
+
+function LanguageSwitcher({
+  locale,
+  currentSlug,
+  label
+}: {
+  locale: Locale;
+  currentSlug: string;
+  label: string;
+}) {
+  return (
+    <details className="language-switcher">
+      <summary aria-label={label}>
+        <span>{localeInfo[locale].shortName}</span>
+        <svg viewBox="0 0 12 12" aria-hidden="true">
+          <path d="m3 4.5 3 3 3-3" />
+        </svg>
+      </summary>
+      <div className="language-menu">
+        {locales.map((candidate) => (
+          <Link
+            key={candidate}
+            href={pathForLocale(candidate, currentSlug)}
+            hrefLang={localeInfo[candidate].htmlLang}
+            lang={localeInfo[candidate].htmlLang}
+            className={candidate === locale ? "is-active" : ""}
+            aria-current={candidate === locale ? "true" : undefined}
+            onClick={(event) =>
+              event.currentTarget.closest("details")?.removeAttribute("open")
+            }
+          >
+            <span>{localeInfo[candidate].shortName}</span>
+            <strong>{localeInfo[candidate].name}</strong>
+          </Link>
+        ))}
+      </div>
+    </details>
   );
 }
 
@@ -97,6 +248,19 @@ export default function SiteChrome({
 }: SiteChromeProps) {
   const copy = uiCopy[locale];
   const [navigationOpen, setNavigationOpen] = useState(false);
+  const activeGroupKey = useMemo(() => {
+    const index = navigation.findIndex((group) =>
+      group.items.some((item) => item.slug === currentSlug)
+    );
+    return index >= 0 ? navigationGroupKey(navigation[index], index) : "";
+  }, [currentSlug, navigation]);
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => {
+    const remembered = openGroupMemory.get(locale);
+    return new Set(remembered ?? (activeGroupKey ? [activeGroupKey] : []));
+  });
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(
+    () => desktopSidebarCollapsedMemory
+  );
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeHeading, setActiveHeading] = useState(toc[0]?.id ?? "");
@@ -105,16 +269,33 @@ export default function SiteChrome({
 
   const rememberSidebarPosition = () => {
     if (!sidebar.current) return;
+    if (!window.matchMedia("(min-width: 941px)").matches) return;
     const scrollTop = sidebar.current.scrollTop;
     sidebarScrollMemory.set(locale, scrollTop);
-    try {
-      window.sessionStorage.setItem(
-        `${SIDEBAR_SCROLL_KEY}:${locale}`,
-        String(scrollTop)
-      );
-    } catch {
-      // Navigation still keeps the in-memory value when storage is unavailable.
-    }
+  };
+
+  const openNavigation = () => {
+    setNavigationOpen(true);
+    window.requestAnimationFrame(() => {
+      if (sidebar.current) sidebar.current.scrollTop = 0;
+    });
+  };
+
+  const toggleNavigationGroup = (key: string) => {
+    setOpenGroups((current) => {
+      const next = new Set(current);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      openGroupMemory.set(locale, new Set(next));
+      return next;
+    });
+  };
+
+  const toggleDesktopSidebar = () => {
+    setSidebarCollapsed((current) => {
+      desktopSidebarCollapsedMemory = !current;
+      return !current;
+    });
   };
 
   const results = useMemo(() => {
@@ -157,6 +338,16 @@ export default function SiteChrome({
   }, [locale]);
 
   useEffect(() => {
+    setOpenGroups((current) => {
+      const remembered = openGroupMemory.get(locale);
+      const next = new Set(remembered ?? current);
+      if (activeGroupKey) next.add(activeGroupKey);
+      openGroupMemory.set(locale, new Set(next));
+      return next;
+    });
+  }, [activeGroupKey, locale]);
+
+  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -183,20 +374,12 @@ export default function SiteChrome({
     const element = sidebar.current;
     if (!element) return;
 
-    let savedPosition = sidebarScrollMemory.get(locale) ?? null;
-    if (savedPosition === null) {
-      try {
-        const stored = window.sessionStorage.getItem(
-          `${SIDEBAR_SCROLL_KEY}:${locale}`
-        );
-        if (stored !== null) {
-          const parsed = Number(stored);
-          if (Number.isFinite(parsed) && parsed >= 0) savedPosition = parsed;
-        }
-      } catch {
-        // The active item fallback below also works without web storage.
-      }
+    if (!window.matchMedia("(min-width: 941px)").matches) {
+      element.scrollTop = 0;
+      return;
     }
+
+    const savedPosition = sidebarScrollMemory.get(locale) ?? null;
 
     if (savedPosition !== null) {
       element.scrollTop = savedPosition;
@@ -273,14 +456,22 @@ export default function SiteChrome({
   }, [copy.copied, copy.copy]);
 
   return (
-    <div className="docs-app">
+    <div className={`docs-app ${sidebarCollapsed ? "is-sidebar-collapsed" : ""}`}>
       <header className="topbar">
+        <div className="mobile-language">
+          <LanguageSwitcher
+            locale={locale}
+            currentSlug={currentSlug}
+            label={copy.language}
+          />
+        </div>
+
         <div className="topbar-brand">
           <button
             className="icon-button mobile-menu-button"
             type="button"
             aria-label={copy.openNavigation}
-            onClick={() => setNavigationOpen(true)}
+            onClick={openNavigation}
           >
             <MenuGlyph />
           </button>
@@ -300,54 +491,17 @@ export default function SiteChrome({
           <kbd>⌘ K</kbd>
         </button>
 
-        <nav className="top-links" aria-label={copy.externalLinks}>
-          <details className="language-switcher">
-            <summary aria-label={copy.language}>
-              <span>{localeInfo[locale].shortName}</span>
-              <svg viewBox="0 0 12 12" aria-hidden="true">
-                <path d="m3 4.5 3 3 3-3" />
-              </svg>
-            </summary>
-            <div className="language-menu">
-              {locales.map((candidate) => (
-                <Link
-                  key={candidate}
-                  href={pathForLocale(candidate, currentSlug)}
-                  hrefLang={localeInfo[candidate].htmlLang}
-                  lang={localeInfo[candidate].htmlLang}
-                  className={candidate === locale ? "is-active" : ""}
-                  aria-current={candidate === locale ? "true" : undefined}
-                  onClick={(event) =>
-                    event.currentTarget
-                      .closest("details")
-                      ?.removeAttribute("open")
-                  }
-                >
-                  <span>{localeInfo[candidate].shortName}</span>
-                  <strong>{localeInfo[candidate].name}</strong>
-                </Link>
-              ))}
-            </div>
-          </details>
-          <a
-            className="top-site-link"
-            href="https://parano1d.org"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {copy.website}
-            <ExternalGlyph />
-          </a>
-          <a
-            className="top-source-link"
-            href="https://github.com/ignotusnemo/parano1d"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {copy.source}
-            <ExternalGlyph />
-          </a>
-        </nav>
+        <div className="top-links">
+          <LanguageSwitcher
+            locale={locale}
+            currentSlug={currentSlug}
+            label={copy.language}
+          />
+          <ExternalLinks
+            className="top-external-links"
+            label={copy.externalLinks}
+          />
+        </div>
       </header>
 
       <div
@@ -376,55 +530,70 @@ export default function SiteChrome({
           </button>
         </div>
 
+        <button
+          className="sidebar-collapse-button"
+          type="button"
+          aria-label={
+            sidebarCollapsed ? copy.expandNavigation : copy.collapseNavigation
+          }
+          title={
+            sidebarCollapsed ? copy.expandNavigation : copy.collapseNavigation
+          }
+          onClick={toggleDesktopSidebar}
+        >
+          <ChevronGlyph direction={sidebarCollapsed ? "right" : "left"} />
+        </button>
+
         <nav className="documentation-nav" aria-label={copy.documentation}>
-          {navigation.map((group) => (
-            <section className="nav-group" key={group.label}>
-              <div className="nav-group-label">{group.label}</div>
-              <ul>
-                {group.items.map((item) => {
-                  const active = item.slug === currentSlug;
-                  return (
-                    <li key={item.slug || "overview"}>
-                      <Link
-                        href={pathForLocale(locale, item.slug)}
-                        className={active ? "is-active" : ""}
-                        aria-current={active ? "page" : undefined}
-                        onClick={() => {
-                          rememberSidebarPosition();
-                          setNavigationOpen(false);
-                        }}
-                      >
-                        {item.title}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          ))}
-        </nav>
+          {navigation.map((group, groupIndex) => {
+            const groupKey = navigationGroupKey(group, groupIndex);
+            const expanded = openGroups.has(groupKey);
+            const panelId = `navigation-group-${groupIndex}`;
 
-        <nav className="sidebar-language" aria-label={copy.language}>
-          {locales.map((candidate) => (
-            <Link
-              key={candidate}
-              href={pathForLocale(candidate, currentSlug)}
-              hrefLang={localeInfo[candidate].htmlLang}
-              lang={localeInfo[candidate].htmlLang}
-              className={candidate === locale ? "is-active" : ""}
-              aria-current={candidate === locale ? "true" : undefined}
-              onClick={() => setNavigationOpen(false)}
-            >
-              {localeInfo[candidate].shortName}
-            </Link>
-          ))}
+            return (
+              <section
+                className={`nav-group ${expanded ? "is-open" : ""}`}
+                key={groupKey}
+              >
+                <button
+                  className="nav-group-label"
+                  type="button"
+                  aria-expanded={expanded}
+                  aria-controls={panelId}
+                onClick={() => toggleNavigationGroup(groupKey)}
+              >
+                  <FolderGlyph open={expanded} />
+                  <span>{group.label}</span>
+                  <ChevronGlyph />
+                </button>
+                {expanded ? (
+                  <ul id={panelId}>
+                    {group.items.map((item) => {
+                      const active = item.slug === currentSlug;
+                      return (
+                        <li key={item.slug || "overview"}>
+                          <Link
+                            href={pathForLocale(locale, item.slug)}
+                            className={active ? "is-active" : ""}
+                            aria-current={active ? "page" : undefined}
+                            onClick={() => setNavigationOpen(false)}
+                          >
+                            <FileGlyph />
+                            <span>{item.title}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : null}
+              </section>
+            );
+          })}
         </nav>
-
-        <div className="sidebar-foot">
-          <span>{copy.network}</span>
-          <strong>{copy.mainnet}</strong>
-          <i aria-hidden="true" />
-        </div>
+        <ExternalLinks
+          className="sidebar-external-links"
+          label={copy.externalLinks}
+        />
       </aside>
 
       <main className="main-column">

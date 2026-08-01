@@ -28,7 +28,7 @@ stated otherwise.
 | Live user inputs | 1,020 |
 | Live user outputs | 510 |
 | Live user actions | 1,530 |
-| Distinct state segments touched | 256 |
+| Distinct State segments touched | 256 |
 | Transaction-tree leaves | 256 |
 
 ## Transaction limits
@@ -87,7 +87,8 @@ development payout counts as one position.
 | Header encoding | 212 bytes |
 | P2P TCP port | 9400 |
 | Local RPC TCP port | 9401 |
-| Header batch | 512 |
+| Direct-sync header request | 512 headers |
+| Header protocol batch cap | 4,096 headers |
 | Mempool transaction count | 1,024 |
 | Mempool intent-byte budget | 384 MiB |
 | Peer-store entries | 500 |

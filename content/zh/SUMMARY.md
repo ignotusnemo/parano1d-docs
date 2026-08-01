@@ -1,6 +1,6 @@
 # ParanO(1)d 技术文档
 
-- [概览](index.md)
+- [首页](index.md)
 
 ## 快速开始
 
@@ -17,10 +17,14 @@
 
 - [系统概览](architecture/overview.md)
 - [交易](architecture/transactions.md)
-- [活状态](architecture/state.md)
+- [Live State](architecture/state.md)
 - [同步](architecture/synchronization.md)
 - [网络](architecture/networking.md)
 - [证明栈](architecture/proof-stack.md)
+
+## 研究
+
+- [FROST-GKR](research/frost-gkr.md)
 
 ## 挖矿
 
@@ -35,7 +39,7 @@
 - [共识](protocol/consensus.md)
 - [交易协议](protocol/transactions.md)
 - [区块与区块头](protocol/blocks.md)
-- [状态转换](protocol/state.md)
+- [State 转换](protocol/state.md)
 - [工作量证明](protocol/proof-of-work.md)
 - [网络经济模型](protocol/economics.md)
 - [共识不变量](protocol/invariants.md)
@@ -50,7 +54,7 @@
 - [地址](wallet/addresses.md)
 - [发送 NOID](wallet/send.md)
 - [收据](wallet/receipts.md)
-- [归并](wallet/consolidation.md)
+- [归集](wallet/consolidation.md)
 - [Scope 浏览器](wallet/scope.md)
 - [设置](wallet/settings.md)
 - [备份与恢复](wallet/backup-recovery.md)

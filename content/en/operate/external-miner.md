@@ -1,7 +1,7 @@
 # External miner
 
 External mining separates PoW nonce search from the node. The node still owns
-the mempool, transaction selection, state transition, `HistoryStep` proof,
+the mempool, transaction selection, State transition, `HistoryStep` proof,
 template and block relay.
 
 The worker receives no block body or proving witness.

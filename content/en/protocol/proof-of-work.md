@@ -68,5 +68,5 @@ An external worker receives the exact 16-field schedule, nonce index and target.
 It returns only a canonical 16-byte little-endian nonce. The node checks it
 against the immutable, single-use template before committing a block.
 
-The worker cannot alter a transaction, state root, payout or proof. A solved
+The worker cannot alter a transaction, State root, payout or proof. A solved
 nonce for an expired or stale template is rejected.

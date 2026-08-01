@@ -1,65 +1,65 @@
 # 挖矿
 
-**仅有哈希算力无法生成区块。挖矿依赖状态，并以证明为前置条件。**
+**仅有哈希算力无法生成区块。挖矿需要 [State](../reference/glossary.md#state)；只有证明完成后才能开始搜索 [nonce](../reference/glossary.md#nonce)。**
 
-ParanO(1)d 的 proof of work 负责为已经证明有效的状态转换排序。在搜索
-nonce 前，区块生产者必须跟随规范链、持有当前 UTXO 状态、构建精确的下一
+ParanO(1)d 的工作量证明负责为已经证明有效的 State 转换排序。在搜索
+nonce 前，区块生产者必须跟随[规范链](../reference/glossary.md#canonical-chain)、持有 [Live State](../reference/glossary.md#live-state)、构建精确的下一
 次转换，并完成递归 `HistoryStep`。
 
 因此，独立生产区块的基本单元是能够生成证明的完整节点，而不是单独的哈希
-worker。
+挖矿工作进程。
 
-![证明原生区块流程](../assets/architecture/proof-native-block-flow.svg)
+![证明原生区块流程](../../../assets/architecture/proof-native-block-flow.svg)
 
-## 节点和 worker 分别做什么
+## 节点和挖矿进程分别做什么
 
 区块归属于挖矿节点。节点负责：
 
 - 跟随并独立验证规范状态链；
-- 在交易 intent 进入 mempool 前进行验证；
+- 在交易意图进入内存池前进行验证；
 - 选择互不冲突的交易集；
-- 固定奖励、费用、槽位写入和后状态根；
-- 证明与 nonce 无关的区块部分和前置 terminal；
+- 固定奖励、费用、槽位写入和转换后 State 根；
+- 证明与 nonce 无关的区块部分和前一终端证明；
 - 验证获胜 nonce；
-- 原子提交并广播完整的 `{block, HistoryStep terminal}` bundle。
+- 原子提交并广播完整的 `{block, HistoryStep 终端证明}` 区块包。
 
 Nonce 搜索可以在该进程内部运行，也可以交给 `parano1d-miner`。外部
-worker 的职责窄得多：
+挖矿进程的职责窄得多：
 
-- 接收一份不可变的 Poseidon2b 区块头 schedule 和 target；
+- 接收一份不可变的 Poseidon2b 区块头输入序列和目标值；
 - 搜索 128 位 nonce 的独立取值；
 - 把候选 nonce 返回节点。
 
-Worker 不会收到区块体、状态 witness 或 `HistoryStep` witness。证明完成
-后，它无法替换交易、更改状态根或修改模板。
+挖矿进程不会收到区块体、State 见证数据或 `HistoryStep` 见证数据。证明完成
+后，它无法替换交易、更改 State 根或修改模板。
 
 ## 一次区块尝试
 
 区块生产按以下顺序进行：
 
-1. 节点等待同步完成，并满足所需的认证对等节点数量。
-2. 读取规范链尖、当前状态和 mempool 中可接受的 intent。
+1. 节点等待同步完成，并满足所需的[已完成身份认证的对等节点](../reference/glossary.md#authenticated-peer)数量。
+2. 读取规范链尖、Live State 和内存池中可接受的交易意图。
 3. 选择 B64 或 B255 证明类别，并固定候选区块除 nonce 之外的全部语义
    字段。
 4. 计算精确的槽位写入和最终 UTXO 根。
-5. 证明新的 `HistoryStep`，包括与前一 terminal 的递归连续性。
+5. 证明新的 `HistoryStep`，包括与前一终端证明的递归连续性。
 6. 完成的证明固定一份不可变挖矿模板。
-7. 内置矿工或外部 worker 搜索 Poseidon2b nonce。
-8. 节点验证 nonce、封装已准备的 terminal、原子提交区块并向对等节点
+7. 内置矿工或外部挖矿进程搜索 Poseidon2b nonce。
+8. 节点验证 nonce、封装已准备的终端证明、原子提交区块并向对等节点
    宣布。
 
-新的规范链尖会使未完成工作过期。节点丢弃该尝试，从新状态重新开始；绝不
+新的规范链尖会使未完成工作过期。节点丢弃该尝试，从新的 State 重新开始；绝不
 把旧证明移到不同父区块或交易集上。
 
-对等节点只有在独立验证父区块、`HistoryStep`、PoW target 和所有共识
-commitment 后才接受结果。有效竞争链之间由累计工作量决定胜者。
+对等节点只有在独立验证父区块、`HistoryStep`、PoW 目标值和所有共识
+承诺后才接受结果。有效竞争链之间由累计工作量决定胜者。
 
 ## 两种挖矿模式
 
 | 模式 | 证明构建 | Nonce 搜索 | 适合场景 |
 |---|---|---|---|
 | 内置 | Core 节点 | Core 节点 | GUI 钱包、单机矿工、单台服务器 |
-| 外部 | Core 节点 | `parano1d-miner` | 独立 CPU worker、私有挖矿网络或矿池 |
+| 外部 | Core 节点 | `parano1d-miner` | 独立 CPU 挖矿进程、私有挖矿网络或矿池 |
 
 两种模式遵循同一套共识规则，生成完全相同的区块。外部挖矿只把 nonce
 搜索移过 RPC 边界。
@@ -107,11 +107,11 @@ parano1d-cli peers
 parano1d-cli mining
 ```
 
-如果未同步或认证对等节点少于两个，Core 会等待，不会在孤立的本地视图上
+如果未同步或已完成身份认证的对等节点少于两个，Core 会等待，不会在孤立的本地视图上
 挖矿。完整服务器和 systemd 流程见
 [内置挖矿](../operate/internal-mining.md)。
 
-## 运行外部 worker
+## 运行外部挖矿进程
 
 启动负责持有并证明外部挖矿模板的节点：
 
@@ -121,7 +121,7 @@ parano1d \
   --mining-key '<long-random-token>'
 ```
 
-让 worker 连接节点的 loopback RPC：
+让挖矿进程连接节点的本地回环 RPC：
 
 ```sh
 parano1d-miner \
@@ -130,28 +130,28 @@ parano1d-miner \
   --threads 12
 ```
 
-节点在返回模板前已经完成整份证明。Worker 只搜索 nonce 并提交结果。模板
+节点在返回模板前已经完成整份证明。挖矿进程只搜索 nonce 并提交结果。模板
 一次性使用，30 秒后过期；接受竞争链尖时也会立即失效。
 
-远程 worker 应通过认证私有网络或受防火墙限制的 TLS endpoint 连接。
-Bearer token 认证 worker，但不会加密普通 HTTP。不要把通用 RPC 监听器
+远程挖矿进程应通过经过认证的私有网络或受防火墙限制的 TLS 端点连接。
+Bearer 令牌用于认证挖矿进程，但不会加密普通 HTTP。不要把通用 RPC 监听器
 直接公开到互联网。
 
-奖励地址默认由节点控制。是否允许认证 worker 请求自己的奖励地址，是
+奖励地址默认由节点控制。是否允许经过认证的挖矿进程请求自己的奖励地址，是
 运营者的显式选择。远程配置与信任边界见
 [外部矿工](../operate/external-miner.md)。
 
 ## CPU 与证明容量
 
-正式运行的最低指令集为：
+发布版运行的最低指令集为：
 
 | 架构 | 必需指令 |
 |---|---|
 | x86-64 | SSE4.1 和 PCLMULQDQ |
 | ARM64 | NEON 和 PMULL |
 
-主机暴露更宽指令时，程序会在运行时自动选择对应 kernel。硬件检查只确认
-正式后端可以运行，不保证挖矿性能具有竞争力。
+主机支持更宽的指令集时，程序会在运行时自动选择对应内核。硬件检查只确认
+发布版后端可以运行，但不保证挖矿性能具有竞争力。
 
 每个挖矿进程都从 B64 证明类别开始。只有测得的完整准备时间支持更大关系
 时，才使用 B255。两类证明同一个共识陈述：
@@ -169,22 +169,22 @@ Bearer token 认证 worker，但不会加密普通 HTTP。不要把通用 RPC �
 证明延迟仍然重要，因为其他矿工推进链尖后，当前候选会过期。应在目标机器
 上测量完整 B64 准备路径，而不是只看 CPU 型号或宣传的 vCPU 数量。
 
-正式最低要求和参考数据见[硬件与容量](../operate/hardware.md)及
+发布版最低要求和参考数据见[硬件与容量](../operate/hardware.md)及
 [性能测量](../reference/performance.md)。
 
 ## 难度、奖励与确认
 
-ASERT 调整 Poseidon2b target，使平均区块间隔维持 15 秒。累计有效工作量
-最大的链获胜；工作量相同时使用规范区块哈希作为 tie-break。
+ASERT 调整 Poseidon2b 目标值，使平均区块间隔维持 15 秒。累计有效工作量
+最大的链获胜；工作量相同时使用规范区块哈希作确定性决胜。
 
-当前奖励取决于活动状态级别，可通过以下命令查看：
+当前奖励取决于 State 级别，可通过以下命令查看：
 
 ```sh
 parano1d-cli mining
 ```
 
 在三年开发分配期内，矿工获得每个新区块发行奖励的 90%。扣除共识规定的
-状态增长销毁后，可领取的交易费也归矿工。分配期结束后，每个新区块奖励的
+[State 增长费](../reference/glossary.md#state-growth-fee)销毁后，可领取的交易费也归矿工。分配期结束后，每个新区块奖励的
 100% 都支付给矿工。
 
 本机找到区块后，余额并不会立刻具有最终性。后续有效区块会增加确认深度；
@@ -193,12 +193,12 @@ parano1d-cli mining
 ## 挖矿与去中心化
 
 自主矿工不能只依靠哈希算力。它的节点必须保持最新、验证收到的工作、构建
-并证明下一状态，之后 nonce 引擎才能得到有用任务。如果该节点接受入站
+并证明下一 State，之后 nonce 引擎才能得到有用任务。如果该节点接受入站
 P2P，同一套基础设施还会中继交易和区块，并向其他节点提供同步数据。
 
-外部 worker 和矿池仍然可行：一个证明节点可以服务多个 nonce worker。
+外部挖矿进程和矿池仍然可行：一个证明节点可以服务多个 nonce 搜索进程。
 因此，ParanO(1)d 并不声称专用硬件无法存在。系统提供的更强且更精确的
 性质是：专用哈希算力无法独立生成区块，也无法弥补证明节点能力不足。
 
-区块头精确关系见 [Proof of work](../protocol/proof-of-work.md)，实现流水线
+区块头的精确关系见[工作量证明](../protocol/proof-of-work.md)，实现流水线
 见[区块生产](../architecture/mining.md)。

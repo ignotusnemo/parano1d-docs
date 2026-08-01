@@ -64,9 +64,9 @@ amount and `creation_id`. For each output, the target slot must be empty and
 inside the active slot domain.
 
 Output `creation_id` values are not transaction fields. Consensus assigns them
-from the post-state allocation sequence. A user cannot choose or reuse one.
+from the post-State allocation sequence. A user cannot choose or reuse one.
 
-The block transition enforces all state checks atomically for the complete
+The block transition enforces all State checks atomically for the complete
 logical group.
 
 ## Fees
@@ -81,10 +81,10 @@ The minimum fee is:
 ```
 
 All amounts are in μNOID. `growth_price` begins at 2,500 μNOID per net-new
-slot and is multiplied by 1, 2, 4 or 8 according to parent-state occupancy.
+slot and is multiplied by 1, 2, 4 or 8 according to parent-State occupancy.
 
-The state-growth component is burned. Any fee above the required minimum is a
-miner-claimable tip. State-preserving and state-shrinking spends have no growth
+The State-growth component is burned. Any fee above the required minimum is a
+miner-claimable tip. State-preserving and State-shrinking spends have no growth
 burn.
 
 ## Epoch anchor
@@ -100,13 +100,13 @@ for `C > 0`. Height 144 still consumes the height-zero anchor; height 145
 begins using height 144. The mempool removes intents whose anchor is no longer
 current.
 
-## Authorization and state are separate
+## Authorization and State are separate
 
 Wallet authorization proves ownership only. It does not prove current slot
-membership and contains no live-state Merkle path.
+membership and contains no Live State Merkle path.
 
 The block `HistoryStep` proves current membership, emptiness, balance,
-allocation and the post-state root. Both statements bind the same public
+allocation and the post-State root. Both statements bind the same public
 logical transaction.
 
 ## System records

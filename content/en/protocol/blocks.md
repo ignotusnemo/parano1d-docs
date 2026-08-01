@@ -7,7 +7,7 @@ An accepted block is an atomic pair:
 ```
 
 The block contains a fixed header and up to 256 fixed transaction bodies.
-The terminal proves the nonce-independent semantic header and complete state
+The terminal proves the nonce-independent semantic header and complete State
 transition.
 
 ## Block contents
@@ -24,7 +24,7 @@ the remaining positions in canonical group order.
 | Live user inputs | 1,020 |
 | Live user outputs | 510 |
 | Live user actions | 1,530 |
-| Distinct state segments touched | 256 |
+| Distinct State segments touched | 256 |
 
 The decoder rejects oversize counts before allocating or decoding their
 payload.
@@ -47,7 +47,7 @@ The header has a fixed 212-byte little-endian encoding:
 | Field | Size | Meaning |
 |---|---:|---|
 | `prev_block_hash` | 32 | Nonce-bearing parent block ID |
-| `state_root` | 32 | Exact post-state UTXO root |
+| `state_root` | 32 | Exact post-State UTXO root |
 | `tx_root` | 32 | Count-bound transaction root |
 | `timestamp` | 8 | Unix time in seconds |
 | `height` | 8 | Child height |
@@ -55,8 +55,8 @@ The header has a fixed 212-byte little-endian encoding:
 | `nonce` | 16 | Poseidon2b PoW nonce |
 | `difficulty_target` | 32 | Exact little-endian ASERT target |
 | `log_slots` | 4 | Slot-domain exponent |
-| `active_slot_count` | 8 | Post-state live UTXO count |
-| `alloc_counter` | 8 | Post-state allocation counter |
+| `active_slot_count` | 8 | Post-State live UTXO count |
+| `alloc_counter` | 8 | Post-State allocation counter |
 
 Field order is consensus-locked. Future formats cannot reorder existing fields.
 
@@ -86,7 +86,7 @@ Ordinary output allocation remains below `2^63`, so a reward record can never
 collide with a user allocation identifier.
 
 The primary reward may claim only the current miner subsidy and miner-claimable
-fees. It cannot reclaim the burned state-growth component.
+fees. It cannot reclaim the burned State-growth component.
 
 ## Accepted bundle
 

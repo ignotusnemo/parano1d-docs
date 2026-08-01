@@ -108,7 +108,7 @@ python3 scripts/live_two_miner_fork_reorg_scenario.py
 
 ## Boundary changes
 
-Changes near finality, epochs or state expansion require explicit boundary
+Changes near finality, epochs or State expansion require explicit boundary
 vectors, not only a long-running happy path. Cover:
 
 - heights 143, 144 and 145 for transaction anchors;
@@ -117,7 +117,7 @@ vectors, not only a long-running happy path. Cover:
 - finalized expansion windows with 9/9 and 10/8 occupancy;
 - restart with the complete 36-header expansion lookback;
 - payout boundaries and the final allocation height;
-- state expansion from one `log_slots` tier to the next.
+- State expansion from one `log_slots` tier to the next.
 
 Tests should use isolated data directories. They may use different ports to run
 concurrently, but must not mutate fixtures or production data.

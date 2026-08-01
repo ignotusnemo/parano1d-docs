@@ -65,7 +65,7 @@ Construction has two proof boundaries:
 
 1. the wallet proves knowledge of the active owner's secret;
 2. the miner proves current input membership, output emptiness, value
-   conservation, fee rules and the exact post-state.
+   conservation, fee rules and the exact post-State.
 
 The wallet proof runs outside the wallet-state lock. Mining may continue, but
 the node gives local transaction work priority so a user is not forced to wait
@@ -77,10 +77,10 @@ Admission deliberately repeats the cheap checks around expensive proof
 verification:
 
 1. decode canonical wire data and validate group semantics;
-2. under the mempool lock, check fee, epoch, conflicts and the current state;
+2. under the mempool lock, check fee, epoch, conflicts and the current State;
 3. release the lock and verify the authorization capsule under a bounded CPU
    permit;
-4. reacquire the lock and repeat the cheap state and conflict checks;
+4. reacquire the lock and repeat the cheap State and conflict checks;
 5. reserve every live input and output slot, then relay the intent.
 
 The second cheap pass closes the race between authorization verification and a
@@ -98,7 +98,7 @@ Groups remain indivisible. Selection also respects:
 - the active proof class, B64 or B255;
 - at most 1,020 live inputs per block;
 - at most 510 user outputs per block;
-- at most 256 distinct state segments touched;
+- at most 256 distinct State segments touched;
 - the available physical page positions.
 
 A scheduled development-reward payout uses one physical page position, leaving

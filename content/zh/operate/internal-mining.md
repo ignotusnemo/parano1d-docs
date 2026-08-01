@@ -5,7 +5,7 @@
 
 ## 准备
 
-先运行正式硬件检查：
+先运行发布版硬件检查：
 
 ```sh
 parano1d --check-hardware

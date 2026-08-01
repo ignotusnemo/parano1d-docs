@@ -1,6 +1,6 @@
-# Live-state architecture
+# Live State architecture
 
-The canonical state is an exact sparse vector of UTXOs indexed by 32-bit slot
+The canonical State is an exact sparse vector of UTXOs indexed by 32-bit slot
 number. A header commits to both its Merkle root and the counters required to
 interpret the vector:
 
@@ -9,10 +9,10 @@ interpret the vector:
 - `active_slot_count`;
 - `alloc_counter`, the next creation identifier.
 
-The state begins with `2^24` possible slots and can expand one level at a time
+State begins with `2^24` possible slots and can expand one level at a time
 to `2^32`.
 
-![Finalized-window state expansion](../assets/architecture/live-state-expansion.svg)
+![Finalized-window State expansion](../assets/architecture/live-state-expansion.svg)
 
 ## Slot lifecycle
 
@@ -41,7 +41,7 @@ This gives the node two useful views:
 
 - exact raw segment columns in MDBX for wallet queries and transition
   materialization;
-- a compact tree of segment roots for state authentication.
+- a compact tree of segment roots for State authentication.
 
 At the initial `2^24` domain, only 256 segment roots are needed. Together with
 their upper tree nodes, the compact exact-root cache is under roughly 17 KiB.
@@ -79,7 +79,7 @@ depth becomes the right child:
 
 ```text
 new root
-├── previous exact state root
+├── previous exact State root
 └── canonical empty subtree
 ```
 
@@ -92,7 +92,7 @@ alter existing values or create a migration transaction.
 ## State pressure and fees
 
 Ordinary input and output work has a fixed fee component. Net-new live slots
-also pay a state-growth component whose multiplier rises with occupancy.
+also pay a State-growth component whose multiplier rises with occupancy.
 
 | Occupancy | Growth multiplier |
 |---:|---:|
@@ -105,18 +105,18 @@ The growth component is burned. The remainder of the fee is claimable by the
 miner. A transaction that reduces or preserves the number of live slots pays
 no growth burn.
 
-This prices the scarce resource directly: persistent state, not historical
+This prices the scarce resource directly: persistent State, not historical
 bytes that active consensus no longer needs.
 
 ## Restart and reorganization
 
-MDBX stores state changes transactionally. For recent blocks, bounded undo
-records contain the exact preimages and counters needed to roll state backward.
+MDBX stores State changes transactionally. For recent blocks, bounded undo
+records contain the exact preimages and counters needed to roll State backward.
 The node retains 36 blocks of undo data while consensus permits a maximum
 17-block canonical reorganization.
 
-Restart does not reconstruct state from genesis. The node opens the persisted
-state, checks its canonical metadata and resumes from the current terminal.
+Restart does not reconstruct State from genesis. The node opens the persisted
+State, checks its canonical metadata and resumes from the current terminal.
 
 See [State transition](../protocol/state.md) for normative rules and
-[Synchronization](synchronization.md) for authenticated state transfer.
+[Synchronization](synchronization.md) for authenticated State transfer.

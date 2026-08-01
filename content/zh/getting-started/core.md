@@ -42,7 +42,7 @@ Windows PowerShell：
 NODE READY
 ```
 
-x86-64 正式节点要求 SSE4.1 和 PCLMULQDQ，ARM64 则要求 NEON 和
+x86-64 发布版节点要求 SSE4.1 和 PCLMULQDQ，ARM64 则要求 NEON 和
 PMULL。程序会自动选择更宽的 AVX2、VPCLMULQDQ 或 AVX-512 路径。
 
 虚拟机注意事项、内存需求与磁盘容量规划见

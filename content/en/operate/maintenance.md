@@ -1,6 +1,6 @@
 # Maintenance
 
-ParanO(1)d persists live state transactionally. Routine maintenance does not
+ParanO(1)d persists Live State transactionally. Routine maintenance does not
 replay or retain historical block bodies.
 
 ## Observe
@@ -22,7 +22,7 @@ systemctl status parano1d
 journalctl -u parano1d --since today
 ```
 
-Monitor disk space for the live MDBX state and proof cache, not an assumed
+Monitor disk space for the live MDBX State and proof cache, not an assumed
 fixed allocation. State storage follows current UTXO usage.
 
 ## Stop before file operations
@@ -67,16 +67,19 @@ authority.
 
 Do not delete the data directory during a normal update.
 
-## Rebuild volatile state
+## Rebuild chain data
 
-If state corruption is suspected and a healthy peer network is available:
+If State corruption is suspected and a healthy peer network is available:
 
 ```sh
 parano1d --purge-state
 ```
 
-This clears chain state and forces authenticated synchronization. Back up the
-wallet key and receipts first. The operation is recovery, not routine cleanup.
+This clears the complete chain database, including headers, retained blocks,
+indexes, undo data and Live State, then forces authenticated synchronization.
+Wallet files, receipts and peer identity are stored separately and remain, but
+backing up the wallet key and receipts first is still prudent. The operation is
+recovery, not routine cleanup.
 
 ## Snapshot staging
 

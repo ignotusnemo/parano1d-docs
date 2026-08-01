@@ -17,3 +17,9 @@ npm run typecheck
 npm run build
 npm run build:worker
 ```
+
+## Mathematical notation
+
+Documentation pages use TeX delimiters in Markdown: `$...$` for inline math
+and `$$...$$` for display math. The renderer emits static KaTeX HTML and
+MathML during the site build; malformed TeX fails the build.

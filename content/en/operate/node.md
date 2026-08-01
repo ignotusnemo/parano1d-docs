@@ -1,7 +1,7 @@
 # Run a node on Linux
 
 An ordinary ParanO(1)d node verifies complete blocks, maintains the live UTXO
-state, relays transactions and serves synchronization data. It does not mine.
+State, relays transactions and serves synchronization data. It does not mine.
 
 This guide installs the official Core release as a system service. It assumes a
 64-bit Linux server with systemd.
@@ -19,8 +19,9 @@ scalar reference backend is not used by a production node.
 The node listens for P2P connections on TCP port `9400`. Its JSON-RPC endpoint
 should remain bound to `127.0.0.1:9401`.
 
-Storage follows the live UTXO set rather than chain age. The node also retains
-compact headers and the latest 18 complete blocks.
+The dominant mutable storage follows the live UTXO set. Compact 212-byte
+headers remain permanent, while complete block bodies are retained only for
+the latest 18 blocks.
 
 Read [Hardware and capacity](hardware.md) before ordering a virtual machine or
 choosing disk and memory limits.
@@ -75,7 +76,6 @@ Create `/etc/parano1d/parano1d.toml`:
 [network]
 listen = "0.0.0.0:9400"
 seeds = []
-max_peers = 50
 
 [storage]
 backend = "mdbx"
@@ -152,7 +152,7 @@ parano1d-cli state
 ```
 
 `status` should report the current height, `peers` should become non-zero, and
-`state` reports the authenticated live-state dimensions.
+`state` reports the authenticated Live State dimensions.
 
 ## Network access
 

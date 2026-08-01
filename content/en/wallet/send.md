@@ -27,8 +27,8 @@ The review shows:
 - network fee;
 - resulting active-owner balance.
 
-The fee quote includes base, input, output and any state-growth component.
-Creating one net-new UTXO costs more as state occupancy rises. A voluntary fee
+The fee quote includes base, input, output and any State-growth component.
+Creating one net-new UTXO costs more as State occupancy rises. A voluntary fee
 above minimum is miner-claimable.
 
 ## Forge and submit
@@ -71,7 +71,7 @@ The wallet can refuse or abandon a send when:
 - the local node rejects or cannot relay the intent.
 
 No balance is reserved on-chain merely because the review opened. If the final
-submission fails, refresh current state and build the payment again.
+submission fails, refresh current State and build the payment again.
 
 ## Privacy
 

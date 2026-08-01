@@ -1,26 +1,26 @@
 # 在 Linux 上运行节点
 
-普通 ParanO(1)d 节点验证完整区块、维护实时 UTXO 状态、中继交易并提供
+普通 ParanO(1)d 节点验证完整区块、维护 [Live State](../reference/glossary.md#live-state)、中继交易并提供
 同步数据，但不参与挖矿。
 
-本指南在带有 systemd 的 64 位 Linux 服务器上，把官方 Core 版本安装为
+本指南在带有 systemd 的 64 位 Linux 服务器上，把发布版 Core 安装为
 系统服务。
 
 ## 要求
 
-正式证明后端要求：
+发布版证明后端要求：
 
 - x86-64，支持 SSE4.1 和 PCLMULQDQ；或
 - ARM64，支持 NEON 和 PMULL。
 
-AVX2、VPCLMULQDQ 和 AVX-512 会在可用时自动选择。正式节点不使用标量
+AVX2、VPCLMULQDQ 和 AVX-512 会在可用时自动选择。发布版节点不使用标量
 参考后端。
 
 节点通过 TCP `9400` 接受 P2P 连接。JSON-RPC 应保持绑定
 `127.0.0.1:9401`。
 
-存储量跟随实时 UTXO 集，而不是链龄。节点还永久保存紧凑区块头和最近
-18 个完整区块。
+主要可变存储随 Live State 中的 UTXO 数量变化。每个 212 字节的紧凑区块头会
+永久保存，而完整区块体只保留最近 18 个。
 
 购买虚拟机或设置磁盘、内存限制前，请阅读
 [硬件与容量](hardware.md)。
@@ -75,7 +75,6 @@ sudo install -d -o root -g parano1d -m 0750 /etc/parano1d
 [network]
 listen = "0.0.0.0:9400"
 seeds = []
-max_peers = 50
 
 [storage]
 backend = "mdbx"
@@ -96,7 +95,7 @@ sudo chown root:parano1d /etc/parano1d/parano1d.toml
 sudo chmod 0640 /etc/parano1d/parano1d.toml
 ```
 
-无需填写种子地址。正式二进制会通过内置 DNS 种子发现公网，并记住成功
+无需填写种子地址。发布版二进制会通过内置 [DNS 种子](../reference/glossary.md#dns-seed)发现公网，并记住成功
 连接过的出站节点。
 
 ## 通过 systemd 运行
@@ -151,7 +150,7 @@ parano1d-cli state
 ```
 
 `status` 应报告当前高度，`peers` 应变为非零，`state` 则显示经过认证的
-实时状态尺寸。
+Live State 的大小。
 
 ## 网络访问
 

@@ -26,7 +26,7 @@ For a child block to extend a parent, all of the following must hold:
 9. no input or output conflict exists inside the block;
 10. fees, value conservation, allocation counters and slot writes are exact;
 11. `log_slots` follows the finalized expansion rule;
-12. the post-state counters and root equal the header commitments;
+12. the post-State counters and root equal the header commitments;
 13. the supplied `HistoryStep` terminal verifies and binds the nonce-free
     semantic header.
 
@@ -49,7 +49,7 @@ A candidate that would change the finalized prefix is ineligible for fork
 choice. Because rollback depth must be strictly less than 18, the maximum
 accepted reorganization is 17 blocks.
 
-Hard finality also separates state-expansion measurements from temporary
+Hard finality also separates State-expansion measurements from temporary
 forks. The 18-header occupancy window used for expansion ends at the finalized
 boundary, not at the tip.
 
@@ -78,7 +78,7 @@ floor((C - 1) / 144) × 144
 ```
 
 This clock is independent of the six-block ASERT epoch. It limits replay and
-stale mempool lifetime without tying wallet authorization to every new state
+stale mempool lifetime without tying wallet authorization to every new State
 root.
 
 ## Local policy is not consensus
@@ -97,7 +97,7 @@ is an operational isolation guard, not a block-validity vote.
 The public network has one compiled chain origin, network magic and protocol
 identifier. A node does not negotiate consensus parameters with peers. Data
 from another network fails parent, identity or proof checks before it can
-become canonical state.
+become canonical State.
 
 Continue with [Blocks and headers](blocks.md),
 [Transaction protocol](transactions.md), [State transition](state.md), and the

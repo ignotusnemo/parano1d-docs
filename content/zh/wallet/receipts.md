@@ -2,7 +2,7 @@
 
 收据页面保存并验证外发付款的长期证明。按 `F4` 打开。
 
-![本机保存的付款收据](../assets/wallet/receipts.png)
+![本机保存的付款收据](../../../assets/wallet/receipts.png)
 
 ## 我的收据
 

@@ -1,5 +1,6 @@
 import MarkdownIt from "markdown-it";
 import anchor from "markdown-it-anchor";
+import { mathPlugin } from "@/lib/math";
 import {
   generatedDocuments,
   generatedSummaries
@@ -128,6 +129,22 @@ function slugifyHeading(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+function extractStableHeadingIds(raw: string): {
+  markdown: string;
+  headingIds: ReadonlyMap<string, string>;
+} {
+  const headingIds = new Map<string, string>();
+  const markdown = raw.replace(
+    /^<a id="([a-z0-9_-]+)"><\/a>\r?\n(#{2,3})\s+(.+)$/gim,
+    (_match, id: string, marker: string, title: string) => {
+      headingIds.set(cleanInlineMarkdown(title), id);
+      return `${marker} ${title}`;
+    }
+  );
+
+  return { markdown, headingIds };
+}
+
 function splitHref(href: string): { pathname: string; suffix: string } {
   const index = href.search(/[?#]/);
   if (index === -1) return { pathname: href, suffix: "" };
@@ -178,7 +195,11 @@ function resolveDocHref(
   return `${pathForLocale(locale, slugFromSource(resolved))}${suffix}`;
 }
 
-function createMarkdownRenderer(sourcePath: string, locale: Locale) {
+function createMarkdownRenderer(
+  sourcePath: string,
+  locale: Locale,
+  headingIds: ReadonlyMap<string, string>
+) {
   const md = new MarkdownIt({
     html: false,
     linkify: true,
@@ -187,8 +208,10 @@ function createMarkdownRenderer(sourcePath: string, locale: Locale) {
 
   md.use(anchor, {
     level: [2, 3],
-    slugify: slugifyHeading
+    slugify: (value: string) =>
+      headingIds.get(cleanInlineMarkdown(value)) ?? slugifyHeading(value)
   });
+  md.use(mathPlugin);
 
   md.renderer.rules.link_open = (tokens, index, options, env, self) => {
     const token = tokens[index];
@@ -201,7 +224,7 @@ function createMarkdownRenderer(sourcePath: string, locale: Locale) {
 
       if (/^https?:\/\//i.test(resolved)) {
         token.attrSet("target", "_blank");
-        token.attrSet("rel", "noreferrer");
+        token.attrSet("rel", "noopener noreferrer");
       }
     }
 
@@ -274,8 +297,9 @@ export function getDoc(locale: Locale, slug: string): DocPage | null {
   if (!sourcePath) return null;
 
   const raw = generatedDocuments[locale][sourcePath];
-  const md = createMarkdownRenderer(sourcePath, locale);
-  const tokens = md.parse(raw, {});
+  const { markdown, headingIds } = extractStableHeadingIds(raw);
+  const md = createMarkdownRenderer(sourcePath, locale, headingIds);
+  const tokens = md.parse(markdown, {});
   const toc: TocItem[] = [];
 
   for (let index = 0; index < tokens.length; index += 1) {

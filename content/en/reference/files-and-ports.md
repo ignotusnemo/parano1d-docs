@@ -6,7 +6,7 @@
 |---|---|---|
 | `~/.parano1d/parano1d.toml` | Core configuration | Operator |
 | `~/.parano1d/gui-settings.json` | GUI preferences | Local UI |
-| `~/.parano1d/data/` | Default Core and GUI node data | Consensus state |
+| `~/.parano1d/data/` | Default Core and GUI node data | Consensus data |
 | `DATA_DIR/wallet.key` | 256-bit wallet master secret | Spending authority |
 | `DATA_DIR/wallet.receipts` | Saved outgoing receipts | Local payment evidence |
 | `DATA_DIR/wallet.history` | Local wallet history | Local presentation |
@@ -60,15 +60,25 @@ Receipts preserve payment-specific inclusion evidence outside body retention.
 |---|---:|
 | Mempool logical transactions | 1,024 |
 | Mempool intent bytes | 384 MiB |
+| Mempool-sync response | 128 intents / 16 MiB |
+| Orphan accepted bundles | 36 / 128 MiB |
 | Peer-store entries | 500 |
 | Addresses per stored peer | 8 |
-| Startup peer anchors | 8 |
+| Automatic outbound peer target | 12 identities |
+| Established inbound transports | 128 |
+| Established outbound transports | 64 |
+| Pending inbound / outbound transports | 64 / 32 |
+| Established transports per peer identity | 2 |
 | Public outbound peers per network group | 2 |
-| Public inbound peers per IP | 8 |
-| Public inbound peers per network group | 32 |
-| Header batch | 512 |
-| Simultaneous snapshot exports | 2 |
-| Pending state-segment requests | 64 |
+| Public inbound peer identities per IP | 32 |
+| Public inbound connections per network group | 96 |
+| Direct-sync header request | 512 headers |
+| Header protocol batch cap | 4,096 headers |
+| Concurrent snapshot generation tasks | 1 |
+| Unleased snapshot generations retained | 2 |
+| Snapshot export lease idle lifetime | 15 minutes |
+| Snapshot State segments in flight | 8 |
+| State-segment request correlation entries | 64 |
 | External template lifetime | 30 seconds |
 
 ## RPC bounds

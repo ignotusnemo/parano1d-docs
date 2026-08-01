@@ -1,6 +1,6 @@
 # JSON-RPC API
 
-Core 通过 HTTP 提供 JSON-RPC 2.0。默认 endpoint：
+Core 通过 HTTP 提供 JSON-RPC 2.0。默认端点：
 
 ```text
 http://127.0.0.1:9401
@@ -25,7 +25,7 @@ curl --silent --show-error \
 - 货币整数字段以 μNOID 为单位。
 - 1 NOID 等于 1,000,000 μNOID。
 - 哈希使用不带 `0x` 的小写十六进制。
-- Target 与 nonce 字节使用各自规范的 little-endian 编码。
+- 目标值（target）与 nonce 字节使用各自规范的小端编码。
 - 地址默认使用规范 bech32m `o1…`，除非字段明确要求 hex。
 - 未知的永久对象通常返回 `null`。
 - 超出 18 区块保留窗口的旧区块体返回 `null`，其区块头仍可查询。
@@ -35,7 +35,7 @@ curl --silent --show-error \
 
 ## 认证
 
-RPC 默认没有认证，因此必须保持在 loopback。
+RPC 默认没有认证，因此必须仅监听回环地址。
 
 使用 `--mining-key TOKEN` 启动 Core 后，必须提供：
 
@@ -58,7 +58,7 @@ HTTP `401`，没有 JSON-RPC 结果。Token 只负责认证，不加密连接；
 | `getBlockHeaderByHash` | `[hash: string]` | `BlockHeaderInfo \| null` |
 | `getHeaderByHeight` | `[height: u64]` | 原始 212 字节区块头 hex 或 `null` |
 | `getHeaderByHash` | `[hash: string]` | 原始 212 字节区块头 hex 或 `null` |
-| `getHistoryStepTerminal` | `[]` | 当前 terminal hex 或 `null` |
+| `getHistoryStepTerminal` | `[]` | 当前终端证明的十六进制编码或 `null` |
 | `getSlot` | `[slot_index: u32]` | `SlotInfo` |
 | `getSlotsByOwner` | `[address: string]` | `SlotInfo[]` |
 | `getActiveSlotCount` | `[]` | `u64` |
@@ -80,13 +80,13 @@ HTTP `401`，没有 JSON-RPC 结果。Token 只负责认证，不加密连接；
 | 方法后缀 | 位置参数 | 结果 |
 |---|---|---|
 | `getMiningInfo` | `[]` | `MiningInfo` |
-| `getPeerCount` | `[]` | 已连接 peer 数量 |
+| `getPeerCount` | `[]` | 已连接对等节点数量 |
 | `getNodeStatus` | `[]` | `NodeStatus` |
 | `estimateFee` | `[n_outputs: u32]` | 假设一个输入时可接受的最低 μNOID |
 | `estimateFeeDetailed` | `[n_inputs: u32, n_outputs: u32]` | `FeeEstimate` |
 
-详细费用要求 1–1,020 个输入和 1–256 个输出。返回费用包含当前 relay
-floor。
+详细费用要求 1–1,020 个输入和 1–256 个输出。返回费用包含当前中继费率
+下限。
 
 ## 工具与提交方法
 
@@ -95,17 +95,17 @@ floor。
 | `validateAddress` | `[address: string]` | `AddressInfo` |
 | `getSlotHints` | `[count: u32]` | `u32[]` |
 | `getSlotHintsSalted` | `[count: u32, salt_hex: string]` | `u32[]` |
-| `getEpochAnchor` | `[]` | 当前用户交易 anchor hex |
+| `getEpochAnchor` | `[]` | 当前用户交易周期（epoch）锚点的十六进制编码 |
 | `submitTxIntent` | `[intent_hex: string]` | 逻辑交易 ID |
 
-槽位提示不是预留。两个方法都会排除 mempool 当前预留的输出，最多返回
+槽位提示不是预留。两个方法都会排除内存池当前预留的输出，最多返回
 256 项；若找不到足够空槽，返回项可能更少。解码后的 salt 上限为 256
 字节。
 
 `submitTxIntent` 接受一份规范编码的 `PagedSpendIntent`，其中包含分离的
-授权 capsule。解析和证明验证前，解码输入上限为 303,495 字节。
+授权证明封装。解析和证明验证前，解码输入上限为 303,495 字节。
 
-## Mempool 方法
+## 内存池方法
 
 | 方法后缀 | 位置参数 | 结果 |
 |---|---|---|
@@ -114,7 +114,7 @@ floor。
 | `getMempoolStats` | `[]` | `MempoolStats` |
 | `getMempoolEntry` | `[txid: string]` | `MempoolTxInfo \| null` |
 
-Mempool 响应描述的是原子逻辑交易，而不是物理页。
+内存池响应描述的是原子逻辑交易，而不是物理页。
 
 ## 收据方法
 
@@ -181,7 +181,7 @@ Mempool 响应描述的是原子逻辑交易，而不是物理页。
 
 以下 schema 使用 `?` 表示可选字段；JSON 明确没有值时使用 `null`。
 
-### 链与状态
+### 链与 State
 
 ```text
 ChainInfo {
@@ -190,7 +190,10 @@ ChainInfo {
   difficulty_target: string
   active_slot_count: u64
   log_slots: u32
+  circulating_supply_micronoid: decimal string
 }
+
+`circulating_supply_micronoid` 是 Live State 中所有 UTXO 数值之和，以 μNOID 为单位。该字段使用十进制字符串编码，以避免超出 JSON 数字的精确表示范围。
 
 BlockHeaderInfo {
   height: u64
@@ -364,7 +367,7 @@ NodeStatus {
 ```
 
 `isolated_mining` 是节点在特殊运营上下文中启动时的状态信息。公网部署不应
-把它用作远程控制或 peer 属性。
+把它用作远程控制凭据或对等节点属性。
 
 ### 费用
 
@@ -394,7 +397,7 @@ FeeBreakdownInfo {
 }
 ```
 
-### Mempool
+### 内存池（Mempool）
 
 ```text
 MempoolInfo {
@@ -425,7 +428,7 @@ MempoolTxInfo {
 }
 ```
 
-Fee rate 使用以下加权单位：
+手续费率（fee rate）使用以下加权单位：
 
 ```text
 inputs + outputs + 4 × net_new_slots
@@ -663,8 +666,8 @@ BlockTemplateResponse {
 }
 ```
 
-`pow_fields_hex` 包含 16 个连续的 16 字节 little-endian 字段。Worker
-替换 `nonce_field_index` 指向的字段，规范值为 10。
+`pow_fields_hex` 包含 16 个连续的 16 字节小端字段。外部挖矿进程替换
+`nonce_field_index` 指向的字段，规范值为 10。
 
 ## 错误
 

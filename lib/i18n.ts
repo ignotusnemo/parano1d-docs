@@ -15,14 +15,12 @@ export type UiCopy = {
   overview: string;
   openNavigation: string;
   closeNavigation: string;
+  collapseNavigation: string;
+  expandNavigation: string;
   documentation: string;
   searchDocumentation: string;
-  website: string;
-  source: string;
   externalLinks: string;
   language: string;
-  network: string;
-  mainnet: string;
   adjacentPages: string;
   previous: string;
   next: string;
@@ -77,14 +75,12 @@ export const uiCopy: Record<Locale, UiCopy> = {
     overview: "Overview",
     openNavigation: "Open documentation navigation",
     closeNavigation: "Close documentation navigation",
+    collapseNavigation: "Collapse documentation navigation",
+    expandNavigation: "Expand documentation navigation",
     documentation: "Documentation",
     searchDocumentation: "Search documentation",
-    website: "Website",
-    source: "Source",
     externalLinks: "External links",
     language: "Language",
-    network: "NETWORK",
-    mainnet: "MAINNET",
     adjacentPages: "Adjacent pages",
     previous: "Previous",
     next: "Next",
@@ -108,14 +104,12 @@ export const uiCopy: Record<Locale, UiCopy> = {
     overview: "Обзор",
     openNavigation: "Открыть меню документации",
     closeNavigation: "Закрыть меню документации",
+    collapseNavigation: "Свернуть меню документации",
+    expandNavigation: "Развернуть меню документации",
     documentation: "Документация",
     searchDocumentation: "Поиск по документации",
-    website: "Сайт",
-    source: "Исходный код",
     externalLinks: "Внешние ссылки",
     language: "Язык",
-    network: "СЕТЬ",
-    mainnet: "MAINNET",
     adjacentPages: "Соседние страницы",
     previous: "Назад",
     next: "Далее",
@@ -140,14 +134,12 @@ export const uiCopy: Record<Locale, UiCopy> = {
     overview: "概览",
     openNavigation: "打开文档导航",
     closeNavigation: "关闭文档导航",
+    collapseNavigation: "收起文档导航",
+    expandNavigation: "展开文档导航",
     documentation: "技术文档",
     searchDocumentation: "搜索文档",
-    website: "官网",
-    source: "源代码",
     externalLinks: "外部链接",
     language: "语言",
-    network: "网络",
-    mainnet: "主网",
     adjacentPages: "相邻页面",
     previous: "上一页",
     next: "下一页",

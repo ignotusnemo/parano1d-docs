@@ -45,7 +45,7 @@ Do not open RPC `9401` as a substitute for P2P.
 
 Mining needs:
 
-- synchronized state;
+- synchronization with the canonical tip;
 - two authenticated peers;
 - a ready embedded HistoryStep runtime;
 - a valid payout owner;

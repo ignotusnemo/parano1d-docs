@@ -1,6 +1,6 @@
 # Scope
 
-Scope is the wallet's view into canonical headers, current live state and the
+Scope is the wallet's view into canonical headers, current Live State and the
 recent full-data window. Open it with `F6`.
 
 ![Scope canonical-chain view](../assets/wallet/scope.png)
@@ -37,11 +37,11 @@ Old payments are not a permanent explorer database. Their canonical headers
 remain, and a saved receipt provides the transaction-specific inclusion
 evidence.
 
-## Live state
+## Live State
 
 An address query returns its current UTXOs. A slot query returns the current
 record or canonical emptiness. Spent historical occupants are not reconstructed
 outside the bounded undo window.
 
-The state map on Main and Scope is a visualization of current occupancy, not a
+The State map on Main and Scope is a visualization of current occupancy, not a
 history heatmap.

@@ -11,7 +11,7 @@ operations that every peer must execute. It arrives with a recursive
 `HistoryStep` proving that:
 
 - the public block relation was satisfied;
-- the resulting UTXO root is the exact post-state;
+- the resulting UTXO root is the exact post-State;
 - the previous `HistoryStep` terminal was valid.
 
 The terminal has a fixed shape. Verifying block 10,000 or block
@@ -23,7 +23,7 @@ The work has not disappeared. It has moved to the participant that already has
 the necessary witness.
 
 The wallet knows the spending secret, so it proves authorization. The miner
-has the live state and the selected block contents, so it proves the state
+has the Live State and the selected block contents, so it proves the State
 transition. Peers verify both results. They do not reconstruct the wallet
 witness or repeat the miner's public computation.
 
@@ -32,7 +32,7 @@ This division is deliberate:
 | Participant | Private or expensive knowledge | Output |
 |---|---|---|
 | Wallet | 256-bit owner secret | Randomized authorization bound to one logical spend |
-| Miner | Selected intents and exact live state | Recursive proof of the complete block transition |
+| Miner | Selected intents and exact Live State | Recursive proof of the complete block transition |
 | Full node | No proving witness | Verification result and canonical slot writes |
 
 The miner cannot manufacture wallet authority, and a valid wallet proof cannot
@@ -43,7 +43,7 @@ proofs are required.
 
 A current full node keeps:
 
-- the exact live UTXO state;
+- the exact Live State;
 - permanent compact headers;
 - the current `HistoryStep` terminal;
 - the latest 18 complete accepted blocks;
@@ -54,7 +54,7 @@ They can be discarded after their retention window. Headers remain because
 proof of work and fork choice still need a permanent cumulative-work history.
 
 This makes ParanO(1)d **history-stateless**, not state-free. Joining still
-requires the live UTXO set. The amount of state transfer follows current
+requires the live UTXO set. The amount of State transfer follows current
 usage, while validation no longer grows with the total number of transactions
 the network has ever processed.
 
@@ -63,7 +63,7 @@ the network has ever processed.
 After verification, a node materializes canonical slot writes into MDBX. It
 does not re-run logical transaction execution to discover those writes. Each
 input clears one exact `{slot_index, creation_id}` record; each output installs
-one newly allocated record. The committed post-state root binds the result.
+one newly allocated record. The committed post-State root binds the result.
 
 The distinction matters:
 
@@ -81,7 +81,7 @@ verifies them normally. For a deeper gap, it downloads permanent headers, an
 authenticated snapshot at a finalized boundary, the matching terminal and the
 recent complete suffix.
 
-The snapshot is staged, its segment roots reconstruct the committed state root,
+The snapshot is staged, its segment roots reconstruct the committed State root,
 and its boundary is checked against the canonical header and recursive
 terminal. Only then is it installed. The recent suffix is applied normally.
 
@@ -95,7 +95,7 @@ ordering and Sybil-resistant fork choice. A miner proves the nonce-independent
 block first, then searches the 128-bit nonce of the fixed header.
 
 Hash power can choose between valid competing transitions. It cannot turn an
-invalid authorization, state root or recursive terminal into a valid block.
+invalid authorization, State root or recursive terminal into a valid block.
 
 Continue with [System architecture](../architecture/overview.md) for the
 component flow, or [Synchronization](../architecture/synchronization.md) for

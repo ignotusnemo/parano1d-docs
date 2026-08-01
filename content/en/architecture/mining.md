@@ -1,13 +1,14 @@
 # Mining architecture
 
-**Hashpower alone cannot produce blocks. Mining is stateful and proof-gated.**
-The block producer must hold the current state and establish the exact next
+**Hashpower alone cannot produce blocks. Mining requires State; nonce search
+begins only after the proof is complete.**
+The block producer must hold the current State and establish the exact next
 transition before nonce search begins. An independent miner is therefore a
 proving full node backed by hashpower, not a stateless hashing endpoint.
 
 Mining has two ordered phases:
 
-1. select transactions, construct the state transition and prove the complete
+1. select transactions, construct the State transition and prove the complete
    nonce-independent block;
 2. search the 128-bit nonce of the fixed Poseidon2b header.
 
@@ -17,13 +18,13 @@ has not yet been established.
 ## Template construction
 
 The node starts from its canonical tip and current mempool. It selects
-non-conflicting logical transactions by fee rate while respecting state,
+non-conflicting logical transactions by fee rate while respecting State,
 segment and proof-class limits. It then:
 
 - computes coinbase and any scheduled system payout;
 - assigns fresh output creation identifiers;
 - derives canonical slot writes;
-- computes transaction and post-state roots;
+- computes transaction and post-State roots;
 - builds the `HistoryStep` public input;
 - proves the new terminal.
 
@@ -95,7 +96,7 @@ template. External templates expire after 30 seconds and cannot be replayed
 after a tip change or successful submission.
 
 The external worker never receives authority to replace transactions, alter
-state, change fees or recompute coinbase. Custom coinbase use requires both an
+State, change fees or recompute coinbase. Custom coinbase use requires both an
 explicit node setting and a bearer key.
 
 ## Fork choice

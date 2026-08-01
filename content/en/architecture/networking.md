@@ -30,6 +30,12 @@ Nodes combine three discovery sources:
 Successful peer addresses are persisted and reused. The peer store keeps up to
 500 peers and limits the number of remembered addresses for any one peer.
 
+The automatic connection manager targets 12 outbound peer identities. DNS
+seeds provide the initial neighbours; as stable ordinary peers become
+available through discovery, seed connections are replaced without first
+dropping below the target. Seeds are therefore bootstrap anchors, not a
+permanent exclusive topology.
+
 DNS records point to network endpoints, not chain state. Changing software or
 resetting a node does not require changing its DNS name if the public address
 remains the same.
@@ -45,7 +51,13 @@ peer cannot turn ordinary relay into unbounded allocation.
 
 A transaction is relayed only after local mempool admission has verified its
 canonical structure, authorization and current conflicts. Receiving gossip is
-never equivalent to accepting consensus state.
+never equivalent to accepting consensus State.
+
+For locally admitted transactions, GossipSub is supplemented by bounded direct
+push. A node with at most eight connected peers pushes to all of them. Above
+that size it pushes to a random fanout of at most four while GossipSub remains
+the network-wide relay path. This gives a small network immediate first-hop
+coverage without turning large-network propagation into all-peer broadcast.
 
 ## Request-response protocols
 
@@ -53,12 +65,14 @@ Typed exchanges serve:
 
 - header batches;
 - complete retained blocks;
-- snapshot manifests and state segments;
+- snapshot manifests and State segments;
 - recent mempool inventory and missing intents.
 
-Header batches contain at most 512 headers. Snapshot state is transferred as a
-manifest followed by individually authenticated segments rather than as one
-unbounded message.
+Direct catch-up requests ask for at most 512 headers at a time. Snapshot
+header staging uses batches of up to 4,096 headers; the fixed framing still
+keeps each response below 0.83 MiB at the canonical 212-byte header size.
+Snapshot State is transferred as a manifest followed by individually
+authenticated segments rather than as one unbounded message.
 
 When a peer connects, nodes can reconcile recent mempool contents. Every
 received intent still passes ordinary local admission.
@@ -69,15 +83,18 @@ Public networking is bounded at multiple layers:
 
 - response byte budgets apply independently to inbound and outbound service;
 - block and gossip message sizes are capped;
-- state is segmented;
+- State is segmented;
 - peer addresses and peer-store entries are bounded;
 - repeated invalid behavior is penalized;
 - connection diversity is enforced by network group.
 
 Outbound selection permits no more than two peers from one network group.
-Inbound service permits at most eight connections from one IP address and 32
-from one group. These limits reduce the value of filling all peer slots from
-one hosting range.
+Inbound service permits at most 32 peer identities from one IP address and 96
+connections from one network group. After the first 96 inbound connections,
+the remaining capacity is reserved for groups that are not already well
+represented; no such group may occupy more than eight of those reserved
+positions. These limits accommodate shared VPN and carrier-NAT exits without
+letting one hosting range fill every inbound slot.
 
 They are not a substitute for a diverse public topology. Seed and mining
 infrastructure should span independent networks and operators.

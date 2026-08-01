@@ -1,6 +1,6 @@
 # ParanO(1)d documentation
 
-- [Overview](index.md)
+- [Main](index.md)
 
 ## Start
 
@@ -17,10 +17,14 @@
 
 - [System overview](architecture/overview.md)
 - [Transactions](architecture/transactions.md)
-- [Live state](architecture/state.md)
+- [Live State](architecture/state.md)
 - [Synchronization](architecture/synchronization.md)
 - [Networking](architecture/networking.md)
 - [Proof stack](architecture/proof-stack.md)
+
+## Research
+
+- [FROST-GKR](research/frost-gkr.md)
 
 ## Mining
 

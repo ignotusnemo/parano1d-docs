@@ -31,6 +31,22 @@ async function collectHtmlFiles(directory) {
   return files;
 }
 
+async function countSourcePages(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  let count = 0;
+
+  for (const entry of entries) {
+    const absolutePath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      count += await countSourcePages(absolutePath);
+    } else if (entry.name.endsWith(".md") && entry.name !== "SUMMARY.md") {
+      count += 1;
+    }
+  }
+
+  return count;
+}
+
 function routeFromFile(file) {
   const relative = path.relative(outputDirectory, file).replaceAll(path.sep, "/");
   if (relative === "index.html") return "/";
@@ -48,9 +64,18 @@ const htmlFiles = (await collectHtmlFiles(outputDirectory)).filter((file) => {
   return route !== "/404" && !route.includes("_not-found");
 });
 
+const renderedPages = new Map();
+
 for (const file of htmlFiles) {
-  const html = await readFile(file, "utf8");
   const route = routeFromFile(file);
+  renderedPages.set(route, {
+    file,
+    html: await readFile(file, "utf8")
+  });
+}
+
+for (const [route, page] of renderedPages) {
+  const { file, html } = page;
   const locale = localeForRoute(route);
   const canonical = route === "/" ? siteUrl : `${siteUrl}${route}`;
 
@@ -108,6 +133,56 @@ for (const file of htmlFiles) {
   }
 }
 
+for (const [route, page] of renderedPages) {
+  const ids = new Map(
+    [...page.html.matchAll(/\sid="([^"]+)"/g)].map((match) => [
+      match[1],
+      true
+    ])
+  );
+
+  for (const match of page.html.matchAll(/<a\b[^>]*\shref="([^"]+)"/g)) {
+    const href = match[1];
+    if (!href || /^[a-z][a-z0-9+.-]*:/i.test(href)) continue;
+
+    const resolved = new URL(href, `${siteUrl}${route || "/"}`);
+    if (resolved.origin !== siteUrl) continue;
+    if (
+      resolved.pathname.startsWith("/_next/") ||
+      resolved.pathname.startsWith("/assets/") ||
+      /\.[a-z0-9]{2,8}$/i.test(resolved.pathname)
+    ) {
+      continue;
+    }
+
+    const targetRoute =
+      resolved.pathname.length > 1
+        ? resolved.pathname.replace(/\/$/, "")
+        : resolved.pathname;
+    const target = renderedPages.get(targetRoute);
+    if (!target) {
+      failures.push(`${route}: broken internal route ${href}`);
+      continue;
+    }
+
+    if (!resolved.hash) continue;
+    const fragment = decodeURIComponent(resolved.hash.slice(1));
+    if (!fragment) continue;
+    const targetIds =
+      target === page
+        ? ids
+        : new Map(
+            [...target.html.matchAll(/\sid="([^"]+)"/g)].map((idMatch) => [
+              idMatch[1],
+              true
+            ])
+          );
+    if (!targetIds.has(fragment)) {
+      failures.push(`${route}: broken internal anchor ${href}`);
+    }
+  }
+}
+
 const expectedRootTitles = {
   "index.html": "ParanO(1)d Documentation",
   "ru.html": "Документация ParanO(1)d",
@@ -125,8 +200,12 @@ for (const [relative, title] of Object.entries(expectedRootTitles)) {
   }
 }
 
-if (htmlFiles.length !== 153) {
-  failures.push(`expected 153 indexable pages, found ${htmlFiles.length}`);
+const sourcePageCount = await countSourcePages(path.resolve("content/en"));
+const expectedPageCount = sourcePageCount * 3;
+if (htmlFiles.length !== expectedPageCount) {
+  failures.push(
+    `expected ${expectedPageCount} indexable pages from ${sourcePageCount} source pages, found ${htmlFiles.length}`
+  );
 }
 
 const sitemap = await readFile(path.join(outputDirectory, "sitemap.xml"), "utf8");

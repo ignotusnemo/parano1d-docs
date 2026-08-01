@@ -1,6 +1,6 @@
 # Security model
 
-ParanO(1)d combines proof of work, recursive validity, exact live state and
+ParanO(1)d combines proof of work, recursive validity, exact Live State and
 signatureless wallet authorization. Each mechanism has a distinct job.
 
 ## What consensus establishes
@@ -12,32 +12,56 @@ An accepted canonical tip establishes that:
 - every wallet-authorized input belongs to a prover who knew the owner's
   256-bit secret;
 - every input existed and every output target was empty in the exact parent
-  state;
+  State;
 - values, fees, issuance and allocation followed consensus;
-- the committed post-state is the exact result;
+- the committed post-State is the exact result;
 - recursive validity reaches the current terminal.
 
 Proof of work orders valid transitions. It does not repair invalid proofs.
 Recursive proofs establish validity. They do not replace fork choice.
 
-## Post-quantum proof floor
+## Industry proof-security profile
 
-The project accounts for the complete consensus proof path rather than applying
-a label to one primitive:
+Security figures are reported with the same scoped labels used by established
+FRI and STARK implementations. The production parameters are pinned to the
+source revision used by the executable calculator.
 
-| Component | Post-quantum bound |
-|---|---:|
-| Wallet authorization | 79 bits |
-| Recursive `HistoryStep` | 83 bits |
-| Poseidon2b collision resistance | 85 bits |
-| Poseidon2b preimage resistance | 128 bits |
-| **Composed floor** | **79 bits** |
+| Published system and metric | Published value | ParanO(1)d under the corresponding metric |
+|---|---:|---:|
+| [Plonky2 default FRI](https://github.com/0xPolygonZero/plonky2#security), Toy Problem conjecture | **100 bits conjectured**; default Poseidon estimated at about **95 bits** | **128 bits conjectured**, using the literal Plonky2 formula and production field cap |
+| [RISC Zero soundness calculator](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35), Toy Problem conjecture | **97 bits conjectured** at `SEGMENT_SIZE = 2^20`; **95 bits conjectured** at `2^24` | **128 bits conjectured**, using the corresponding rate/query calculation |
+| [ethSTARK / StarkWare](https://www.starknet.io/blog/safe-and-sound-a-deep-dive-into-stark-security/), round-by-round and `t/e(t)` operation-count analysis | **96-bit RBR** IOP premise; **95-bit** compiled-STARK result under its stated operation-count definition | **96.047-bit** wallet generalized-RBR knowledge bound; **95.022-bit** fixed-invalid-block work-accounted finite composition |
 
-The result is a proven 79-bit post-quantum engineering security floor across
-the complete consensus proof pipeline. These values are pinned in the
-executable
-[soundness ledger](https://github.com/ignotusnemo/parano1d/blob/main/noid_gkr/src/zk_auth_qrom.rs)
-and tested as part of the build.
+The first ParanO(1)d value is the literal Plonky2/Toy Problem score
+
+```text
+min(field bits, query count * log2(inverse rate) + pre-query grind bits).
+```
+
+The wallet uses 64 queries at rate `1/32` with a 16-bit pre-query grind;
+`HistoryStep` uses 125 queries at rate `1/4` with the same grind. Both raw
+scores exceed 128 bits and are capped by `GF(2^128)`.
+
+The last row reports different scalar conventions. `96.047` is the negative
+base-two logarithm of the largest generalized round-by-round knowledge-error
+bound among the moves of the interactive wallet base IOP. `95.022` is the
+fixed-invalid-block finite composition when the mandatory grind is charged
+only to the query term that follows it. Neither is silently substituted for
+the 128-bit conjectured FRI score.
+
+All production inputs, formulas, finite ceilings and regression tests are in
+the [ParanO(1)d soundness workbench](https://github.com/ignotusnemo/parano1d-soundness).
+The corresponding ParanO(1)d Lab
+[analysis](https://lab.parano1d.org/research/parano1d-soundness-industry-metrics/)
+explains the comparison in full.
+
+In the terminology used for transparent STARK and FRI systems, the transaction
+proof stack is post-quantum resistant: it is transparent and hash-based,
+requires no trusted setup and contains no elliptic-curve transaction
+signature. Poseidon2b is used for addresses, commitments and transcripts; the
+proof arithmetic is over the binary tower field `GF(2^128)`. The numerical
+claims above remain attached to their exact published conventions rather than
+being collapsed into a different end-to-end metric.
 
 ## Trust boundaries
 
@@ -49,7 +73,7 @@ The protocol does not require:
 - a public-key transaction signature scheme;
 - permission from seed nodes or peers.
 
-The released binary embeds authenticated proof matrices. Snapshot state is
+The released binary embeds authenticated proof matrices. Snapshot State is
 checked against canonical headers and the matching terminal before
 installation.
 

@@ -1,7 +1,7 @@
 # Wallet
 
 The native wallet is a full-node application. It derives addresses, proves
-spending authority, submits transactions, follows live state, verifies blocks
+spending authority, submits transactions, follows Live State, verifies blocks
 and stores payment receipts on the same device.
 
 Its bundled node is a private application component. The wallet starts it
@@ -18,12 +18,12 @@ illustrative.
 
 | Key | Section | Purpose |
 |---|---|---|
-| `F1` | Main | Active address, balances, UTXOs and live-state map |
+| `F1` | Main | Active address, balances, UTXOs and Live State map |
 | `F2` | Addresses | Derived addresses and active-owner selection |
 | `F3` | Send | Build, prove and submit a payment |
 | `F4` | Receipts | Saved outgoing receipts and independent verification |
 | `F5` | Mining | Internal miner controls and mined blocks |
-| `F6` | Scope | Search current state, blocks and retained transactions |
+| `F6` | Scope | Search current State, blocks and retained transactions |
 | `F7` | Settings | Secret, node, network and interface controls |
 | `F10` | Quit | Stop the supervised node and close |
 

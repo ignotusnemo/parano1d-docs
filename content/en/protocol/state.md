@@ -1,6 +1,6 @@
 # State transition
 
-The consensus state is a sparse Merkle vector of UTXO records. Its active
+The consensus State is a sparse Merkle vector of UTXO records. Its active
 domain contains `2^log_slots` leaves, where `log_slots` ranges from 24 to 32.
 The header commits to the root, live count and allocation counter after every
 block.
@@ -26,7 +26,7 @@ Consensus derives one ordered transition from the block:
 4. clear every consumed input;
 5. assign fresh creation identifiers and install outputs;
 6. update segment roots, live count and allocation counter;
-7. reconstruct the global state root.
+7. reconstruct the global State root.
 
 Logical transaction atomicity is preserved even though its physical pages are
 consecutive block records.
@@ -35,7 +35,7 @@ consecutive block records.
 
 Every live user input must:
 
-- be inside the parent state domain;
+- be inside the parent State domain;
 - identify a currently occupied slot;
 - match the declared amount and shared owner;
 - match the current `creation_id`;
@@ -49,7 +49,7 @@ system schedule.
 
 Every live user output must:
 
-- be inside the child state domain;
+- be inside the child State domain;
 - target an empty slot after accounting for earlier block actions;
 - have a non-zero value;
 - appear only once in the block.
@@ -68,7 +68,7 @@ sum(inputs) = sum(outputs) + fee
 
 Across the block, created value is limited to the protocol subsidy. The primary
 reward ceiling includes the miner share plus claimable transaction fees. The
-burned state-growth fee is omitted from that ceiling.
+burned State-growth fee is omitted from that ceiling.
 
 All aggregate monetary arithmetic uses a width that cannot silently saturate a
 sum of valid `u64` fields.

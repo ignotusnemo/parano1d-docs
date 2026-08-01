@@ -1,7 +1,7 @@
 # Architecture
 
 ParanO(1)d moves each proof obligation to the place where its witness already
-exists. The wallet knows the spending secret. The miner has the public state
+exists. The wallet knows the spending secret. The miner has the public State
 witness. Full nodes need neither: they verify the resulting proofs and
 materialize the proven writes.
 
@@ -22,13 +22,13 @@ resulting UTXO root is correct. It also verifies the preceding `HistoryStep`
 terminal inside the new proof.
 
 This separation keeps private authorization local while allowing the public
-state witness to change between transaction construction and block inclusion.
+State witness to change between transaction construction and block inclusion.
 
 | Stage | Receives | Establishes |
 |---|---|---|
 | Wallet | Secret and owned UTXOs | One randomized authorization bound to the logical transaction |
 | Mempool | `PagedSpend` intent | Capsule, structure, limits, fees and reservations are admissible |
-| Miner | Accepted intents and live state | Exact state transition and recursive continuity |
+| Miner | Accepted intents and Live State | Exact State transition and recursive continuity |
 | Full node | Block and terminal | `HistoryStep`, PoW and canonical parent are valid |
 
 ## Transaction and block flow
@@ -52,8 +52,9 @@ acceptable.
 Conceptually, terminal `T[h]` attests to three things:
 
 - block `h` satisfies the public block relation;
-- its post-state root is the exact result of the proven writes;
-- terminal `T[h-1]` was valid for the preceding statechain.
+- its post-State root is the exact result of the proven writes;
+- terminal `T[h-1]` verifies, and its accumulator is the exact pre-State
+  boundary for block `h`.
 
 The next block verifies `T[h]` inside its own relation. The chain therefore
 accumulates validity recursively while keeping a fixed terminal shape.
@@ -68,7 +69,7 @@ logic again.
 
 Slots live in `2^16`-entry segments. Empty segments are virtual. Clearing the
 last occupied slot removes a segment, while allocating an output reuses an
-empty slot before extending state. A fresh `creation_id` prevents an old
+empty slot before extending State. A fresh `creation_id` prevents an old
 reference from becoming valid when the same index is reused.
 
 Nodes retain compact headers for cumulative-work comparison and the latest 18
@@ -80,24 +81,24 @@ window.
 ## Joining the network
 
 A short gap is filled with retained complete blocks. For a deeper gap, the
-joining node stages headers and an authenticated snapshot of the live state.
+joining node stages headers and an authenticated snapshot of Live State.
 It verifies the cumulative-work chain, the finalized boundary and the matching
-`HistoryStep` terminal before installing the state. The recent suffix is then
+`HistoryStep` terminal before installing the State. The recent suffix is then
 verified normally.
 
-The snapshot is not trusted state. It is a transport for state whose root and
+The snapshot is not trusted State. It is a transport for State whose root and
 history boundary are authenticated by consensus.
 
 ## Mining boundary
 
 The miner proves all nonce-independent data first. PoW then searches only the
 128-bit nonce of a fixed Poseidon2b header. This gives PoW one job: order valid
-state transitions.
+State transitions.
 
 An external miner receives an immutable, single-use template and returns only
-a nonce. Transaction selection, state transition, proof construction and
+a nonce. Transaction selection, State transition, proof construction and
 block relay remain inside the node. Once issued, the template's payout,
-transactions and state root cannot be changed by the external worker.
+transactions and State root cannot be changed by the external worker.
 
 ## Implementation map
 
@@ -105,9 +106,9 @@ transactions and state root cannot be changed by the external worker.
 |---|---|
 | `noid_tx` | Logical `PagedSpend`, transaction identifiers and authorization binding |
 | `noid_mempool` | Intent admission, conflict reservations and relay policy |
-| `noid_miner` | Transaction selection, state witness, block preparation and PoW |
+| `noid_miner` | Transaction selection, State witness, block preparation and PoW |
 | `noid_recursive` | `HistoryStep` relation, terminal verification and recursion |
-| `noid_chain` | Consensus rules, MDBX state, headers, reorgs and snapshots |
+| `noid_chain` | Consensus rules, MDBX State, headers, reorgs and snapshots |
 | `noid_p2p` | GossipSub relay, discovery and synchronization protocols |
 | `noid_node` | Runtime orchestration, wallet integration and shutdown |
 | `noid_rpc` | Local node, wallet and external-mining interface |

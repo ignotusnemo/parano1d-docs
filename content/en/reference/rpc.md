@@ -194,7 +194,7 @@ new quote.
 The following schemas use `?` for optional fields and `null` where JSON can
 explicitly carry no value.
 
-### Chain and state
+### Chain and State
 
 ```text
 ChainInfo {
@@ -203,6 +203,7 @@ ChainInfo {
   difficulty_target: string
   active_slot_count: u64
   log_slots: u32
+  circulating_supply_micronoid: decimal string
 }
 
 BlockHeaderInfo {

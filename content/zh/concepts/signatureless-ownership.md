@@ -1,6 +1,6 @@
 # 无签名所有权
 
-ParanO(1)d 地址是一个 256 位秘密经 Poseidon2b 映射后的结果。支出时既不公开公钥，也不附加数字签名。钱包改为生成零知识证明，证明自己知道输入所有者背后的原像。
+ParanO(1)d [地址](../reference/glossary.md#address)是 256 位秘密经 [Poseidon2b](../reference/glossary.md#poseidon2b) 映射所得[所有者](../reference/glossary.md#owner)值的公开编码。支出时既不公开公钥，也不附加数字签名。钱包改为生成[零知识证明](../reference/glossary.md#zero-knowledge-proof)，证明自己知道输入所有者背后的原像。
 
 授权绑定到：
 
@@ -14,15 +14,15 @@ ParanO(1)d 地址是一个 256 位秘密经 Poseidon2b 映射后的结果。支�
 
 钱包只保存一个 256 位主密钥，并从中确定性派生带索引的所有者秘密。首先创建索引 `0` 的地址；后续地址无需维护相互独立的私钥文件。
 
-当前地址是钱包层面的选择，不是共识属性。它决定钱包用哪个所有者进行支出以及接收内置挖矿收益。其他派生地址上的资金仍然可见，但不会被悄悄混入当前地址的交易。
+[活动地址](../reference/glossary.md#active-address)是钱包层面的选择，不是共识属性。它决定钱包用哪个所有者进行支出以及接收内置挖矿收益。其他派生地址上的资金仍然可见，但不会被悄悄混入活动地址的交易。
 
 ## 每次支出都生成新证明
 
-授权胶囊每次都会重新随机化并隐藏 witness。重复使用同一地址不会产生重复签名或稳定的证明 transcript。秘密始终留在钱包 prover 内，并通过保证清零的边界使用。
+[授权证明封装](../reference/glossary.md#authorization-envelope)每次都会重新随机化并隐藏见证数据。重复使用同一地址不会产生重复签名或稳定的证明[交互记录](../reference/glossary.md#transcript)。秘密始终留在生成证明的钱包内，并在使用后可靠清零。
 
-授权中不包含 UTXO Merkle 路径。它证明的是所有权，而不是此刻是否可以支出。因此，它不依赖某一个活状态根；构造交易期间，公开状态 witness 可以继续推进。
+授权中不包含 UTXO Merkle 路径。它证明的是所有权，而不是此刻是否可以支出。因此，它不依赖某一个 Live State 根；构造交易期间，公开的 State 见证可以继续推进。
 
-矿工另行证明所引用输入仍处于活状态，并证明完整状态转换有效。
+矿工另行证明所引用输入仍存在于 Live State，并证明完整 State 转换有效。
 
 ## 哪些信息是公开的
 
@@ -30,7 +30,7 @@ ParanO(1)d 地址是一个 256 位秘密经 Poseidon2b 映射后的结果。支�
 
 地址、金额、手续费、输入引用、输出记录和正在转发的交易都是公开的。零知识隐藏支出秘密，但不会在交易历史仍可取得时隐藏历史本身。
 
-ParanO(1)d 让旧区块体不再是共识必需数据，从而减少永久性的历史暴露。区块体被裁剪后，已经保存的收据仍能证明某一笔具体付款。
+ParanO(1)d 让旧区块体不再是共识必需数据，从而减少普通节点的长期存储负担。公开交易仍可能被第三方归档；区块体被普通节点裁剪后，已经保存的收据仍能证明某一笔具体付款。
 
 ## 后量子边界
 
@@ -38,9 +38,7 @@ ParanO(1)d 让旧区块体不再是共识必需数据，从而减少永久性的
 
 libp2p 使用的 Ed25519 身份位于这条边界之外。它只标识网络对等节点，不能授权交易、创造价值，也不能满足任何共识所有权规则。
 
-完整共识证明流水线具有可量化的 79 位后量子工程安全下界，并固定在可执行的
-[可靠性账本](https://github.com/ignotusnemo/parano1d/blob/main/noid_gkr/src/zk_auth_qrom.rs)
-中。组合方式见[证明栈](../architecture/proof-stack.md)，精确的声明边界见[安全模型](../protocol/security-model.md)。
+按照成熟 FRI 系统采用的同一 [Toy Problem 猜想](../reference/glossary.md#toy-problem-conjecture)，实际部署的钱包与 `HistoryStep` 参数的 FRI 安全性评分均为 **128 位**。这里所说的[后量子抗性](../reference/glossary.md#post-quantum-resistance)及其数值范围，必须连同命名的安全模型理解。参数与组合方式见[证明栈](../architecture/proof-stack.md)，比较方法和各项指标的精确名称见[安全模型](../protocol/security-model.md)。
 
 ## 实际含义
 

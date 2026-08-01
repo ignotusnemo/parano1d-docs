@@ -12,8 +12,8 @@ The repository is split by proof and trust boundary rather than by binary.
 | `noid_fri_binius` | Binary-field FRI-Binius/BaseFold integration |
 | `noid_ivc_core` | Recursive public I/O and verifier foundations |
 | `noid_ivc_prover` | Recursive prover implementation |
-| `noid_gkr` | FROST-GKR relations and wallet authorization |
-| `noid_recursive` | `HistoryStep`, exact-state relation and recursive acceptance |
+| `noid_gkr` | [FROST-GKR](../research/frost-gkr.md) relations and wallet authorization |
+| `noid_recursive` | `HistoryStep`, exact-State relation and recursive acceptance |
 | `bench_prover` | Matrix generation, pin tools and proof benchmarks |
 
 ## Protocol objects
@@ -22,10 +22,10 @@ The repository is split by proof and trust boundary rather than by binary.
 |---|---|
 | `noid_tx` | Fixed `Tx8x2`, logical `PagedSpend`, IDs and authorization binding |
 | `noid_block` | Block-level proof composition |
-| `noid_chain` | Headers, consensus, state, fees, receipts, MDBX and snapshots |
+| `noid_chain` | Headers, consensus, State, fees, receipts, MDBX and snapshots |
 
 `noid_tx` contains representation-level rules that can be checked without a
-chain. `noid_chain` adds current epoch, live state, issuance, allocation and
+chain. `noid_chain` adds current epoch, Live State, issuance, allocation and
 fork context.
 
 ## Runtime
@@ -66,7 +66,7 @@ A change is consensus-sensitive when it alters any of:
 - canonical byte encoding;
 - Poseidon2b field order or domain tag;
 - transaction or block validity;
-- state-root derivation;
+- State-root derivation;
 - issuance, fee burn or allocation;
 - difficulty, timestamp, finality or expansion rules;
 - `HistoryStep` relation or authenticated matrices.

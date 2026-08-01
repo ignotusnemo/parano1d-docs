@@ -4,6 +4,7 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import "./globals.css";
+import "katex/dist/katex.min.css";
 
 const siteUrl = "https://docs.parano1d.org";
 const socialImage = "/assets/social/docs-og.png";

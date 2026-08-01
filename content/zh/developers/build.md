@@ -1,13 +1,13 @@
 # 从源码构建
 
-Workspace 使用 Rust 2021，并固定 Rust `1.96.0`。MDBX、证明代码和 GUI
+工作区使用 Rust 2021，并固定 Rust `1.96.0`。MDBX、证明代码和 GUI
 打包需要原生依赖。
 
 ## 主机要求
 
 所有平台都需要：
 
-- 固定版本的 Rust toolchain，以及 `rustfmt`；
+- 固定版本的 Rust 工具链，以及 `rustfmt`；
 - 原生 C/C++ 编译器；
 - CMake；
 - libclang；
@@ -32,7 +32,7 @@ rustc --version
 cargo --version
 ```
 
-## 检查 workspace
+## 检查工作区
 
 ```sh
 cargo fmt --all -- --check
@@ -49,12 +49,12 @@ cargo build --locked \
   --bins
 ```
 
-开发二进制可测试解析、UI 和非正式测试路径。能够生产区块的 release 需要
-下文所述的认证 HistoryStep 矩阵 pack。
+开发版二进制文件可测试解析、UI 和非生产用证明路径。能够生产区块的发布版需要
+下文所述经过认证的 HistoryStep 矩阵包。
 
-## 生成 proof pack
+## 生成证明矩阵包
 
-规范 pack 包含：
+规范矩阵包包含：
 
 ```text
 v1/history-step.runtime
@@ -64,7 +64,7 @@ pins.env
 SHA256SUMS
 ```
 
-从诚实 fixture 生成 B64 和 B255 矩阵：
+从诚实执行样例生成 B64 和 B255 矩阵：
 
 ```sh
 mkdir -p ../parano1d-artifacts
@@ -72,10 +72,10 @@ mkdir -p ../parano1d-artifacts
   ../parano1d-artifacts/history-step-pack-v1
 ```
 
-生成开销很高；relation 不变时只需执行一次。Pack 应保存在 `target/`
+生成开销很高；证明关系不变时只需执行一次。矩阵包应保存在 `target/`
 之外。
 
-脚本先写入 staging 目录，派生语义 pins，认证每个文件，再原子发布完整
+脚本先写入临时目录，派生语义固定值，认证每个文件，再原子发布完整
 目录。若输出路径已存在，脚本会拒绝覆盖。
 
 ## 构建原生发布物
@@ -87,12 +87,12 @@ mkdir -p ../parano1d-artifacts
 
 脚本会：
 
-1. 认证 pack 并派生 pins；
-2. 检查格式和完整 workspace；
-3. 把 runtime 元数据和两份矩阵嵌入节点；
+1. 认证矩阵包并派生固定值；
+2. 检查格式和完整工作区；
+3. 把运行时元数据和两份矩阵嵌入节点；
 4. 构建 Core、外部矿工与 GUI；
-5. 运行原生 release 测试；
-6. 对每个可执行文件做 smoke test；
+5. 运行原生发布测试；
+6. 对每个可执行文件做冒烟测试；
 7. 打包 Core 压缩包和原生 GUI 安装程序；
 8. 验证归档成员并生成 SHA-256。
 
@@ -103,16 +103,16 @@ cat target/release-builds/LAST_RELEASE
 ```
 
 使用 `--output PATH` 可选择新的输出目录。`--skip-tests` 只适用于源码
-修订已经通过完整 release gates 的平台打包任务，不应在独立发布构建中
+修订已经通过完整发布门禁的平台打包任务，不应在独立发布构建中
 使用。
 
 ## 可移植二进制
 
-x86-64 版本针对可移植进程 baseline 编译。检查主机后，运行时 dispatch
+x86-64 版本针对可移植的指令集基线编译。检查主机后，运行时分派机制
 会选择 PCLMULQDQ、带 VPCLMULQDQ 的 AVX2 或 AVX-512。ARM64 选择
 NEON 与 PMULL。
 
-官方文件不得使用 `target-cpu=native` 构建，否则二进制会在运行时硬件
+发布产物不得使用 `target-cpu=native` 构建，否则二进制会在运行时硬件
 检查之前就依赖构建机器。
 
 ## 可复现归档细节

@@ -20,7 +20,7 @@ A block and its matching `HistoryStep` terminal are one accepted bundle.
 Neither object can enter the canonical chain without the other.
 
 The terminal binds the nonce-free semantic header, including transaction and
-post-state commitments. The nonce-bearing header is then checked separately
+post-State commitments. The nonce-bearing header is then checked separately
 for proof of work and parent linkage.
 
 ## Canonical transaction grouping
@@ -41,11 +41,11 @@ the owner's 256-bit secret without placing that secret in the transaction.
 Network peer keys, wallet labels and local address-discovery state have no
 spending authority.
 
-## Exact state transition
+## Exact State transition
 
 For every accepted logical transaction:
 
-- each input slot is occupied in the parent state;
+- each input slot is occupied in the parent State;
 - its owner, value and `creation_id` match the referenced record;
 - each input is consumed at most once;
 - every output target is empty before allocation;
@@ -53,7 +53,7 @@ For every accepted logical transaction:
 - value is conserved after the exact fee;
 - resulting counters, segment roots and global root are exact.
 
-Untouched state branches carry through unchanged. Nodes apply the canonical
+Untouched State branches carry through unchanged. Nodes apply the canonical
 writes exposed by the proven transition; they do not invent an alternative
 execution result.
 
@@ -70,14 +70,14 @@ scheduled development boundary, the next body is the exact mandatory payout.
 No user transaction can replace, omit or modify a required system record.
 
 All other value enters and leaves user transactions through explicit inputs,
-outputs and fees. The state-growth fee component is burned; it is not silently
+outputs and fees. The State-growth fee component is burned; it is not silently
 redirected to a miner or fund.
 
 ## Recursive continuity
 
 Each `HistoryStep` verifies the previous validity terminal and the complete
 current public transition. A valid tip therefore carries recursive continuity
-from the chain origin through its exact post-state.
+from the chain origin through its exact post-State.
 
 Proof of work cannot make an invalid terminal acceptable. A valid terminal
 cannot replace proof of work or cumulative-work fork choice.
@@ -98,12 +98,12 @@ node checks that all of the following agree:
 
 - validated permanent header at the finalized boundary;
 - matching recursive terminal;
-- manifest height, state root and counters;
+- manifest height, State root and counters;
 - every segment identifier, length and root;
-- the reconstructed exact global state root.
+- the reconstructed exact global State root.
 
 Candidate data is staged separately and becomes canonical in one transaction.
-An interrupted or invalid transfer cannot leave a partially installed state.
+An interrupted or invalid transfer cannot leave a partially installed State.
 
 ## Policy boundary
 

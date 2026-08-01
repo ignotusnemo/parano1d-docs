@@ -16,7 +16,6 @@ replaced.
 [network]
 listen = "0.0.0.0:9400"
 seeds = []
-max_peers = 50
 
 [storage]
 backend = "mdbx"
@@ -48,15 +47,12 @@ dnsaddr:seed.example.org
 
 Built-in DNS seeds are always available. Custom seeds supplement them.
 
-`max_peers` defaults to 50. Raising it increases file descriptors, connection
-state and public service load; it does not increase consensus weight.
-
 The `--seed HOST:PORT` option is repeatable and appends to configured seeds.
 
 ## Storage
 
 `storage.backend` is `mdbx` in production. The RAM backend is for tests and
-does not provide durable node state.
+does not provide durable node State.
 
 `storage.path` contains the chain database, wallet artifacts, peer identity,
 proof cache and snapshot staging. Do not point two running node processes at

@@ -1,6 +1,6 @@
 # Документация ParanO(1)d
 
-- [Обзор](index.md)
+- [Главная](index.md)
 
 ## Начало работы
 
@@ -17,10 +17,14 @@
 
 - [Обзор системы](architecture/overview.md)
 - [Транзакции](architecture/transactions.md)
-- [Живое состояние](architecture/state.md)
+- [Live State](architecture/state.md)
 - [Синхронизация](architecture/synchronization.md)
 - [Сеть](architecture/networking.md)
 - [Стек доказательств](architecture/proof-stack.md)
+
+## Исследования
+
+- [FROST-GKR](research/frost-gkr.md)
 
 ## Майнинг
 
@@ -35,8 +39,8 @@
 - [Консенсус](protocol/consensus.md)
 - [Протокол транзакций](protocol/transactions.md)
 - [Блоки и заголовки](protocol/blocks.md)
-- [Переход состояния](protocol/state.md)
-- [Proof of work](protocol/proof-of-work.md)
+- [Переход `State`](protocol/state.md)
+- [Доказательство выполнения работы](protocol/proof-of-work.md)
 - [Экономика сети](protocol/economics.md)
 - [Инварианты консенсуса](protocol/invariants.md)
 - [Модель безопасности](protocol/security-model.md)
@@ -66,7 +70,7 @@
 ## Разработка
 
 - [Сборка из исходного кода](developers/build.md)
-- [Структура workspace](developers/workspace.md)
+- [Структура рабочего пространства](developers/workspace.md)
 - [Тестирование](developers/testing.md)
 - [Подготовка релизов](developers/releases.md)
 
@@ -76,5 +80,5 @@
 - [JSON-RPC API](reference/rpc.md)
 - [Файлы, порты и ограничения](reference/files-and-ports.md)
 - [Параметры протокола](reference/parameters.md)
-- [Замеры производительности](reference/performance.md)
+- [Измерения производительности](reference/performance.md)
 - [Глоссарий](reference/glossary.md)

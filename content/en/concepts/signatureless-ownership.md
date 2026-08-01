@@ -33,12 +33,12 @@ The secret stays inside the wallet prover and is consumed through a
 zeroizing boundary.
 
 The authorization does not contain a UTXO Merkle path. It proves ownership,
-not current spendability. This makes it independent of a particular live-state
-root and allows the public state witness to advance while the transaction is
+not current spendability. This makes it independent of a particular State
+root and allows the public State witness to advance while the transaction is
 being constructed.
 
 The miner separately proves that the referenced inputs are live and that the
-complete state transition is valid.
+complete State transition is valid.
 
 ## What is public
 
@@ -62,11 +62,12 @@ The Ed25519 identity used by libp2p is outside this boundary. It identifies a
 network peer; it cannot authorize a transaction, create value or satisfy any
 consensus ownership rule.
 
-The complete consensus proof pipeline has a quantified 79-bit post-quantum
-engineering floor, pinned in the executable
-[soundness ledger](https://github.com/ignotusnemo/parano1d/blob/main/noid_gkr/src/zk_auth_qrom.rs).
-See [Proof stack](../architecture/proof-stack.md) for the composition and
-[Security model](../protocol/security-model.md) for the exact claim boundary.
+Under the same Toy Problem convention used by established FRI systems, the
+production wallet and `HistoryStep` parameters each provide a **128-bit
+conjectured FRI security score**. See
+[Proof stack](../architecture/proof-stack.md) for the parameters and
+[Security model](../protocol/security-model.md) for the comparison and exact
+metric labels.
 
 ## Operational consequence
 
