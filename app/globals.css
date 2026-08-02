@@ -1868,29 +1868,27 @@ kbd {
 
 .documentation-nav {
   margin-top: 32px;
-  gap: 7px;
+  gap: 2px;
   transition: opacity 120ms ease;
 }
 
 .nav-group-label {
   width: 100%;
-  min-height: 36px;
-  padding: 0 10px 0 12px;
-  color: #8a9199;
+  min-height: 35px;
+  padding: 0 7px 0 5px;
+  color: #3d444c;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 10.5px;
-  font-weight: 600;
+  font-size: 11.5px;
+  font-weight: 650;
   line-height: 1;
-  letter-spacing: 0.045em;
+  letter-spacing: 0.025em;
   text-align: left;
-  gap: 8px;
-  border: 1px solid rgba(28, 34, 42, 0.075);
-  border-radius: 9px;
-  background: linear-gradient(180deg, #f4f5f5 0%, #eceeed 100%);
+  gap: 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
   cursor: pointer;
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, 0.9),
-    0 1px 2px rgba(28, 34, 42, 0.025);
+  box-shadow: none;
   transition:
     border-color 140ms ease,
     background 140ms ease,
@@ -1904,95 +1902,97 @@ kbd {
   color: inherit;
 }
 
-.nav-group-label > svg:last-child {
-  width: 14px;
-  height: 14px;
+.nav-group-label > svg:first-child {
+  width: 13px;
+  height: 13px;
   flex: 0 0 auto;
   fill: none;
-  stroke: currentColor;
+  stroke: #737c85;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.7;
-  transition: transform 150ms ease;
-}
-
-.nav-group.is-open > .nav-group-label > svg:last-child {
-  transform: rotate(180deg);
+  stroke-width: 1.75;
 }
 
 .nav-group-label .folder-glyph {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   flex: 0 0 auto;
-  filter: drop-shadow(0 1px 1px rgba(35, 39, 47, 0.17));
+  filter:
+    drop-shadow(0 1px 1px rgba(101, 61, 14, 0.24))
+    drop-shadow(0 2px 3px rgba(101, 61, 14, 0.08));
 }
 
 .folder-glyph .folder-shadow {
-  fill: #555b66;
-  opacity: 0.34;
+  fill: #8d5716;
+  opacity: 0.3;
 }
 
 .folder-glyph .folder-tab {
-  fill: #7770ba;
-  stroke: #5a5592;
+  fill: #d98b24;
+  stroke: #a35f12;
   stroke-linejoin: round;
-  stroke-width: 0.8;
+  stroke-width: 0.75;
 }
 
 .folder-glyph .folder-tab-highlight {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.58);
+  stroke: rgba(255, 238, 181, 0.92);
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 0.7;
+  stroke-width: 0.72;
 }
 
 .folder-glyph .folder-face {
-  fill: #8c929b;
-  stroke: #666c75;
+  fill: #efb03b;
+  stroke: #ad6917;
   stroke-linejoin: round;
-  stroke-width: 0.8;
+  stroke-width: 0.75;
 }
 
 .folder-glyph.is-open .folder-face {
-  fill: #989ea6;
+  fill: #f3bb4b;
 }
 
 .folder-glyph .folder-face-highlight {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.58);
+  stroke: rgba(255, 225, 139, 0.95);
   stroke-linecap: round;
-  stroke-width: 0.7;
+  stroke-width: 0.72;
 }
 
 .folder-glyph .folder-slot {
   fill: none;
-  stroke: #e9edf0;
+  stroke: #b36a16;
   stroke-linecap: round;
-  stroke-width: 1.15;
+  stroke-width: 0.9;
 }
 
 .nav-group-label:hover {
-  border-color: rgba(28, 34, 42, 0.12);
-  background: linear-gradient(180deg, #f7f8f8 0%, #e9ecea 100%);
-  color: #525a63;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.86);
+  border-color: rgba(130, 91, 29, 0.08);
+  background: #f3f1eb;
+  color: #1f252b;
+  box-shadow: none;
+}
+
+.nav-group.is-open > .nav-group-label {
+  color: #242a30;
+  font-weight: 700;
 }
 
 .nav-group ul {
   position: relative;
-  margin: 5px 0 7px 14px;
-  padding-left: 18px;
-  gap: 2px;
+  margin: 0 0 4px 12px;
+  padding: 1px 0 4px 21px;
+  gap: 0;
 }
 
 .nav-group ul::before {
   position: absolute;
-  top: 0;
-  bottom: 19px;
-  left: 8px;
+  top: -1px;
+  bottom: 18px;
+  left: 7px;
   content: "";
-  border-left: 1px solid #d8dcda;
+  border-left: 1px solid #cbd0cd;
 }
 
 .nav-group li {
@@ -2002,21 +2002,21 @@ kbd {
 .nav-group li::before {
   position: absolute;
   z-index: 1;
-  top: 19px;
-  left: -10px;
-  width: 10px;
+  top: 17px;
+  left: -13px;
+  width: 14px;
   content: "";
-  border-top: 1px solid #d8dcda;
+  border-top: 1px solid #cbd0cd;
 }
 
 .nav-group a {
-  min-height: 38px;
-  padding: 9px 10px 9px 8px;
+  min-height: 34px;
+  padding: 7px 9px 7px 7px;
   gap: 8px;
-  border-radius: 9px;
+  border-radius: 6px;
   border: 1px solid transparent;
-  color: #59616b;
-  font-size: 13.5px;
+  color: #434b54;
+  font-size: 13px;
   line-height: 1.35;
 }
 
@@ -2024,24 +2024,24 @@ kbd {
   width: 16px;
   height: 16px;
   flex: 0 0 auto;
-  filter: drop-shadow(0 1px 1px rgba(35, 39, 47, 0.14));
+  filter: drop-shadow(0 1px 1px rgba(35, 39, 47, 0.12));
 }
 
 .file-glyph .file-shadow {
-  fill: #aab0b5;
-  opacity: 0.4;
+  fill: #899198;
+  opacity: 0.32;
 }
 
 .file-glyph .file-page {
-  fill: #fbfbfa;
-  stroke: #8e949a;
+  fill: #ffffff;
+  stroke: #7f8991;
   stroke-linejoin: round;
   stroke-width: 0.8;
 }
 
 .file-glyph .file-fold {
-  fill: #e2e5e7;
-  stroke: #969ca2;
+  fill: #e6e9ea;
+  stroke: #879097;
   stroke-linejoin: round;
   stroke-width: 0.7;
 }
@@ -2055,7 +2055,7 @@ kbd {
 
 .file-glyph .file-line {
   fill: none;
-  stroke: #989ea4;
+  stroke: #707a82;
   stroke-linecap: round;
   stroke-width: 0.75;
 }
@@ -2069,21 +2069,20 @@ kbd {
 }
 
 .nav-group a:hover {
-  border-color: rgba(28, 34, 42, 0.045);
-  background: linear-gradient(180deg, #f4f5f5 0%, #eef0ef 100%);
+  border-color: rgba(28, 34, 42, 0.035);
+  background: #f0f2f1;
   color: #20252a;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.85);
+  box-shadow: none;
 }
 
 .nav-group a.is-active {
-  border-color: rgba(18, 139, 75, 0.09);
-  background: linear-gradient(180deg, #edf9f2 0%, #e4f5eb 100%);
+  border-color: rgba(18, 139, 75, 0.13);
+  background: #e5f5eb;
   color: #10703e;
   font-weight: 600;
   box-shadow:
-    inset 0 1px rgba(255, 255, 255, 0.82),
-    0 1px 2px rgba(28, 34, 42, 0.03),
-    0 5px 12px rgba(18, 139, 75, 0.035);
+    inset 0 1px rgba(255, 255, 255, 0.74),
+    0 1px 2px rgba(18, 103, 57, 0.035);
 }
 
 .nav-group a.is-active .file-glyph {

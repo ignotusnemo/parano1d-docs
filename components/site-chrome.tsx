@@ -561,11 +561,11 @@ export default function SiteChrome({
                   type="button"
                   aria-expanded={expanded}
                   aria-controls={panelId}
-                onClick={() => toggleNavigationGroup(groupKey)}
-              >
+                  onClick={() => toggleNavigationGroup(groupKey)}
+                >
+                  <ChevronGlyph direction={expanded ? "down" : "right"} />
                   <FolderGlyph open={expanded} />
                   <span>{group.label}</span>
-                  <ChevronGlyph />
                 </button>
                 {expanded ? (
                   <ul id={panelId}>
