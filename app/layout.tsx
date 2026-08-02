@@ -85,23 +85,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon-96.png", type: "image/png", sizes: "96x96" },
-      { url: "/icon-16.png", type: "image/png", sizes: "16x16" },
-      { url: "/icon-32.png", type: "image/png", sizes: "32x32" },
-      { url: "/icon-48.png", type: "image/png", sizes: "48x48" },
-      { url: "/favicon.ico", sizes: "16x16 32x32 48x48 96x96" }
+      { url: "/favicon-16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-48.png", type: "image/png", sizes: "48x48" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "16x16 32x32 48x48" }
     ],
-    shortcut: "/favicon.ico",
-    apple: {
-      url: "/apple-touch-icon.png",
-      type: "image/png",
-      sizes: "180x180"
-    }
-  },
-  manifest: "/manifest.webmanifest",
-  other: {
-    "apple-mobile-web-app-title": "Parano1d Docs",
-    "mobile-web-app-capable": "yes"
+    shortcut: "/favicon.ico"
   }
 };
 
