@@ -1,6 +1,6 @@
 # Parano1d
 
-**A proof-native Layer 1.**
+**A proof-native Layer 1 network secured by proof of work**
 
 У блокчейн-сетей есть фундаментальный архитектурный недостаток: чтобы проверить
 настоящее, приходится заново воспроизводить прошлое. Новая [полная нода](reference/glossary.md#полная-нода)

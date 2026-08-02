@@ -1,6 +1,6 @@
 # Parano1d
 
-**A proof-native Layer 1.**
+**A proof-native Layer 1 network secured by proof of work**
 
 Blockchains have a fundamental architectural flaw: to validate the present,
 you must replay the past. A new full node downloads the chain from genesis and
