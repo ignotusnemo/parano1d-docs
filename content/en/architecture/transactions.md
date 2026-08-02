@@ -1,6 +1,6 @@
 # Transaction architecture
 
-ParanO(1)d separates the physical transaction page carried by a block from the
+Parano1d separates the physical transaction page carried by a block from the
 logical payment authorized by a wallet.
 
 The physical record is `Tx8x2`: at most eight inputs and two outputs in a

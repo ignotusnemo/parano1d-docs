@@ -2,7 +2,7 @@
 
 This glossary defines protocol-specific language used throughout the
 documentation. A capitalized term such as `State` or `HistoryStep` names a
-particular ParanO(1)d object; ordinary lowercase use keeps its general meaning.
+particular Parano1d object; ordinary lowercase use keeps its general meaning.
 
 ## Accepted block bundle
 
@@ -23,7 +23,7 @@ an output owner without publishing a public key.
 ## ASERT
 
 The absolutely scheduled exponentially weighted target algorithm used to
-derive the exact proof-of-work target at every height. ParanO(1)d uses a
+derive the exact proof-of-work target at every height. Parano1d uses a
 six-block reference epoch, a 90-second half-life and a 15-second target
 interval.
 
@@ -121,7 +121,7 @@ longer current.
 ## Fiat-Shamir transcript
 
 The ordered record of public statements, commitments and derived challenges
-used to compile an interactive proof into a non-interactive one. ParanO(1)d
+used to compile an interactive proof into a non-interactive one. Parano1d
 derives transcript challenges with domain-separated Poseidon2b.
 
 ## Fork choice
@@ -133,7 +133,7 @@ ID as a tie-break.
 ## FRI / FRI-Binius
 
 FRI is an interactive-oracle proof of proximity to a low-degree codeword.
-FRI-Binius is ParanO(1)d's binary-field polynomial commitment layer built from
+FRI-Binius is Parano1d's binary-field polynomial commitment layer built from
 that family and a BaseFold schedule.
 
 ## [FROST-GKR](../research/frost-gkr.md)
@@ -326,7 +326,7 @@ trace.
 ## Rank-1 constraint system (R1CS)
 
 An arithmetic representation of computation as multiplication constraints
-between linear combinations. ParanO(1)d uses a binary R1CS relation closed by
+between linear combinations. Parano1d uses a binary R1CS relation closed by
 sumcheck, zerocheck, lincheck and FRI-Binius.
 
 ## Receipt
@@ -337,7 +337,7 @@ inclusion under a claimed canonical header transaction root.
 ## Reorganization (reorg)
 
 Replacement of recent canonical blocks by a different eligible branch with
-greater cumulative work. ParanO(1)d accepts at most a 17-block rollback.
+greater cumulative work. Parano1d accepts at most a 17-block rollback.
 
 ## Round-by-round knowledge bound (RBR)
 
@@ -422,7 +422,7 @@ label and is not interchangeable with an RBR or end-to-end security claim.
 ## Trusted setup
 
 A ceremony that creates secret public parameters whose compromise could
-invalidate security. ParanO(1)d's transparent proof stack requires no such
+invalidate security. Parano1d's transparent proof stack requires no such
 ceremony.
 
 ## Tx8x2
@@ -444,7 +444,7 @@ owner and fresh `creation_id` at one indexed slot.
 ## Zero-knowledge proof
 
 A proof that establishes a statement without revealing the secret witness.
-In ParanO(1)d it hides wallet spending secrets; public owners, amounts, fees
+In Parano1d it hides wallet spending secrets; public owners, amounts, fees
 and relayed transactions remain transparent.
 
 ## Zerocheck

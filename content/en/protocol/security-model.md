@@ -1,6 +1,6 @@
 # Security model
 
-ParanO(1)d combines proof of work, recursive validity, exact Live State and
+Parano1d combines proof of work, recursive validity, exact Live State and
 signatureless wallet authorization. Each mechanism has a distinct job.
 
 ## What consensus establishes
@@ -26,13 +26,13 @@ Security figures are reported with the same scoped labels used by established
 FRI and STARK implementations. The production parameters are pinned to the
 source revision used by the executable calculator.
 
-| Published system and metric | Published value | ParanO(1)d under the corresponding metric |
+| Published system and metric | Published value | Parano1d under the corresponding metric |
 |---|---:|---:|
 | [Plonky2 default FRI](https://github.com/0xPolygonZero/plonky2#security), Toy Problem conjecture | **100 bits conjectured**; default Poseidon estimated at about **95 bits** | **128 bits conjectured**, using the literal Plonky2 formula and production field cap |
 | [RISC Zero soundness calculator](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35), Toy Problem conjecture | **97 bits conjectured** at `SEGMENT_SIZE = 2^20`; **95 bits conjectured** at `2^24` | **128 bits conjectured**, using the corresponding rate/query calculation |
 | [ethSTARK / StarkWare](https://www.starknet.io/blog/safe-and-sound-a-deep-dive-into-stark-security/), round-by-round and `t/e(t)` operation-count analysis | **96-bit RBR** IOP premise; **95-bit** compiled-STARK result under its stated operation-count definition | **96.047-bit** wallet generalized-RBR knowledge bound; **95.022-bit** fixed-invalid-block work-accounted finite composition |
 
-The first ParanO(1)d value is the literal Plonky2/Toy Problem score
+The first Parano1d value is the literal Plonky2/Toy Problem score
 
 ```text
 min(field bits, query count * log2(inverse rate) + pre-query grind bits).
@@ -50,8 +50,8 @@ only to the query term that follows it. Neither is silently substituted for
 the 128-bit conjectured FRI score.
 
 All production inputs, formulas, finite ceilings and regression tests are in
-the [ParanO(1)d soundness workbench](https://github.com/ignotusnemo/parano1d-soundness).
-The corresponding ParanO(1)d Lab
+the [Parano1d soundness workbench](https://github.com/ignotusnemo/parano1d-soundness).
+The corresponding Parano1d Lab
 [analysis](https://lab.parano1d.org/research/parano1d-soundness-industry-metrics/)
 explains the comparison in full.
 
@@ -101,7 +101,7 @@ infrastructure.
 
 ## Transparency
 
-ParanO(1)d is not an anonymity system. Transaction owners, amounts, slots and
+Parano1d is not an anonymity system. Transaction owners, amounts, slots and
 fees are transparent while bodies are available. Zero knowledge hides the
 wallet secret and proves execution; it does not conceal the public ledger
 statement.

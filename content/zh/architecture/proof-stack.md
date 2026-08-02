@@ -1,8 +1,8 @@
 # 证明栈
 
-ParanO(1)d 使用同一个二进制算术栈处理所有权、State 转换、Merkle 关系、递归连续性以及工作量证明承诺。共同底层域是[二进制塔域](../reference/glossary.md#binary-tower-field) `GF(2^128)`。
+Parano1d 使用同一个二进制算术栈处理所有权、State 转换、Merkle 关系、递归连续性以及工作量证明承诺。共同底层域是[二进制塔域](../reference/glossary.md#binary-tower-field) `GF(2^128)`。
 
-![ParanO(1)d 证明栈](../../../assets/architecture/proof-stack.svg)
+![Parano1d 证明栈](../../../assets/architecture/proof-stack.svg)
 
 ## Poseidon2b
 
@@ -19,7 +19,7 @@ ParanO(1)d 使用同一个二进制算术栈处理所有权、State 转换、Mer
 
 ## [FROST-GKR](../research/frost-gkr.md)
 
-FROST-GKR 把批量 Poseidon2b 执行与 Merkle 路径表示为共享布尔超立方体上的直接七次关系。ParanO(1)d 使用的是这种承诺列归约（committed-column reduction），而不是逐层重放电路。
+FROST-GKR 把批量 Poseidon2b 执行与 Merkle 路径表示为共享布尔超立方体上的直接七次关系。Parano1d 使用的是这种承诺列归约（committed-column reduction），而不是逐层重放电路。
 
 该归约保留 GKR 的[多线性扩展](../reference/glossary.md#multilinear-extension)与 [sumcheck](../reference/glossary.md#sumcheck-family) 机制，同时用覆盖整条执行轨迹的全局关系替代递归电路层下降。共享列让大量置换与路径可以共同检查，无需为每个实例单独执行一次约束 sumcheck。
 
@@ -58,12 +58,12 @@ exact post-state
 
 实际部署的证明参数公开三个彼此独立命名的指标：
 
-| 指标 | ParanO(1)d 数值 |
+| 指标 | Parano1d 数值 |
 |---|---:|
 | 按 Plonky2 / Toy Problem 原公式计算的 FRI 评分 | **基于猜想的 128 位安全性** |
 | 钱包广义逐轮知识误差上界 | **对应 96.047 位，经典模型** |
 | 按攻击计算量折算的固定无效区块有限次组合 | **对应 95.022 位，经典模型** |
 
-第一项沿用 Plonky2 和 RISC Zero 公布的、基于猜想的码率与查询数约定。后两项分别刻画[逐轮可靠性（RBR）](../reference/glossary.md#round-by-round-soundness)知识误差与有限次组合，不会被改名为同一项指标。实际部署的参数常量、公式与测试发布在 [ParanO(1)d 可靠性分析仓库](https://github.com/ignotusnemo/parano1d-soundness)中。
+第一项沿用 Plonky2 和 RISC Zero 公布的、基于猜想的码率与查询数约定。后两项分别刻画[逐轮可靠性（RBR）](../reference/glossary.md#round-by-round-soundness)知识误差与有限次组合，不会被改名为同一项指标。实际部署的参数常量、公式与测试发布在 [Parano1d 可靠性分析仓库](https://github.com/ignotusnemo/parano1d-soundness)中。
 
 声明边界与证明系统之外的假设见[安全模型](../protocol/security-model.md)，实现 crate 见[工作区结构](../developers/workspace.md)。

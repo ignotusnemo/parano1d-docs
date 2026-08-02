@@ -1,6 +1,6 @@
 # 安全模型
 
-ParanO(1)d 组合[工作量证明](../reference/glossary.md#proof-of-work)、[递归有效性](../reference/glossary.md#recursive-validity)、[Live State](../reference/glossary.md#live-state) 以及无签名钱包授权。每种机制各司其职。
+Parano1d 组合[工作量证明](../reference/glossary.md#proof-of-work)、[递归有效性](../reference/glossary.md#recursive-validity)、[Live State](../reference/glossary.md#live-state) 以及无签名钱包授权。每种机制各司其职。
 
 ## 共识确立什么
 
@@ -20,13 +20,13 @@ ParanO(1)d 组合[工作量证明](../reference/glossary.md#proof-of-work)、[�
 
 安全性数值沿用成熟 FRI 与 STARK 实现公开采用的、带明确适用范围的名称。实际部署的参数固定到可执行计算所对应的源代码版本。
 
-| 已发布系统与指标 | 已发布数值 | ParanO(1)d 在对应指标下的数值 |
+| 已发布系统与指标 | 已发布数值 | Parano1d 在对应指标下的数值 |
 |---|---:|---:|
 | [Plonky2 默认 FRI](https://github.com/0xPolygonZero/plonky2#security)，Toy Problem 猜想 | 基于猜想的 **100 位**安全性；项目估计默认 Poseidon 配置约为 **95 位** | 基于同一猜想的 **128 位**安全性，按 Plonky2 原公式计算，并受实际部署实现所用域大小限制 |
 | [RISC Zero 可靠性计算器](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35)，Toy Problem 猜想 | `SEGMENT_SIZE = 2^20` 时为基于猜想的 **97 位**安全性；`2^24` 时为 **95 位** | 基于同一猜想的 **128 位**安全性，采用对应的码率与查询数计算 |
 | [ethSTARK / StarkWare](https://www.starknet.io/blog/safe-and-sound-a-deep-dive-into-stark-security/)，逐轮分析与 `t/e(t)` 操作次数分析 | **96 位 RBR** IOP 前提；按其操作次数定义得到 **95 位**编译后 STARK 结果 | 钱包广义 RBR 知识误差上界对应 **96.047 位**；按攻击计算量折算的固定无效区块有限次组合对应 **95.022 位** |
 
-ParanO(1)d 的第一项数值按 Plonky2 / Toy Problem 原公式计算：
+Parano1d 的第一项数值按 Plonky2 / Toy Problem 原公式计算：
 
 ```text
 min(域位数, 查询数 * log2(码率倒数) + 查询前 grinding 位数)。
@@ -36,7 +36,7 @@ min(域位数, 查询数 * log2(码率倒数) + 查询前 grinding 位数)。
 
 最后一行报告的是两种不同的标量约定。`96.047` 是交互式钱包基础 [IOP](../reference/glossary.md#iop) 各轮中最大广义[逐轮可靠性（RBR）](../reference/glossary.md#round-by-round-soundness)[知识误差](../reference/glossary.md#knowledge-error)上界的以二为底负对数。`95.022` 是固定无效区块的有限次组合，其中强制 grinding 只计入紧随其后的查询项。两者都不会被悄然替代为基于猜想的 128 位 FRI 评分。
 
-全部实际部署参数、公式、有限上界和回归测试都收录在 [ParanO(1)d 可靠性分析仓库](https://github.com/ignotusnemo/parano1d-soundness)中。对应的 ParanO(1)d Lab [分析文章](https://lab.parano1d.org/research/parano1d-soundness-industry-metrics/)完整说明了比较方法。
+全部实际部署参数、公式、有限上界和回归测试都收录在 [Parano1d 可靠性分析仓库](https://github.com/ignotusnemo/parano1d-soundness)中。对应的 Parano1d Lab [分析文章](https://lab.parano1d.org/research/parano1d-soundness-industry-metrics/)完整说明了比较方法。
 
 按照透明 STARK 与 FRI 系统通行的术语，交易证明栈具有[后量子抗性](../reference/glossary.md#post-quantum-resistance)：它采用透明、基于哈希的构造，不需要可信设置，也不含椭圆曲线交易签名。地址、承诺和交互记录使用 Poseidon2b，证明算术运行在二进制塔域 `GF(2^128)` 上。上述数值声明分别保留其明确命名的公开约定，不会被合并成另一项端到端指标。
 
@@ -66,7 +66,7 @@ min(域位数, 查询数 * log2(码率倒数) + 查询前 grinding 位数)。
 
 ## 透明性
 
-ParanO(1)d 不是匿名系统。交易所有者、金额、槽位和手续费都是公开信息；区块体被普通节点裁剪后，第三方仍可能保留其归档。零知识隐藏钱包秘密并证明执行，但不会隐藏公开账本命题。
+Parano1d 不是匿名系统。交易所有者、金额、槽位和手续费都是公开信息；区块体被普通节点裁剪后，第三方仍可能保留其归档。零知识隐藏钱包秘密并证明执行，但不会隐藏公开账本命题。
 
 ## 最终性假设
 

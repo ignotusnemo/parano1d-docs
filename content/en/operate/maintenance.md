@@ -1,6 +1,6 @@
 # Maintenance
 
-ParanO(1)d persists Live State transactionally. Routine maintenance does not
+Parano1d persists Live State transactionally. Routine maintenance does not
 replay or retain historical block bodies.
 
 ## Observe

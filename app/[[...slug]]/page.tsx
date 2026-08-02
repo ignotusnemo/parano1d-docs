@@ -48,7 +48,7 @@ export async function generateMetadata({
   const pageTitle = slug ? seoTitle : info.docsTitle;
   const description = slug ? doc.description : info.docsDescription;
   const title = {
-    absolute: slug ? `${seoTitle} · ParanO(1)d Docs` : info.docsTitle
+    absolute: slug ? `${seoTitle} · Parano1d Docs` : info.docsTitle
   };
 
   return {
@@ -57,7 +57,7 @@ export async function generateMetadata({
     keywords: [
       doc.title,
       section,
-      "ParanO(1)d",
+      "Parano1d",
       "Parano1d",
       info.docsTitle
     ],

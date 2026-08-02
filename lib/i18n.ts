@@ -46,27 +46,27 @@ export const localeInfo: Record<Locale, LocaleInfo> = {
     ogLocale: "en_US",
     name: "English",
     shortName: "EN",
-    docsTitle: "ParanO(1)d Documentation",
+    docsTitle: "Parano1d Documentation",
     docsDescription:
-      "Technical documentation for ParanO(1)d (Parano1d), a proof-native L1 statechain secured by proof of work: protocol, wallet, mining, and APIs."
+      "Technical documentation for Parano1d, a proof-native L1 statechain secured by proof of work: protocol, wallet, mining, and APIs."
   },
   ru: {
     htmlLang: "ru",
     ogLocale: "ru_RU",
     name: "Русский",
     shortName: "RU",
-    docsTitle: "Документация ParanO(1)d",
+    docsTitle: "Документация Parano1d",
     docsDescription:
-      "Техническая документация ParanO(1)d (Parano1d), proof-native L1 statechain на proof of work: протокол, кошелёк, майнинг и API."
+      "Техническая документация Parano1d, proof-native L1 statechain на proof of work: протокол, кошелёк, майнинг и API."
   },
   zh: {
     htmlLang: "zh-CN",
     ogLocale: "zh_CN",
     name: "简体中文",
     shortName: "中文",
-    docsTitle: "ParanO(1)d 技术文档",
+    docsTitle: "Parano1d 技术文档",
     docsDescription:
-      "ParanO(1)d（Parano1d）技术文档：由工作量证明保护的证明原生 L1 状态链，涵盖协议、钱包、挖矿与 API。"
+      "Parano1d 技术文档：由工作量证明保护的证明原生 L1 状态链，涵盖协议、钱包、挖矿与 API。"
   }
 };
 

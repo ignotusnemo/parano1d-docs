@@ -1,6 +1,6 @@
 # Networking
 
-ParanO(1)d uses libp2p for peer identity, discovery, relay and synchronization.
+Parano1d uses libp2p for peer identity, discovery, relay and synchronization.
 The public network protocol is identified as:
 
 ```text

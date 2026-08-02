@@ -1,6 +1,6 @@
 # 网络
 
-ParanO(1)d 使用 libp2p 完成[对等节点身份](../reference/glossary.md#peer-identity)、发现、转发与同步。公网协议标识为：
+Parano1d 使用 libp2p 完成[对等节点身份](../reference/glossary.md#peer-identity)、发现、转发与同步。公网协议标识为：
 
 ```text
 /noid/mainnet/1.0.0

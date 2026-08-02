@@ -1,6 +1,6 @@
 # Запуск ноды на Linux
 
-Обычная нода ParanO(1)d проверяет полные блоки, поддерживает Live State,
+Обычная нода Parano1d проверяет полные блоки, поддерживает Live State,
 ретранслирует транзакции и обслуживает синхронизацию. Она не майнит.
 
 Это руководство устанавливает официальный релиз Core как системную службу на
@@ -105,7 +105,7 @@ sudo chmod 0640 /etc/parano1d/parano1d.toml
 
 ```ini
 [Unit]
-Description=ParanO(1)d node
+Description=Parano1d node
 Wants=network-online.target
 After=network-online.target
 

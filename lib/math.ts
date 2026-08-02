@@ -12,7 +12,7 @@ const katexOptions = {
   macros: {
     "\\State": "\\mathsf{State}",
     "\\HistoryStep": "\\mathsf{HistoryStep}",
-    "\\Parano": "\\mathsf{ParanO(1)d}"
+    "\\Parano": "\\mathsf{Parano1d}"
   }
 };
 

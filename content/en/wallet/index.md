@@ -8,7 +8,7 @@ Its bundled node is a private application component. The wallet starts it
 without a terminal, communicates through local RPC and shuts it down cleanly
 when the application exits.
 
-![ParanO(1)d wallet main screen](../assets/wallet/main.png)
+![Parano1d wallet main screen](../assets/wallet/main.png)
 
 Screenshots of populated wallet pages use the built-in preview dataset.
 Addresses, balances, blocks and transaction identifiers shown in them are

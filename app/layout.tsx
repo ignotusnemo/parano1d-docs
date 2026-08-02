@@ -10,25 +10,25 @@ import "katex/dist/katex.min.css";
 const siteUrl = "https://docs.parano1d.org";
 const socialImage = "/assets/social/docs-og.png";
 const siteDescription =
-  "Technical documentation for ParanO(1)d (Parano1d), a proof-native L1 statechain secured by proof of work: protocol, wallet, mining, and APIs.";
+  "Technical documentation for Parano1d (Parano1d), a proof-native L1 statechain secured by proof of work: protocol, wallet, mining, and APIs.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "ParanO(1)d Documentation",
-    template: "%s · ParanO(1)d Documentation"
+    default: "Parano1d Documentation",
+    template: "%s · Parano1d Documentation"
   },
   description: siteDescription,
-  applicationName: "ParanO(1)d Documentation",
-  authors: [{ name: "ParanO(1)d", url: "https://parano1d.org" }],
-  creator: "ParanO(1)d",
-  publisher: "ParanO(1)d",
+  applicationName: "Parano1d Documentation",
+  authors: [{ name: "Parano1d", url: "https://parano1d.org" }],
+  creator: "Parano1d",
+  publisher: "Parano1d",
   generator: "Next.js",
   category: "technology",
   classification: "Technical documentation",
   referrer: "origin-when-cross-origin",
   keywords: [
-    "ParanO(1)d",
+    "Parano1d",
     "Parano1d",
     "NOID",
     "proof-native blockchain",
@@ -64,8 +64,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "ParanO(1)d Documentation",
-    title: "ParanO(1)d Documentation",
+    siteName: "Parano1d Documentation",
+    title: "Parano1d Documentation",
     description: siteDescription,
     url: "/",
     images: [
@@ -73,13 +73,13 @@ export const metadata: Metadata = {
         url: socialImage,
         width: 1200,
         height: 630,
-        alt: "ParanO(1)d technical documentation"
+        alt: "Parano1d technical documentation"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "ParanO(1)d Documentation",
+    title: "Parano1d Documentation",
     description: siteDescription,
     images: [socialImage]
   },
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.webmanifest",
   other: {
-    "apple-mobile-web-app-title": "ParanO(1)d Docs",
+    "apple-mobile-web-app-title": "Parano1d Docs",
     "mobile-web-app-capable": "yes"
   }
 };
@@ -122,7 +122,7 @@ export default function RootLayout({
       {
         "@type": "Organization",
         "@id": "https://parano1d.org/#organization",
-        name: "ParanO(1)d",
+        name: "Parano1d",
         alternateName: "Parano1d",
         url: "https://parano1d.org",
         logo: {
@@ -136,7 +136,7 @@ export default function RootLayout({
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
-        name: "ParanO(1)d Documentation",
+        name: "Parano1d Documentation",
         alternateName: [
           "Parano1d Documentation",
           "Parano1d Docs",

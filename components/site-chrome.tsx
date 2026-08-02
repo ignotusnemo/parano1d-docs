@@ -163,15 +163,17 @@ function GitHubGlyph() {
 
 function ExternalLinks({
   className,
-  label
+  label,
+  branded = false
 }: {
   className: string;
   label: string;
+  branded?: boolean;
 }) {
   return (
     <nav className={className} aria-label={label}>
       <a href="https://parano1d.org" target="_blank" rel="noopener noreferrer">
-        <span>ParanO(1)d</span>
+        <span>{branded ? "ParanO(1)d" : "Parano1d"}</span>
         <ExternalGlyph />
       </a>
       <a
@@ -497,6 +499,7 @@ export default function SiteChrome({
           <ExternalLinks
             className="top-external-links"
             label={copy.externalLinks}
+            branded
           />
         </div>
 

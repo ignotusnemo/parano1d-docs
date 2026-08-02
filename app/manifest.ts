@@ -5,10 +5,10 @@ export const dynamic = "force-static";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "ParanO(1)d Documentation",
-    short_name: "ParanO(1)d Docs",
+    name: "Parano1d Documentation",
+    short_name: "Parano1d Docs",
     description:
-      "Technical documentation for the ParanO(1)d protocol and software.",
+      "Technical documentation for the Parano1d protocol and software.",
     start_url: "/",
     scope: "/",
     lang: "en",

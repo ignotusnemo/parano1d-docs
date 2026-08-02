@@ -1,6 +1,6 @@
 # 安装并使用钱包
 
-原生 GUI 安装包同时包含 ParanO(1)d 钱包及其私有完整节点。应用会自行
+原生 GUI 安装包同时包含 Parano1d 钱包及其私有完整节点。应用会自行
 启动、监控并停止该节点，日常使用无需终端。
 
 ## 选择安装包
@@ -44,7 +44,7 @@ Get-FileHash .\parano1d-gui-vVERSION-windows-x86_64-setup.exe -Algorithm SHA256
 sudo apt install ./parano1d-gui-vVERSION-linux-x86_64.deb
 ```
 
-然后从应用菜单启动 **ParanO(1)d**。
+然后从应用菜单启动 **Parano1d**。
 
 ### Windows
 
@@ -107,7 +107,7 @@ Debian 或 Ubuntu：
 sudo apt remove parano1d-gui
 ```
 
-Windows 请使用 **已安装的应用 → ParanO(1)d → 卸载**；macOS 则将
+Windows 请使用 **已安装的应用 → Parano1d → 卸载**；macOS 则将
 Applications 中的应用移到废纸篓。
 
 钱包和节点数据仍保存在用户目录下的 `.parano1d` 中。只有在导出或

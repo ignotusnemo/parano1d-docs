@@ -1,6 +1,6 @@
 # 网络经济模型
 
-ParanO(1)d 把发行量与 [Live State](../reference/glossary.md#live-state) 容量绑定，并将持久 State 增长与普通交易处理分别定价。
+Parano1d 把发行量与 [Live State](../reference/glossary.md#live-state) 容量绑定，并将持久 State 增长与普通交易处理分别定价。
 
 ## 单位
 
@@ -33,7 +33,7 @@ NOID 是币种代码；钱包界面中使用符号 ①。
 
 - 90% 给矿工；
 - 5% 给 O(1) Network Fund；
-- 5% 给 ParanO(1)d Lab。
+- 5% 给 Parano1d Lab。
 
 没有预挖。高度 6,307,200 之后，全部区块补贴归矿工。
 

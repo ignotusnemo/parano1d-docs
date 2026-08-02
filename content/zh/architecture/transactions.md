@@ -1,6 +1,6 @@
 # 交易架构
 
-ParanO(1)d 把区块携带的物理交易页与钱包授权的逻辑付款分离。
+Parano1d 把区块携带的物理交易页与钱包授权的逻辑付款分离。
 
 [`Tx8x2` 物理页](../reference/glossary.md#tx8x2)采用固定 323 字节编码，最多包含八个输入和两个输出。逻辑 [`PagedSpend`](../reference/glossary.md#pagedspend) 最多把 128 个物理页组合为一笔原子[交易意图](../reference/glossary.md#transaction-intent)，共用一个交易 ID 和一份[授权证明封装](../reference/glossary.md#authorization-envelope)。
 

@@ -1,4 +1,4 @@
-# ParanO(1)d
+# Parano1d
 
 **A proof-native L1 statechain secured by proof of work.**
 
@@ -7,7 +7,7 @@ you must replay the past. A new full node downloads the chain from genesis and
 re-executes every transaction because the current state does not prove itself.
 This is not a temporary limitation. It is built into the model.
 
-ParanO(1)d removes that requirement.
+Parano1d removes that requirement.
 
 Validity is established once, where the complete information already exists.
 The wallet proves authorization with its private witness. The miner proves the
@@ -28,7 +28,7 @@ hardware requirement.
 
 ## The fundamental shift
 
-| | Conventional blockchain | ParanO(1)d |
+| | Conventional blockchain | Parano1d |
 |---|---|---|
 | Validation | Every full node re-executes | The witness holder proves; the network verifies |
 | Bootstrap | Rebuild state from genesis | Authenticate current State and verify the recent suffix |
@@ -89,7 +89,7 @@ and the latest 18 complete blocks for competing miners and reorgs. A joining
 node authenticates a finalized State with its matching terminal, then verifies
 the recent suffix normally.
 
-ParanO(1)d is history-stateless, not state-free. `State` transfer scales with the
+Parano1d is history-stateless, not state-free. `State` transfer scales with the
 live UTXO set. What no longer scales with chain age is the execution required
 to prove why that State is valid.
 
@@ -105,7 +105,7 @@ including repeated use of the same address. Transaction consensus contains no
 elliptic curves. The Ed25519 key used by libp2p identifies a peer only and has
 no spending or consensus authority.
 
-ParanO(1)d is transparent, not a privacy chain. Values, owners and relayed
+Parano1d is transparent, not a privacy chain. Values, owners and relayed
 transactions are public. Zero knowledge protects the spending witness.
 Protocol storage reduces routine transaction-body retention, but it cannot
 prevent third parties from archiving public transactions.
@@ -142,13 +142,13 @@ systems joined afterward.
 
 ## Industry proof-security profile
 
-ParanO(1)d reports proof security using the scoped conventions published by
+Parano1d reports proof security using the scoped conventions published by
 established FRI and STARK projects. Under the literal Toy Problem convention
 used by Plonky2 and RISC Zero, the production wallet and `HistoryStep`
 parameters each reach the `GF(2^128)` field cap: **128 bits of conjectured FRI
 security**.
 
-| Published system and metric | Published value | ParanO(1)d under the corresponding metric |
+| Published system and metric | Published value | Parano1d under the corresponding metric |
 |---|---:|---:|
 | [Plonky2 default FRI](https://github.com/0xPolygonZero/plonky2#security), Toy Problem conjecture | 100 bits conjectured | 128 bits conjectured |
 | [RISC Zero soundness calculator](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35), Toy Problem conjecture | 97 bits at `2^20`; 95 bits at `2^24`, conjectured | 128 bits conjectured |
@@ -156,7 +156,7 @@ security**.
 
 The metrics retain their original labels because they describe different
 security games. The complete [security model](protocol/security-model.md)
-defines each ParanO(1)d value and links the reproducible formulas and tests.
+defines each Parano1d value and links the reproducible formulas and tests.
 In the terminology used for transparent STARK and FRI systems, the
 transaction proof stack is post-quantum resistant: it is hash-based, requires
 no trusted setup and contains no elliptic-curve transaction signature.

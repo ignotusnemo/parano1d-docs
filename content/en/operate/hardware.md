@@ -1,6 +1,6 @@
 # Hardware and capacity
 
-ParanO(1)d does not make chain age a permanent execution requirement, but a
+Parano1d does not make chain age a permanent execution requirement, but a
 node still needs enough CPU for proof verification, enough memory for bounded
 network work and enough disk for the current Live State. Check the actual
 machine exposed to the process; a provider's physical CPU model is not proof

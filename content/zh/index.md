@@ -1,10 +1,10 @@
-# ParanO(1)d
+# Parano1d
 
 **A proof-native L1 statechain secured by proof of work.**
 
 传统区块链存在一个根本性的架构缺陷：为了验证现在，节点必须重放过去。新全节点要从创世区块开始下载整条链并重新执行每一笔交易，因为当前状态本身无法证明其有效性。这不是暂时的工程限制，而是传统模型固有的代价。
 
-ParanO(1)d 消除了这种依赖。
+Parano1d 消除了这种依赖。
 
 有效性只在信息完整的地方证明一次。钱包使用私有[见证数据](reference/glossary.md#witness)证明其支配资金的权利；矿工证明公开的交易逻辑以及精确的 State 转换；网络只需验证这些证明，不再重复执行同一批计算。
 
@@ -14,7 +14,7 @@ ParanO(1)d 消除了这种依赖。
 
 ## 根本变化
 
-| | 传统区块链 | ParanO(1)d |
+| | 传统区块链 | Parano1d |
 |---|---|---|
 | 验证 | 每个全节点都重新执行 | 见证数据持有者生成证明，网络负责验证 |
 | 初始同步 | 从创世区块重建状态 | 认证已达最终性的 State 并验证近期后缀 |
@@ -52,7 +52,7 @@ ParanO(1)d 消除了这种依赖。
 
 在线节点保存精确的 Live State、用于[累计工作量](reference/glossary.md#cumulative-work)的紧凑区块头，以及供竞争矿工和[链重组](reference/glossary.md#reorganization)使用的最近 18 个完整区块。新加入节点用匹配的终端证明认证已达最终性的 State，再按常规方式验证近期后缀。
 
-ParanO(1)d 消除的是对历史执行的依赖，并非不保存 State。Live State 传输量仍随其中的 UTXO 数量增长；不再随链龄增长的，是证明“该 State 为何有效”所需的执行量。
+Parano1d 消除的是对历史执行的依赖，并非不保存 State。Live State 传输量仍随其中的 UTXO 数量增长；不再随链龄增长的，是证明“该 State 为何有效”所需的执行量。
 
 ## 无签名所有权
 
@@ -60,7 +60,7 @@ ParanO(1)d 消除的是对历史执行的依赖，并非不保存 State。Live S
 
 每次支出都会独立随机化授权证明封装，即使重复使用同一地址也是如此。交易共识不包含椭圆曲线。libp2p 使用的 Ed25519 密钥只构成[对等节点身份](reference/glossary.md#peer-identity)，不具备支出权限或共识权力。
 
-ParanO(1)d 是透明系统，并非隐私链。金额、所有者和网络中转发的交易都是公开的。零知识保护的是支出见证数据。协议存储机制会减少节点在正常运行中保留的交易体，但无法阻止第三方归档公开交易。
+Parano1d 是透明系统，并非隐私链。金额、所有者和网络中转发的交易都是公开的。零知识保护的是支出见证数据。协议存储机制会减少节点在正常运行中保留的交易体，但无法阻止第三方归档公开交易。
 
 ## 可复用的 Live State
 
@@ -78,15 +78,15 @@ State 是一个精确的、带索引的稀疏 UTXO 向量。支出会清空槽�
 
 ## 行业证明安全性指标
 
-ParanO(1)d 沿用成熟 FRI 与 STARK 项目公开采用的、带明确适用范围的约定报告证明安全性。在 Plonky2 和 RISC Zero 采用的 [Toy Problem 猜想](reference/glossary.md#toy-problem-conjecture)原公式约定下，实际部署的钱包与 `HistoryStep` 参数都达到 `GF(2^128)` 的域上限：**基于猜想的 FRI 安全性为 128 位**。
+Parano1d 沿用成熟 FRI 与 STARK 项目公开采用的、带明确适用范围的约定报告证明安全性。在 Plonky2 和 RISC Zero 采用的 [Toy Problem 猜想](reference/glossary.md#toy-problem-conjecture)原公式约定下，实际部署的钱包与 `HistoryStep` 参数都达到 `GF(2^128)` 的域上限：**基于猜想的 FRI 安全性为 128 位**。
 
-| 已发布系统与指标 | 已发布数值 | ParanO(1)d 在对应指标下的数值 |
+| 已发布系统与指标 | 已发布数值 | Parano1d 在对应指标下的数值 |
 |---|---:|---:|
 | [Plonky2 默认 FRI](https://github.com/0xPolygonZero/plonky2#security)，Toy Problem 猜想 | 基于猜想的 100 位安全性 | 基于同一猜想的 128 位安全性 |
 | [RISC Zero 可靠性计算器](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35)，Toy Problem 猜想 | `2^20` 时为基于猜想的 97 位安全性，`2^24` 时为 95 位 | 基于同一猜想的 128 位安全性 |
 | [ethSTARK / StarkWare](https://www.starknet.io/blog/safe-and-sound-a-deep-dive-into-stark-security/)，[逐轮可靠性（RBR）](reference/glossary.md#round-by-round-soundness)与 `t/e(t)` 操作次数分析 | 96 位 RBR [IOP](reference/glossary.md#iop) 前提；编译后 STARK 结果为 95 位 | 钱包广义 RBR [知识误差](reference/glossary.md#knowledge-error)上界对应 96.047 位；按攻击计算量折算的固定无效区块有限次组合对应 95.022 位 |
 
-这些指标保留各自的原始名称，因为它们描述的是不同的安全游戏。完整的[安全模型](protocol/security-model.md)逐项定义 ParanO(1)d 的数值，并链接可复现的公式与测试。按照透明 STARK 与 FRI 系统通行的术语，交易证明栈具有后量子抗性：它采用透明、基于哈希的构造，不需要可信设置，也不含椭圆曲线交易签名。
+这些指标保留各自的原始名称，因为它们描述的是不同的安全游戏。完整的[安全模型](protocol/security-model.md)逐项定义 Parano1d 的数值，并链接可复现的公式与测试。按照透明 STARK 与 FRI 系统通行的术语，交易证明栈具有后量子抗性：它采用透明、基于哈希的构造，不需要可信设置，也不含椭圆曲线交易签名。
 
 ## 协议概况
 

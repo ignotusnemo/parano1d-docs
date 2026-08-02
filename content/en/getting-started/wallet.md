@@ -1,6 +1,6 @@
 # Install and use the wallet
 
-The native GUI package contains the ParanO(1)d wallet and its private full
+The native GUI package contains the Parano1d wallet and its private full
 node. The application starts, monitors and stops that node itself. Ordinary
 wallet use does not require a terminal.
 
@@ -46,7 +46,7 @@ Open the `.deb` with the system Software application, or run:
 sudo apt install ./parano1d-gui-vVERSION-linux-x86_64.deb
 ```
 
-Launch **ParanO(1)d** from the application menu.
+Launch **Parano1d** from the application menu.
 
 ### Windows
 
@@ -116,7 +116,7 @@ On Debian or Ubuntu:
 sudo apt remove parano1d-gui
 ```
 
-On Windows, use **Installed apps → ParanO(1)d → Uninstall**. On macOS, move the
+On Windows, use **Installed apps → Parano1d → Uninstall**. On macOS, move the
 application from Applications to Trash.
 
 Wallet and node data remain under `.parano1d` in the user profile. Remove that

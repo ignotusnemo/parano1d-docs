@@ -1,6 +1,6 @@
 # Proof of work
 
-ParanO(1)d proof of work is a domain-separated Poseidon2b digest over the fixed
+Parano1d proof of work is a domain-separated Poseidon2b digest over the fixed
 semantic header fields. It runs after the nonce-independent `HistoryStep` has
 been proved.
 

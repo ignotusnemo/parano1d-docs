@@ -2,7 +2,7 @@
 
 **仅有哈希算力无法生成区块。挖矿需要 [State](../reference/glossary.md#state)；只有证明完成后才能开始搜索 [nonce](../reference/glossary.md#nonce)。**
 
-ParanO(1)d 的工作量证明负责为已经证明有效的 State 转换排序。在搜索
+Parano1d 的工作量证明负责为已经证明有效的 State 转换排序。在搜索
 nonce 前，区块生产者必须跟随[规范链](../reference/glossary.md#canonical-chain)、持有 [Live State](../reference/glossary.md#live-state)、构建精确的下一
 次转换，并完成递归 `HistoryStep`。
 
@@ -197,7 +197,7 @@ parano1d-cli mining
 P2P，同一套基础设施还会中继交易和区块，并向其他节点提供同步数据。
 
 外部挖矿进程和矿池仍然可行：一个证明节点可以服务多个 nonce 搜索进程。
-因此，ParanO(1)d 并不声称专用硬件无法存在。系统提供的更强且更精确的
+因此，Parano1d 并不声称专用硬件无法存在。系统提供的更强且更精确的
 性质是：专用哈希算力无法独立生成区块，也无法弥补证明节点能力不足。
 
 区块头的精确关系见[工作量证明](../protocol/proof-of-work.md)，实现流水线

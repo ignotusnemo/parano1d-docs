@@ -1,6 +1,6 @@
 # Run a node on Linux
 
-An ordinary ParanO(1)d node verifies complete blocks, maintains the live UTXO
+An ordinary Parano1d node verifies complete blocks, maintains the live UTXO
 State, relays transactions and serves synchronization data. It does not mine.
 
 This guide installs the official Core release as a system service. It assumes a
@@ -105,7 +105,7 @@ Create `/etc/systemd/system/parano1d.service`:
 
 ```ini
 [Unit]
-Description=ParanO(1)d node
+Description=Parano1d node
 Wants=network-online.target
 After=network-online.target
 

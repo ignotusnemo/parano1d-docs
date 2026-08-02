@@ -1,6 +1,6 @@
 # Network economics
 
-ParanO(1)d ties issuance to Live State capacity and prices persistent State
+Parano1d ties issuance to Live State capacity and prices persistent State
 growth separately from ordinary transaction work.
 
 ## Unit
@@ -37,7 +37,7 @@ For the first three target-time years, each block subsidy is divided:
 
 - 90% to the miner;
 - 5% to the O(1) Network Fund;
-- 5% to ParanO(1)d Lab.
+- 5% to Parano1d Lab.
 
 There is no premine. After height 6,307,200, the complete block subsidy goes to
 the miner.

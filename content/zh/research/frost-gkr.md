@@ -1,13 +1,13 @@
 # FROST-GKR
 
-**FROST-GKR 是 ParanO(1)d Lab 的研究成果：一种面向 `GF(2^128)` 上批量
+**FROST-GKR 是 Parano1d Lab 的研究成果：一种面向 `GF(2^128)` 上批量
 Poseidon2b 执行的全局承诺执行轨迹协议。**
 
 FROST 是 **Frobenius Reduction over Shifted Tables** 的缩写。该协议将整批
 四通道 Poseidon2b 执行归约为三个已承诺[多线性多项式](../reference/glossary.md#multilinear-extension)的打开。
 
 [阅读论文](https://lab.parano1d.org/papers/FROST_GKR.pdf) ·
-[阅读 ParanO(1)d Lab 研究文章](https://lab.parano1d.org/research/frost-gkr-global-trace-protocol/) ·
+[阅读 Parano1d Lab 研究文章](https://lab.parano1d.org/research/frost-gkr-global-trace-protocol/) ·
 [查看参考实现](https://github.com/ignotusnemo/frost-gkr)
 
 ## 重复计算问题
@@ -120,12 +120,12 @@ $2^{-119}$；此后还需计入端点关系和多项式承诺的可靠性误差�
 交错样本。交互记录大小按未压缩域元素统计。多项式承诺打开与序列化封装均未
 计入两列数据，因此该比较只衡量论文所述的归约部分。
 
-## 在 ParanO(1)d 中的作用
+## 在 Parano1d 中的作用
 
-这项研究源自 ParanO(1)d 的证明系统。协议在共享二进制证明栈内部承担整批
+这项研究源自 Parano1d 的证明系统。协议在共享二进制证明栈内部承担整批
 Poseidon2b 执行的归约；应用关系将其承诺端点连接到钱包授权、Merkle 计算和
 State 计算，外围 FRI-Binius/BaseFold 层则在无需可信设置的情况下闭合所得
 多线性断言。
 
-因此，FROST-GKR 既是一项可复用的研究成果，也是 ParanO(1)d 证明架构的具体
-组成部分。论文作者为 Andrew Boyle；FROST-GKR 是 **ParanO(1)d Lab** 的研究成果。
+因此，FROST-GKR 既是一项可复用的研究成果，也是 Parano1d 证明架构的具体
+组成部分。论文作者为 Andrew Boyle；FROST-GKR 是 **Parano1d Lab** 的研究成果。

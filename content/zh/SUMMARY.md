@@ -1,4 +1,4 @@
-# ParanO(1)d 技术文档
+# Parano1d 技术文档
 
 - [首页](index.md)
 

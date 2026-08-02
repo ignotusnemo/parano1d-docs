@@ -1,6 +1,6 @@
 # Доказательство выполнения работы (Proof of work)
 
-[Proof of work](../reference/glossary.md#proof-of-work-pow) ParanO(1)d — дайджест Poseidon2b с разделением доменов над
+[Proof of work](../reference/glossary.md#proof-of-work-pow) Parano1d — дайджест Poseidon2b с разделением доменов над
 фиксированными полями семантического заголовка. Он выполняется после
 доказательства `HistoryStep`, не зависящего от nonce.
 

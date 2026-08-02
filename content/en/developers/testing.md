@@ -1,6 +1,6 @@
 # Testing
 
-ParanO(1)d uses three layers of tests: crate-level invariants, cross-crate
+Parano1d uses three layers of tests: crate-level invariants, cross-crate
 release tests and fresh-process live scenarios.
 
 ## Fast checks

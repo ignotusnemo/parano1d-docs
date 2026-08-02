@@ -227,9 +227,9 @@ for (const [route, page] of renderedPages) {
 }
 
 const expectedRootTitles = {
-  "index.html": "ParanO(1)d Documentation",
-  "ru.html": "Документация ParanO(1)d",
-  "zh.html": "ParanO(1)d 技术文档"
+  "index.html": "Parano1d Documentation",
+  "ru.html": "Документация Parano1d",
+  "zh.html": "Parano1d 技术文档"
 };
 
 for (const [relative, title] of Object.entries(expectedRootTitles)) {

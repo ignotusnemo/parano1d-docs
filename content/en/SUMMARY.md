@@ -1,4 +1,4 @@
-# ParanO(1)d documentation
+# Parano1d documentation
 
 - [Main](index.md)
 

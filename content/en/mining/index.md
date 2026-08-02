@@ -3,7 +3,7 @@
 **Hashpower alone cannot produce blocks. Mining requires State; nonce search
 begins only after the proof is complete.**
 
-Proof of work in ParanO(1)d orders transitions whose validity has already been
+Proof of work in Parano1d orders transitions whose validity has already been
 established. Before searching a nonce, a block producer must follow the
 canonical chain, hold the current State, construct the exact next
 transition and complete its recursive `HistoryStep`.
@@ -224,7 +224,7 @@ connections, the same infrastructure also relays transactions and blocks and
 serves synchronization data.
 
 External workers and pools remain possible: one proving node can serve more
-than one nonce worker. ParanO(1)d therefore does not claim that specialized
+than one nonce worker. Parano1d therefore does not claim that specialized
 hardware is impossible. Its stronger and narrower property is that
 specialized hashpower cannot independently originate a block or compensate for
 an incapable proof node.

@@ -1,6 +1,6 @@
-# ParanO(1)d documentation site
+# Parano1d documentation site
 
-The site renders the Markdown documentation maintained in the ParanO(1)d
+The site renders the Markdown documentation maintained in the Parano1d
 repository. The copied `content/` directory is the deployable snapshot; the
 project documentation remains the source of truth.
 

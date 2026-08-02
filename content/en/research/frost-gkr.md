@@ -1,6 +1,6 @@
 # FROST-GKR
 
-**FROST-GKR is research by ParanO(1)d Lab: a global committed-trace protocol for
+**FROST-GKR is research by Parano1d Lab: a global committed-trace protocol for
 batched Poseidon2b over `GF(2^128)`.**
 
 The name expands to **Frobenius Reduction over Shifted Tables**. The protocol
@@ -8,7 +8,7 @@ turns an entire batch of width-four Poseidon2b executions into openings of
 three committed multilinear polynomials.
 
 [Read the paper](https://lab.parano1d.org/papers/FROST_GKR.pdf) ·
-[Open the ParanO(1)d Lab research article](https://lab.parano1d.org/research/frost-gkr-global-trace-protocol/) ·
+[Open the Parano1d Lab research article](https://lab.parano1d.org/research/frost-gkr-global-trace-protocol/) ·
 [Inspect the reference implementation](https://github.com/ignotusnemo/frost-gkr)
 
 ## The repeated-computation problem
@@ -139,9 +139,9 @@ field-element counts. Polynomial-commitment openings and serialization framing
 are outside both columns, so the comparison isolates the reduction described
 by the paper.
 
-## Role in ParanO(1)d
+## Role in Parano1d
 
-The research originated in the proof system developed for ParanO(1)d. The
+The research originated in the proof system developed for Parano1d. The
 protocol supplies the batch-wide Poseidon2b reduction used inside the shared
 binary proof stack. Application relations bind its committed endpoints to
 wallet authorization, Merkle and State computations; the surrounding
@@ -149,5 +149,5 @@ FRI-Binius/BaseFold layer closes the resulting multilinear claims without a
 trusted setup.
 
 FROST-GKR is therefore a reusable research result as well as a concrete part
-of ParanO(1)d's proof architecture. The paper is authored by Andrew Boyle;
-FROST-GKR is research by **ParanO(1)d Lab**.
+of Parano1d's proof architecture. The paper is authored by Andrew Boyle;
+FROST-GKR is research by **Parano1d Lab**.

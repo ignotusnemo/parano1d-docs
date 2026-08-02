@@ -1,6 +1,6 @@
 # Consensus
 
-ParanO(1)d accepts only blocks that satisfy the native header rules, the
+Parano1d accepts only blocks that satisfy the native header rules, the
 recursive `HistoryStep` relation and proof of work. Chain selection compares
 cumulative work among valid candidates while preserving the hard-finalized
 prefix.
