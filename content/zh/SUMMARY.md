@@ -9,7 +9,7 @@
 
 ## 核心概念
 
-- [证明原生状态链](concepts/proof-native-statechain.md)
+- [证明原生 Layer 1](concepts/proof-native-layer-1.md)
 - [无签名所有权](concepts/signatureless-ownership.md)
 - [收据与可裁剪历史](concepts/receipts.md)
 

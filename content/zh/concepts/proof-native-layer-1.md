@@ -1,4 +1,4 @@
-# [证明原生状态链](../reference/glossary.md#proof-native-statechain)
+# [证明原生 Layer 1](../reference/glossary.md#proof-native-layer-1)
 
 传统全节点通过重放区块链来得到当前状态。链中保存历史输入，节点按顺序重复每一次状态转换。验证完成后的裁剪可以减少磁盘占用，却无法消除最初的依赖：节点之所以接受当前状态，是因为它亲自从历史中重建了该状态。Parano1d 改用[无需历史重放](../reference/glossary.md#history-stateless)的验证模型。
 

@@ -23,7 +23,7 @@ type PageProps = {
 };
 
 const siteUrl = "https://docs.parano1d.org";
-const socialImage = `${siteUrl}/assets/social/docs-og.png`;
+const socialImage = `${siteUrl}/assets/social/docs-og-v3.png`;
 
 export const dynamic = "force-static";
 export const dynamicParams = false;

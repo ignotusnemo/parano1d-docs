@@ -392,10 +392,11 @@ occupancy, is removed from circulation and cannot be claimed by the miner.
 A fixed subtree containing `2^16` consecutive State slots. Empty segments are
 virtual; snapshot transport and local storage materialize only non-empty ones.
 
-## Statechain
+## Proof-native Layer 1
 
-The proof-of-work-ordered sequence of exact State transitions whose recursive
-validity is linked by `HistoryStep` terminals.
+An L1 network architecture in which proofs are mandatory consensus objects.
+Every accepted block proves its exact State transition and verifies the
+preceding `HistoryStep` terminal; proof of work orders only valid transitions.
 
 ## Sumcheck
 

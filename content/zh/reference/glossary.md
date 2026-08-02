@@ -18,11 +18,11 @@
 节点当前保存并物化的 `State`。它随已接受区块推进，包含当前未花费 UTXO，
 但不包含已经裁剪的历史交易体。
 
-<a id="proof-native-statechain"></a>
-### 证明原生状态链（proof-native statechain）
+<a id="proof-native-layer-1"></a>
+### 证明原生 Layer 1
 
-把当前转换的有效性及其与前一转换的连续性直接作为递归证明对象的 L1 架构。
-节点验证证明并物化结果，不必从创世区块重新执行全部历史交易。
+一种把证明作为共识必要对象的第一层网络架构。每个已接受区块都证明精确的
+`State` 转换并验证前一个 `HistoryStep` 终端；工作量证明只对有效转换排序。
 
 <a id="history-stateless"></a>
 ### 无需历史重放（history-stateless）

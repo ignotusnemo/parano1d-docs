@@ -1,6 +1,6 @@
 # Parano1d
 
-**A proof-native L1 statechain secured by proof of work.**
+**A proof-native Layer 1.**
 
 У блокчейн-сетей есть фундаментальный архитектурный недостаток: чтобы проверить
 настоящее, приходится заново воспроизводить прошлое. Новая [полная нода](reference/glossary.md#полная-нода)

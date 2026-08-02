@@ -1,6 +1,6 @@
 # Parano1d
 
-**A proof-native L1 statechain secured by proof of work.**
+**A proof-native Layer 1.**
 
 传统区块链存在一个根本性的架构缺陷：为了验证现在，节点必须重放过去。新全节点要从创世区块开始下载整条链并重新执行每一笔交易，因为当前状态本身无法证明其有效性。这不是暂时的工程限制，而是传统模型固有的代价。
 

@@ -1,6 +1,6 @@
-# Proof-native statechain
+# Proof-native Layer 1
 
-[Proof-native statechain](../reference/glossary.md#proof-native-statechain) — архитектура, в которой
+[Proof-native Layer 1](../reference/glossary.md#proof-native-layer-1) — архитектура сети первого уровня, в которой
 доказательство является обязательной частью каждого перехода консенсуса.
 
 Обычная полная нода получает текущее состояние, повторно исполняя цепочку.

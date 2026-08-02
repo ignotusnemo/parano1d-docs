@@ -9,7 +9,7 @@
 
 ## Основные понятия
 
-- [Proof-native statechain](concepts/proof-native-statechain.md)
+- [Proof-native Layer 1](concepts/proof-native-layer-1.md)
 - [Владение без подписей](concepts/signatureless-ownership.md)
 - [Чеки и удаляемая история](concepts/receipts.md)
 

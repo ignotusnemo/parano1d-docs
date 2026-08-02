@@ -157,7 +157,7 @@ const seoTitleOverrides: Readonly<Record<Locale, Readonly<Record<string, string>
   },
   zh: {
     "architecture/state": "Live State 架构",
-    "concepts/proof-native-statechain": "证明原生 statechain",
+    "concepts/proof-native-layer-1": "证明原生 Layer 1",
     "operate/internal-mining": "Core 内置矿工",
     "wallet/mining": "在钱包中挖矿"
   }

@@ -9,7 +9,7 @@
 
 ## Concepts
 
-- [A proof-native statechain](concepts/proof-native-statechain.md)
+- [A proof-native Layer 1](concepts/proof-native-layer-1.md)
 - [Signatureless ownership](concepts/signatureless-ownership.md)
 - [Receipts and pruned history](concepts/receipts.md)
 

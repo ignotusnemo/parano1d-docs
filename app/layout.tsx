@@ -8,9 +8,9 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 
 const siteUrl = "https://docs.parano1d.org";
-const socialImage = "/assets/social/docs-og.png";
+const socialImage = "/assets/social/docs-og-v3.png";
 const siteDescription =
-  "Technical documentation for Parano1d (Parano1d), a proof-native L1 statechain secured by proof of work: protocol, wallet, mining, and APIs.";
+  "Technical documentation for Parano1d, a proof-native Layer 1 network secured by proof of work: protocol, wallet, mining, and APIs.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     "Parano1d",
     "Parano1d",
     "NOID",
-    "proof-native blockchain",
-    "statechain",
+    "proof-native Layer 1",
+    "proof-authenticated State transitions",
     "signatureless ownership",
     "zero-knowledge proofs",
     "post-quantum blockchain",

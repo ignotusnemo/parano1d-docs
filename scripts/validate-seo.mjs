@@ -132,7 +132,7 @@ for (const [route, page] of renderedPages) {
     file,
     html,
     "Open Graph image",
-    /<meta property="og:image" content="https:\/\/docs\.parano1d\.org\/assets\/social\/docs-og\.png"/
+    /<meta property="og:image" content="https:\/\/docs\.parano1d\.org\/assets\/social\/docs-og-v3\.png"/
   );
   expect(
     file,

@@ -1,4 +1,4 @@
-# A proof-native statechain
+# A proof-native Layer 1
 
 A conventional full node establishes the current state by replaying the chain.
 The chain contains the historical inputs, and the node repeats every state

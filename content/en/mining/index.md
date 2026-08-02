@@ -17,7 +17,7 @@ independent block production.
 
 A mining node owns the block. It:
 
-- follows and independently validates the canonical statechain;
+- follows and independently validates the canonical chain;
 - verifies transaction intents before they enter its mempool;
 - selects a non-conflicting transaction set;
 - fixes the payout, fees, slot writes and post-State root;
