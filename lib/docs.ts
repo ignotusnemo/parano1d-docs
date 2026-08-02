@@ -3,6 +3,9 @@ import anchor from "markdown-it-anchor";
 import { mathPlugin } from "@/lib/math";
 import {
   generatedDocuments,
+  generatedImageDimensions,
+  generatedImageVariants,
+  generatedResponsiveImageVariants,
   generatedSummaries
 } from "@/generated/docs-content";
 import {
@@ -94,7 +97,30 @@ function titleFromMarkdown(raw: string): string {
   return match ? cleanInlineMarkdown(match[1]) : "Untitled";
 }
 
-function descriptionFromMarkdown(raw: string): string {
+function truncateDescription(value: string, locale: Locale): string {
+  const maximum = locale === "zh" ? 82 : 160;
+  const minimumSentence = locale === "zh" ? 38 : 92;
+  if (value.length <= maximum) return value;
+
+  const candidate = value.slice(0, maximum + 1);
+  const sentenceBoundary = Math.max(
+    candidate.lastIndexOf("。"),
+    candidate.lastIndexOf("！"),
+    candidate.lastIndexOf("？"),
+    candidate.lastIndexOf(". "),
+    candidate.lastIndexOf("! "),
+    candidate.lastIndexOf("? ")
+  );
+  if (sentenceBoundary >= minimumSentence) {
+    return candidate.slice(0, sentenceBoundary + 1).trim();
+  }
+
+  if (locale === "zh") return `${value.slice(0, maximum - 1).trim()}…`;
+  const wordBoundary = candidate.lastIndexOf(" ");
+  return `${candidate.slice(0, wordBoundary >= minimumSentence ? wordBoundary : maximum - 1).trim()}…`;
+}
+
+function descriptionFromMarkdown(raw: string, locale: Locale): string {
   const withoutCode = raw.replace(/```[\s\S]*?```/g, "");
   const blocks = withoutCode
     .split(/\n\s*\n/)
@@ -108,7 +134,41 @@ function descriptionFromMarkdown(raw: string): string {
         !block.startsWith("![")
     );
 
-  return cleanInlineMarkdown(blocks[0] ?? "").slice(0, 240);
+  const minimum = locale === "zh" ? 42 : 96;
+  const descriptionBlocks: string[] = [];
+  for (const block of blocks) {
+    const clean = cleanInlineMarkdown(block);
+    if (!clean) continue;
+    descriptionBlocks.push(clean);
+    if (descriptionBlocks.join(" ").length >= minimum) break;
+  }
+
+  return truncateDescription(descriptionBlocks.join(" "), locale);
+}
+
+const seoTitleOverrides: Readonly<Record<Locale, Readonly<Record<string, string>>>> = {
+  en: {
+    "operate/internal-mining": "Internal Core miner",
+    "wallet/mining": "Mining in the wallet"
+  },
+  ru: {
+    "operate/internal-mining": "Встроенный майнер Core",
+    "wallet/mining": "Майнинг в кошельке"
+  },
+  zh: {
+    "architecture/state": "Live State 架构",
+    "concepts/proof-native-statechain": "证明原生 statechain",
+    "operate/internal-mining": "Core 内置矿工",
+    "wallet/mining": "在钱包中挖矿"
+  }
+};
+
+export function getSeoTitle(
+  locale: Locale,
+  slug: string,
+  fallback: string
+): string {
+  return seoTitleOverrides[locale][slug] ?? fallback;
 }
 
 function plainTextFromMarkdown(raw: string): string {
@@ -200,6 +260,7 @@ function createMarkdownRenderer(
   locale: Locale,
   headingIds: ReadonlyMap<string, string>
 ) {
+  let imageIndex = 0;
   const md = new MarkdownIt({
     html: false,
     linkify: true,
@@ -239,9 +300,30 @@ function createMarkdownRenderer(
   md.renderer.rules.image = (tokens, index, options, env, self) => {
     const token = tokens[index];
     const src = String(token.attrGet("src") ?? "");
-    token.attrSet("src", resolveDocHref(src, sourcePath, locale));
-    token.attrSet("loading", "lazy");
-    token.attrSet("decoding", "async");
+    const resolvedSource = resolveDocHref(src, sourcePath, locale);
+    const optimizedSource = generatedImageVariants[resolvedSource] ?? resolvedSource;
+    const responsiveVariant = generatedResponsiveImageVariants[resolvedSource];
+    const dimensions =
+      generatedImageDimensions[optimizedSource] ??
+      generatedImageDimensions[resolvedSource];
+    token.attrSet("src", optimizedSource);
+    if (responsiveVariant) {
+      token.attrSet("srcset", responsiveVariant.srcset);
+      token.attrSet("sizes", responsiveVariant.sizes);
+    }
+    if (dimensions) {
+      token.attrSet("width", String(dimensions.width));
+      token.attrSet("height", String(dimensions.height));
+    }
+    if (imageIndex === 0) {
+      token.attrSet("loading", "eager");
+      token.attrSet("fetchpriority", "high");
+      token.attrSet("decoding", "async");
+    } else {
+      token.attrSet("loading", "lazy");
+      token.attrSet("decoding", "async");
+    }
+    imageIndex += 1;
     return defaultImage(tokens, index, options, env, self);
   };
 
@@ -323,7 +405,7 @@ export function getDoc(locale: Locale, slug: string): DocPage | null {
     slug,
     sourcePath,
     title: titleFromMarkdown(raw),
-    description: descriptionFromMarkdown(raw),
+    description: descriptionFromMarkdown(raw, locale),
     html: md.renderer.render(tokens, md.options, {}),
     toc
   };
@@ -346,7 +428,7 @@ export function getSearchIndex(locale: Locale): SearchEntry[] {
       title: titleFromMarkdown(raw),
       slug,
       section: sections.get(slug) ?? uiCopy[locale].documentation,
-      description: descriptionFromMarkdown(raw),
+      description: descriptionFromMarkdown(raw, locale),
       text: plainTextFromMarkdown(raw)
     };
   });

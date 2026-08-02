@@ -170,3 +170,85 @@ export const generatedDocuments: Readonly<Record<"en" | "ru" | "zh", Readonly<Re
     "wallet/settings.md": "# 设置\n\n按 `F7` 打开设置。\n\n![钱包设置](../../../assets/wallet/settings.png)\n\n## 密钥\n\n密钥页面显示当前主密钥模式，并提供明确的维护操作：\n\n- 导出当前由 64 个十六进制字符表示的主密钥；\n- 导入已有密钥；\n- 使用照片像素替换密钥；\n- 生成新密钥。\n\n更换密钥会改变全部派生地址。如果当前密钥控制仍需保留的资金，请先导出。\n\n密钥字段不是普通的应用偏好设置。执行相关操作时，钱包会停止私有节点，\n以原子方式更新仅所有者可读的密钥文件，再重新初始化钱包。\n\n## 节点\n\n节点设置包括：\n\n- 数据目录；\n- 日志级别；\n- 更改需要重启的参数后重启节点。\n\n终端风格的日志窗口显示私有节点真实日志的有限尾部。可选择并复制文本用于诊断，\n查看日志不会创建第二份永久日志存储。\n\n更改数据目录会让应用切换到另一套数据库和钱包。应用前请确认目标路径。\n\n## 网络\n\n网络设置包括：\n\n- P2P 监听地址；\n- 额外的种子端点。\n\n默认 P2P 监听地址为 `0.0.0.0:9400`。无需自定义条目也可使用内置 DNS\n发现。\n\n不要把私有 RPC 端点作为网络设置暴露出去。GUI 和节点只在本机通信。\n"
   }
 };
+
+export const generatedImageDimensions: Readonly<Record<string, { width: number; height: number }>> = {
+  "/assets/architecture/live-state-expansion.svg": {
+    "width": 1440,
+    "height": 760
+  },
+  "/assets/architecture/proof-native-block-flow.svg": {
+    "width": 1440,
+    "height": 660
+  },
+  "/assets/architecture/proof-stack.svg": {
+    "width": 1440,
+    "height": 760
+  },
+  "/assets/architecture/snapshot-sync.svg": {
+    "width": 1440,
+    "height": 760
+  },
+  "/assets/icons/parano1d.png": {
+    "width": 512,
+    "height": 512
+  },
+  "/assets/social/docs-og.png": {
+    "width": 1200,
+    "height": 630
+  },
+  "/assets/social/docs-og.svg": {
+    "width": 1200,
+    "height": 630
+  },
+  "/assets/wallet/addresses.png": {
+    "width": 1200,
+    "height": 760
+  },
+  "/assets/wallet/first-run.png": {
+    "width": 1200,
+    "height": 760
+  },
+  "/assets/wallet/main.png": {
+    "width": 1200,
+    "height": 760
+  },
+  "/assets/wallet/mining.png": {
+    "width": 1200,
+    "height": 760
+  },
+  "/assets/wallet/photo-key-960.webp": {
+    "width": 960,
+    "height": 600
+  },
+  "/assets/wallet/photo-key.png": {
+    "width": 1920,
+    "height": 1200
+  },
+  "/assets/wallet/photo-key.webp": {
+    "width": 1920,
+    "height": 1200
+  },
+  "/assets/wallet/receipts.png": {
+    "width": 1200,
+    "height": 760
+  },
+  "/assets/wallet/scope.png": {
+    "width": 1200,
+    "height": 760
+  },
+  "/assets/wallet/settings.png": {
+    "width": 1200,
+    "height": 760
+  }
+};
+
+export const generatedImageVariants: Readonly<Record<string, string>> = {
+  "/assets/wallet/photo-key.png": "/assets/wallet/photo-key.webp"
+};
+
+export const generatedResponsiveImageVariants: Readonly<Record<string, { srcset: string; sizes: string }>> = {
+  "/assets/wallet/photo-key.png": {
+    "srcset": "/assets/wallet/photo-key-960.webp 960w, /assets/wallet/photo-key.webp 1920w",
+    "sizes": "(max-width: 680px) calc(100vw - 66px), (max-width: 1240px) calc(100vw - 160px), 920px"
+  }
+};

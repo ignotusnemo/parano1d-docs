@@ -217,6 +217,7 @@ function LanguageSwitcher({
           <Link
             key={candidate}
             href={pathForLocale(candidate, currentSlug)}
+            prefetch={false}
             hrefLang={localeInfo[candidate].htmlLang}
             lang={localeInfo[candidate].htmlLang}
             className={candidate === locale ? "is-active" : ""}
@@ -459,7 +460,11 @@ export default function SiteChrome({
     <div className={`docs-app ${sidebarCollapsed ? "is-sidebar-collapsed" : ""}`}>
       <header className="topbar">
         <div className="topbar-brand">
-          <Link href={pathForLocale(locale, "")} className="brand-link">
+          <Link
+            href={pathForLocale(locale, "")}
+            prefetch={false}
+            className="brand-link"
+          >
             <BrandMark />
             <Brand />
           </Link>
@@ -575,6 +580,7 @@ export default function SiteChrome({
                         <li key={item.slug || "overview"}>
                           <Link
                             href={pathForLocale(locale, item.slug)}
+                            prefetch={false}
                             className={active ? "is-active" : ""}
                             aria-current={active ? "page" : undefined}
                             onClick={() => setNavigationOpen(false)}
@@ -610,6 +616,7 @@ export default function SiteChrome({
             {previous ? (
               <Link
                 href={pathForLocale(locale, previous.slug)}
+                prefetch={false}
                 className="neighbor previous"
               >
                 <span>{copy.previous}</span>
@@ -621,6 +628,7 @@ export default function SiteChrome({
             {next ? (
               <Link
                 href={pathForLocale(locale, next.slug)}
+                prefetch={false}
                 className="neighbor next"
               >
                 <span>{copy.next}</span>
@@ -700,6 +708,7 @@ export default function SiteChrome({
               {results.map((entry) => (
                 <Link
                   href={pathForLocale(locale, entry.slug)}
+                  prefetch={false}
                   key={entry.slug || "overview"}
                   onClick={() => {
                     setSearchOpen(false);

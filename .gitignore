@@ -6,4 +6,6 @@ out/
 *.tgz
 *.log
 *.tsbuildinfo
+public/assets/wallet/photo-key.webp
+public/assets/wallet/photo-key-960.webp
 .DS_Store

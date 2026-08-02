@@ -65,6 +65,7 @@ const htmlFiles = (await collectHtmlFiles(outputDirectory)).filter((file) => {
 });
 
 const renderedPages = new Map();
+const pageMetadata = new Map();
 
 for (const file of htmlFiles) {
   const route = routeFromFile(file);
@@ -78,6 +79,24 @@ for (const [route, page] of renderedPages) {
   const { file, html } = page;
   const locale = localeForRoute(route);
   const canonical = route === "/" ? siteUrl : `${siteUrl}${route}`;
+  const title = html.match(/<title>([^<]+)<\/title>/)?.[1] ?? "";
+  const description =
+    html.match(/<meta name="description" content="([^"]+)"/)?.[1] ?? "";
+
+  pageMetadata.set(route, { title, description });
+
+  const titleLimit = locale.lang === "zh-CN" ? 48 : 70;
+  const descriptionLimit = locale.lang === "zh-CN" ? 90 : 165;
+  if (title.length > titleLimit) {
+    failures.push(
+      `${path.relative(outputDirectory, file)}: title is ${title.length} characters (limit ${titleLimit})`
+    );
+  }
+  if (description.length > descriptionLimit) {
+    failures.push(
+      `${path.relative(outputDirectory, file)}: description is ${description.length} characters (limit ${descriptionLimit})`
+    );
+  }
 
   expect(file, html, "title", /<title>[^<]+<\/title>/);
   expect(
@@ -131,6 +150,30 @@ for (const [route, page] of renderedPages) {
       new RegExp(`<link rel="alternate" hrefLang="${language.replace("-", "\\-")}"|<link rel="alternate" hreflang="${language.replace("-", "\\-")}"`)
     );
   }
+}
+
+for (const localePrefix of ["", "/ru", "/zh"]) {
+  const coreMiner = pageMetadata.get(`${localePrefix}/operate/internal-mining`);
+  const walletMiner = pageMetadata.get(`${localePrefix}/wallet/mining`);
+  if (!coreMiner || !walletMiner) {
+    failures.push(`${localePrefix || "/en"}: missing one of the internal miner pages`);
+  } else if (coreMiner.title === walletMiner.title) {
+    failures.push(
+      `${localePrefix || "/en"}: Core and wallet miner pages share the same title`
+    );
+  }
+}
+
+const photoKeyPage = renderedPages.get("/wallet/photo-key");
+if (!photoKeyPage) {
+  failures.push("wallet/photo-key: page is missing");
+} else {
+  expect(
+    photoKeyPage.file,
+    photoKeyPage.html,
+    "optimized Photo Key image with intrinsic dimensions",
+    /<img src="\/assets\/wallet\/photo-key\.webp"[^>]*srcset="\/assets\/wallet\/photo-key-960\.webp 960w, \/assets\/wallet\/photo-key\.webp 1920w"[^>]*sizes="[^"]+"[^>]*width="1920"[^>]*height="1200"[^>]*loading="eager"[^>]*fetchpriority="high"/
+  );
 }
 
 for (const [route, page] of renderedPages) {

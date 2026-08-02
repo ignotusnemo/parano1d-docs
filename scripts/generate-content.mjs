@@ -1,9 +1,11 @@
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 
 const siteRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const contentRoot = resolve(siteRoot, "content");
+const publicRoot = resolve(siteRoot, "public");
 const outputPath = resolve(siteRoot, "generated/docs-content.ts");
 const locales = ["en", "ru", "zh"];
 
@@ -21,6 +23,51 @@ function walkMarkdown(directory, base = directory) {
     })
     .sort();
 }
+
+function walkImages(directory, base = directory) {
+  return readdirSync(directory, { withFileTypes: true })
+    .flatMap((entry) => {
+      const absolute = resolve(directory, entry.name);
+      if (entry.isDirectory()) return walkImages(absolute, base);
+      if (!/\.(?:avif|jpe?g|png|svg|webp)$/i.test(entry.name)) return [];
+      return [normalizeSlash(relative(base, absolute))];
+    })
+    .sort();
+}
+
+const optimizedImageVariants = {
+  "/assets/wallet/photo-key.png": "/assets/wallet/photo-key.webp"
+};
+
+const responsiveImageVariants = {
+  "/assets/wallet/photo-key.png": {
+    srcset:
+      "/assets/wallet/photo-key-960.webp 960w, /assets/wallet/photo-key.webp 1920w",
+    sizes:
+      "(max-width: 680px) calc(100vw - 66px), (max-width: 1240px) calc(100vw - 160px), 920px"
+  }
+};
+
+await sharp(resolve(publicRoot, "assets/wallet/photo-key.png"))
+  .webp({ quality: 90, effort: 6, smartSubsample: true })
+  .toFile(resolve(publicRoot, "assets/wallet/photo-key.webp"));
+
+await sharp(resolve(publicRoot, "assets/wallet/photo-key.png"))
+  .resize({ width: 960, withoutEnlargement: true })
+  .webp({ quality: 88, effort: 6, smartSubsample: true })
+  .toFile(resolve(publicRoot, "assets/wallet/photo-key-960.webp"));
+
+const imageDimensions = Object.fromEntries(
+  await Promise.all(
+    walkImages(resolve(publicRoot, "assets")).map(async (assetPath) => {
+      const metadata = await sharp(resolve(publicRoot, "assets", assetPath)).metadata();
+      if (!metadata.width || !metadata.height) {
+        throw new Error(`Image dimensions unavailable for public/assets/${assetPath}`);
+      }
+      return [`/assets/${assetPath}`, { width: metadata.width, height: metadata.height }];
+    })
+  )
+);
 
 const documents = Object.fromEntries(
   locales.map((locale) => {
@@ -66,6 +113,12 @@ const generated = [
   `export const generatedSummaries: Readonly<Record<"en" | "ru" | "zh", string>> = ${JSON.stringify(summaries, null, 2)};`,
   "",
   `export const generatedDocuments: Readonly<Record<"en" | "ru" | "zh", Readonly<Record<string, string>>>> = ${JSON.stringify(documents, null, 2)};`,
+  "",
+  `export const generatedImageDimensions: Readonly<Record<string, { width: number; height: number }>> = ${JSON.stringify(imageDimensions, null, 2)};`,
+  "",
+  `export const generatedImageVariants: Readonly<Record<string, string>> = ${JSON.stringify(optimizedImageVariants, null, 2)};`,
+  "",
+  `export const generatedResponsiveImageVariants: Readonly<Record<string, { srcset: string; sizes: string }>> = ${JSON.stringify(responsiveImageVariants, null, 2)};`,
   ""
 ].join("\n");
 

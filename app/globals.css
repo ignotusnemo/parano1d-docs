@@ -14,14 +14,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Noto Sans Mono";
-  src: url("/assets/fonts/NotoSansMono-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
 :root {
   --background: #07090d;
   --background-deep: #05070a;

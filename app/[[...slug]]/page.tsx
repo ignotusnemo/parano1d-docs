@@ -6,6 +6,7 @@ import {
   getAllRouteSegments,
   getDoc,
   getNavigation,
+  getSeoTitle,
   getSearchIndex,
   getSectionForSlug
 } from "@/lib/docs";
@@ -43,10 +44,11 @@ export async function generateMetadata({
   const canonical = pathForLocale(locale, slug);
   const section = getSectionForSlug(locale, slug);
   const info = localeInfo[locale];
-  const pageTitle = slug ? doc.title : info.docsTitle;
+  const seoTitle = getSeoTitle(locale, slug, doc.title);
+  const pageTitle = slug ? seoTitle : info.docsTitle;
   const description = slug ? doc.description : info.docsDescription;
   const title = {
-    absolute: slug ? `${doc.title} · ${info.docsTitle}` : info.docsTitle
+    absolute: slug ? `${seoTitle} · ParanO(1)d Docs` : info.docsTitle
   };
 
   return {
@@ -64,7 +66,7 @@ export async function generateMetadata({
       languages: languageAlternates(slug)
     },
     openGraph: {
-      type: "article",
+      type: slug ? "article" : "website",
       locale: info.ogLocale,
       alternateLocale: locales
         .filter((candidate) => candidate !== locale)
@@ -104,7 +106,8 @@ export default async function DocumentationPage({ params }: PageProps) {
   const canonicalUrl = `${siteUrl}${pathForLocale(locale, slug)}`;
   const documentationUrl = `${siteUrl}${pathForLocale(locale, "")}`;
   const structuredData = [
-    {
+    ...(slug
+      ? [{
       "@context": "https://schema.org",
       "@type": "TechArticle",
       "@id": `${canonicalUrl}#article`,
@@ -125,7 +128,8 @@ export default async function DocumentationPage({ params }: PageProps) {
       publisher: {
         "@id": "https://parano1d.org/#organization"
       }
-    },
+    }]
+      : []),
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
