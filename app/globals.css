@@ -2882,6 +2882,185 @@ kbd {
   }
 }
 
+body.repository-gate-open {
+  overflow: hidden;
+}
+
+.repository-gate-layer {
+  position: fixed;
+  z-index: 320;
+  inset: 0;
+  padding: 20px;
+  display: grid;
+  place-items: center;
+  background: rgba(229, 233, 235, 0.78);
+  backdrop-filter: blur(14px) saturate(108%);
+  -webkit-backdrop-filter: blur(14px) saturate(108%);
+  animation: layer-in 150ms ease-out;
+}
+
+.repository-gate-dialog {
+  position: relative;
+  width: min(460px, 100%);
+  padding: 34px 35px 30px;
+  overflow: hidden;
+  border: 1px solid rgba(28, 38, 34, 0.11);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 96% 0%, rgba(25, 173, 93, 0.09), transparent 14rem),
+    #fff;
+  box-shadow:
+    0 34px 95px rgba(31, 38, 47, 0.17),
+    0 3px 12px rgba(31, 38, 47, 0.055),
+    inset 0 1px rgba(255, 255, 255, 0.95);
+  animation: dialog-in 180ms ease-out;
+}
+
+.repository-gate-dialog::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    linear-gradient(rgba(25, 173, 93, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(25, 173, 93, 0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(135deg, #000, transparent 70%);
+}
+
+.repository-gate-dialog > * {
+  position: relative;
+}
+
+.repository-gate-close {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: #9299a1;
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+
+.repository-gate-close:hover {
+  border-color: #dce8e1;
+  background: #f1f8f4;
+  color: #13854b;
+}
+
+.repository-gate-close svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.repository-gate-eyebrow {
+  margin: 0 0 12px;
+  color: #168f57;
+  font: 700 10px/1.2 "Noto Sans Mono", monospace;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.repository-gate-dialog h2 {
+  max-width: 370px;
+  margin: 0;
+  color: #171a1f;
+  font-size: clamp(25px, 3vw, 31px);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+
+.repository-gate-copy {
+  margin: 17px 0 20px;
+  color: #68717a;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.repository-gate-meta {
+  margin: 0 0 22px;
+  padding: 13px 0;
+  display: grid;
+  gap: 7px;
+  border-top: 1px solid #e3ebe6;
+  border-bottom: 1px solid #e3ebe6;
+  color: #59636c;
+  font: 700 10px/1.35 "Noto Sans Mono", monospace;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.repository-gate-meta p {
+  margin: 0;
+}
+
+.repository-gate-meta a {
+  color: #148d4d;
+  text-decoration: none;
+}
+
+.repository-gate-meta a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.repository-gate-dismiss {
+  min-width: 108px;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid #159a53;
+  border-radius: 11px;
+  background: linear-gradient(180deg, #20b964, #17a758);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.22),
+    0 10px 24px rgba(20, 146, 78, 0.16);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.repository-gate-dismiss:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.24),
+    0 14px 30px rgba(20, 146, 78, 0.2);
+}
+
+@media (max-width: 520px) {
+  .repository-gate-layer {
+    padding: 14px;
+  }
+
+  .repository-gate-dialog {
+    padding: 30px 24px 25px;
+    border-radius: 15px;
+  }
+
+  .repository-gate-copy {
+    font-size: 13px;
+  }
+
+  .repository-gate-meta {
+    font-size: 9px;
+    letter-spacing: 0.025em;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

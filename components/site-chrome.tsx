@@ -39,6 +39,67 @@ const sidebarScrollMemory = new Map<Locale, number>();
 const openGroupMemory = new Map<Locale, Set<string>>();
 let desktopSidebarCollapsedMemory = false;
 
+// Set to false when the core repository becomes public.
+const PRIVATE_REPOSITORY_GATE = true;
+
+const repositoryGateCopy: Record<
+  Locale,
+  {
+    dialog: string;
+    closeLabel: string;
+    eyebrow: string;
+    title: string;
+    body: string;
+    launch: string;
+    contact: string;
+    dismiss: string;
+  }
+> = {
+  en: {
+    dialog: "Parano1d source code access",
+    closeLabel: "Close message",
+    eyebrow: "Source code",
+    title: "Code opens before launch.",
+    body: "The core repository remains private during the final preparation stage. The code for the upcoming release will be published before the public network launches.",
+    launch: "Public network launch · August 2026",
+    contact: "Contact developer",
+    dismiss: "Close"
+  },
+  ru: {
+    dialog: "Доступ к исходному коду Parano1d",
+    closeLabel: "Закрыть сообщение",
+    eyebrow: "Исходный код",
+    title: "Код откроется перед запуском.",
+    body: "Основной репозиторий остаётся закрытым на финальном этапе подготовки. Код будущего релиза будет опубликован перед запуском публичной сети.",
+    launch: "Запуск публичной сети · август 2026",
+    contact: "Связаться с разработчиком",
+    dismiss: "Закрыть"
+  },
+  zh: {
+    dialog: "Parano1d 源代码访问说明",
+    closeLabel: "关闭提示",
+    eyebrow: "源代码",
+    title: "代码将在网络启动前公开。",
+    body: "核心代码仓库将在最终准备阶段保持私有。即将发布版本的代码将在公共网络启动前公开。",
+    launch: "公共网络启动 · 2026 年 8 月",
+    contact: "联系开发者",
+    dismiss: "关闭"
+  }
+};
+
+function isPrivateRepositoryUrl(href: string): boolean {
+  if (!PRIVATE_REPOSITORY_GATE) return false;
+  try {
+    const url = new URL(href, window.location.href);
+    return (
+      url.hostname.toLowerCase() === "github.com" &&
+      /^\/ignotusnemo\/parano1d(?:\/|$)/i.test(url.pathname)
+    );
+  } catch {
+    return false;
+  }
+}
+
 function navigationGroupKey(group: NavGroup, index: number): string {
   return `${index}:${group.items[0]?.slug ?? group.label}`;
 }
@@ -263,10 +324,13 @@ export default function SiteChrome({
     () => desktopSidebarCollapsedMemory
   );
   const [searchOpen, setSearchOpen] = useState(false);
+  const [repositoryGateOpen, setRepositoryGateOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeHeading, setActiveHeading] = useState(toc[0]?.id ?? "");
   const searchInput = useRef<HTMLInputElement>(null);
   const sidebar = useRef<HTMLElement>(null);
+  const repositoryGateClose = useRef<HTMLButtonElement>(null);
+  const repositoryGateLastFocus = useRef<HTMLElement | null>(null);
 
   const rememberSidebarPosition = () => {
     if (!sidebar.current) return;
@@ -337,6 +401,61 @@ export default function SiteChrome({
   useEffect(() => {
     document.documentElement.lang = localeInfo[locale].htmlLang;
   }, [locale]);
+
+  useEffect(() => {
+    if (!PRIVATE_REPOSITORY_GATE) return;
+
+    const gateNavigation = (event: MouseEvent) => {
+      const target = event.target instanceof Element ? event.target : null;
+      const link = target?.closest<HTMLAnchorElement>("a[href]");
+      if (!link || !isPrivateRepositoryUrl(link.href)) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      repositoryGateLastFocus.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      setRepositoryGateOpen(true);
+    };
+
+    document.addEventListener("click", gateNavigation, true);
+    document.addEventListener("auxclick", gateNavigation, true);
+    return () => {
+      document.removeEventListener("click", gateNavigation, true);
+      document.removeEventListener("auxclick", gateNavigation, true);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!repositoryGateOpen) return;
+    document.body.classList.add("repository-gate-open");
+    const frame = window.requestAnimationFrame(() =>
+      repositoryGateClose.current?.focus({ preventScroll: true })
+    );
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      setRepositoryGateOpen(false);
+      window.requestAnimationFrame(() =>
+        repositoryGateLastFocus.current?.focus({ preventScroll: true })
+      );
+    };
+    window.addEventListener("keydown", onKeyDown, true);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("keydown", onKeyDown, true);
+      document.body.classList.remove("repository-gate-open");
+    };
+  }, [repositoryGateOpen]);
+
+  const closeRepositoryGate = () => {
+    setRepositoryGateOpen(false);
+    window.requestAnimationFrame(() =>
+      repositoryGateLastFocus.current?.focus({ preventScroll: true })
+    );
+  };
 
   useEffect(() => {
     setOpenGroups((current) => {
@@ -730,6 +849,73 @@ export default function SiteChrome({
                 </div>
               ) : null}
             </div>
+          </div>
+        </div>
+      ) : null}
+
+      {repositoryGateOpen ? (
+        <div
+          className="repository-gate-layer"
+          role="dialog"
+          aria-modal="true"
+          aria-label={repositoryGateCopy[locale].dialog}
+          onMouseDown={(event) => {
+            if (event.currentTarget === event.target) closeRepositoryGate();
+          }}
+        >
+          <div
+            className="repository-gate-dialog"
+            onKeyDown={(event) => {
+              if (event.key !== "Tab") return;
+              const controls = Array.from(
+                event.currentTarget.querySelectorAll<HTMLElement>(
+                  "a[href], button:not([disabled])"
+                )
+              );
+              const first = controls[0];
+              const last = controls[controls.length - 1];
+              if (!first || !last) return;
+              if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+              } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+              }
+            }}
+          >
+            <button
+              ref={repositoryGateClose}
+              className="repository-gate-close"
+              type="button"
+              aria-label={repositoryGateCopy[locale].closeLabel}
+              onClick={closeRepositoryGate}
+            >
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="m3 3 10 10M13 3 3 13" />
+              </svg>
+            </button>
+            <p className="repository-gate-eyebrow">
+              {repositoryGateCopy[locale].eyebrow}
+            </p>
+            <h2>{repositoryGateCopy[locale].title}</h2>
+            <p className="repository-gate-copy">
+              {repositoryGateCopy[locale].body}
+            </p>
+            <div className="repository-gate-meta">
+              <p>{repositoryGateCopy[locale].launch}</p>
+              <p>
+                {repositoryGateCopy[locale].contact} ·{" "}
+                <a href="mailto:dev@parano1d.org">dev@parano1d.org</a>
+              </p>
+            </div>
+            <button
+              className="repository-gate-dismiss"
+              type="button"
+              onClick={closeRepositoryGate}
+            >
+              {repositoryGateCopy[locale].dismiss}
+            </button>
           </div>
         </div>
       ) : null}
