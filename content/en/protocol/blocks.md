@@ -1,6 +1,6 @@
 # Blocks and headers
 
-An accepted block is an atomic pair:
+Direct block admission uses an atomic pair:
 
 ```text
 {canonical block bytes, matching HistoryStep terminal}
@@ -94,7 +94,11 @@ The terminal includes metadata binding its version, height, semantic-header
 hash and proof class. Bundle decoding checks lengths before allocating and
 rejects trailing bytes, mismatched metadata or a terminal for another header.
 
-Complete bundles are retained for 18 blocks. Headers are permanent.
+Canonical block bodies are retained for 18 blocks. A directly admitted block
+stores its complete bundle. During authenticated catch-up, one verified
+terminal at the suffix tip authorizes the exact linked intermediate bodies;
+the tip stores the complete bundle, while intermediate rows keep compact local
+authorization for that verified suffix. Headers are permanent.
 
 See [Proof of work](proof-of-work.md) for nonce validation and
 [Receipts](../concepts/receipts.md) for durable transaction inclusion.

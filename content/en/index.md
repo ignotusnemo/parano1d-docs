@@ -1,6 +1,6 @@
 # Parano1d
 
-**A proof-native Layer 1 network secured by proof of work**
+**A proof-native Layer 1 ordered by proof of work. Provable end-to-end post-quantum soundness for state validation from genesis at NIST PQC Category 1.**
 
 Blockchains have a fundamental architectural flaw: to validate the present,
 you must replay the past. A new full node downloads the chain from genesis and
@@ -85,9 +85,10 @@ terminal inside the same relation. Proof size and verification work do not
 increase with block height.
 
 An active node keeps the exact Live State, compact headers for cumulative work
-and the latest 18 complete blocks for competing miners and reorgs. A joining
-node authenticates a finalized State with its matching terminal, then verifies
-the recent suffix normally.
+and the latest 18 canonical block bodies for competing miners and reorgs. A
+joining node authenticates a finalized State with its matching terminal, then
+verifies one recursive terminal at the recent suffix tip before applying the
+linked bodies.
 
 Parano1d is history-stateless, not state-free. `State` transfer scales with the
 live UTXO set. What no longer scales with chain age is the execution required
@@ -129,8 +130,10 @@ floor.
 
 ## One binary proof stack
 
-The protocol is built over the binary tower field `GF(2^128)`. Poseidon2b is
-the common permutation for addresses, transactions, Merkle trees, State roots,
+Committed trace arithmetic uses the binary tower field `GF(2^128)`. The
+production wide-challenge layer lifts Fiat–Shamir challenges, terminal claims
+and recursive region authentication into `GF(2^256)`. Poseidon2b is the common
+permutation for addresses, transactions, Merkle trees, State roots,
 transcripts, block identifiers and proof of work.
 
 [FROST-GKR](research/frost-gkr.md) packs Poseidon2b batches and Merkle paths into direct degree-seven
@@ -140,26 +143,33 @@ Wallet authorization, exact State transition and recursive chain verification
 therefore compose inside one arithmetic system instead of separate proof
 systems joined afterward.
 
-## Industry proof-security profile
+## Soundness
 
-Parano1d reports proof security using the scoped conventions published by
-established FRI and STARK projects. Under the literal Toy Problem convention
-used by Plonky2 and RISC Zero, the production wallet and `HistoryStep`
-parameters each reach the `GF(2^128)` field cap: **128 bits of conjectured FRI
-security**.
+| Security statement | Current production result |
+|---|---:|
+| Target FRI security | **128 bits** |
+| Provable Block–Tiwari FS-FRI security | **127 bits** |
+| Conjectured Block–Tiwari FS-FRI security | **127 bits** |
+| Sequential ideal-QROM half-success boundary | **64.707407428576 bits** |
+| NIST Post-Quantum Cryptography Category | **Category 1** |
+| Dominant Category 1 gate-depth floor | **173.273866314232 bits** |
+| Margin over the NIST `2^170` reference | **3.273866314232 bits** |
+| Complete ideal bound at the Category 1 envelope | **0.053364140323608411** |
 
-| Published system and metric | Published value | Parano1d under the corresponding metric |
-|---|---:|---:|
-| [Plonky2 default FRI](https://github.com/0xPolygonZero/plonky2#security), Toy Problem conjecture | 100 bits conjectured | 128 bits conjectured |
-| [RISC Zero soundness calculator](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35), Toy Problem conjecture | 97 bits at `2^20`; 95 bits at `2^24`, conjectured | 128 bits conjectured |
-| [ethSTARK / StarkWare](https://www.starknet.io/blog/safe-and-sound-a-deep-dive-into-stark-security/), RBR and `t/e(t)` analysis | 96-bit RBR premise; 95-bit compiled-STARK result | 96.047-bit wallet generalized-RBR bound; 95.022-bit fixed-invalid-block work score |
+[Block and Tiwari](https://eprint.iacr.org/2024/1161) define concrete FS-FRI
+security as the minimum expected classical random-oracle query work over every
+positive integer query budget. Their definitions and whole-bit presentation
+give 127 provable bits and 127 conjectured bits for the production B64 and B255
+profiles. The complete calculation and published-system comparison are in the
+[Block–Tiwari derivation](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/block-tiwari.md).
 
-The metrics retain their original labels because they describe different
-security games. The complete [security model](protocol/security-model.md)
-defines each Parano1d value and links the reproducible formulas and tests.
-In the terminology used for transparent STARK and FRI systems, the
-transaction proof stack is post-quantum resistant: it is hash-based, requires
-no trusted setup and contains no elliptic-curve transaction signature.
+The separate end-to-end game asks whether one stateful quantum adversary can
+make the production verifier accept an invalid terminal State whose recursive
+ancestry starts at genesis. Under the fixed Poseidon2b delta and coherent
+response-cost premises stated in the theorem, the result is provable end-to-end
+post-quantum soundness for state validation from genesis at NIST PQC Category 1. See the
+complete [QROM and Category 1 derivation](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/category-one.md)
+and the [security model](protocol/security-model.md).
 
 ## Protocol profile
 

@@ -54,6 +54,17 @@ Development binaries exercise parsing, UI and non-production test paths. A
 block-producing release requires the authenticated HistoryStep matrix pack
 described below.
 
+## Reproduce the soundness certificate
+
+The production calculations and proof documents are in
+[`noid_soundness`](https://github.com/ignotusnemo/parano1d/tree/main/noid_soundness).
+
+```sh
+cargo run --release --locked -p noid_soundness
+cargo run --release --locked -p noid_soundness -- --exact
+cargo test --release --locked -p noid_soundness
+```
+
 ## Generate the proof pack
 
 The canonical pack contains:
@@ -111,9 +122,9 @@ release gates; it should not be used for an independent release build.
 
 ## Portable binaries
 
-x86-64 releases are compiled against a portable process baseline. Runtime
-dispatch selects PCLMULQDQ, AVX2 with VPCLMULQDQ or AVX-512 after checking the
-host. ARM64 selects NEON with PMULL.
+x86-64 releases are compiled against a portable process baseline. After
+checking the host, runtime dispatch selects `pclmul`, `avx2+vpclmul` or
+`avx512bw+vpclmul`. ARM64 selects `neon+pmull`.
 
 Do not compile official artifacts with `target-cpu=native`. That would make the
 binary depend on the build machine before runtime hardware checks can run.

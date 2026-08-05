@@ -1,11 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 760" role="img"
      aria-labelledby="title description">
-  <title id="title">ParanO(1)d proof stack</title>
+  <title id="title">Parano1d proof stack</title>
   <desc id="description">
     A private wallet authorization path and a public HistoryStep transition
     path share Poseidon2b and binary-field arithmetic. FROST-GKR reduces
     committed execution columns to batched sumcheck relations, which are
-    closed by zerocheck, lincheck and FRI-Binius BaseFold.
+    closed by zerocheck, lincheck and FRI-Binius BaseFold. Production
+    Fiat-Shamir challenges and recursive region authority use GF(2^256).
   </desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
@@ -56,7 +57,7 @@
     </text>
     <text x="1384" y="57" fill="#34e06f" font-size="15" text-anchor="end"
           font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
-      ParanO(1)d
+      Parano1d
     </text>
 
     <!-- foundation -->
@@ -64,8 +65,8 @@
           fill="#111722" stroke="#596078" stroke-opacity=".52"/>
     <text x="80" y="148" fill="#67d7f6" font-size="11" font-weight="700"
           letter-spacing="1.6">SHARED FOUNDATION</text>
-    <text x="80" y="181" fill="#f6f7fa" font-size="18" font-weight="650">
-      GF(2^128) binary tower field
+    <text x="80" y="181" fill="#f6f7fa" font-size="16" font-weight="650">
+      GF(2^128) traces · GF(2^256) challenges
     </text>
     <path d="M382 139V187" stroke="#596078" stroke-opacity=".75"/>
     <text x="414" y="160" fill="#e5e8ee" font-size="16" font-weight="650">
@@ -263,7 +264,7 @@
     <text x="1360" y="713" fill="#34e06f" font-size="15" font-weight="700"
           text-anchor="end"
           font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
-      128-BIT CONJECTURED FRI SECURITY · PRODUCTION PARAMETERS
+      NIST CATEGORY 1 E2E · 127-BIT PROVABLE FS-FRI
     </text>
   </g>
 </svg>

@@ -1,84 +1,84 @@
-# Performance measurements
+# Performance measurement
 
-Performance figures describe a measured implementation on a named machine.
-They are not consensus constants and should not be projected onto an unrelated
-CPU from core count alone.
+Performance is a property of one source revision, proof profile, artifact pack,
+build profile and host. It is not a consensus constant and cannot be inferred
+from core count alone.
 
-The reference system used:
+The archived tables under `research/two_class/results/` predate the production
+C1 profile. They remain reproducible records of that earlier implementation,
+but they are not current production measurements. Current figures must be
+generated from the active source and authenticated matrix pack.
+
+Record at least:
 
 ```text
-CPU       Intel Core i7-1365U
-Topology  10 cores / 12 threads
-ISA       AVX2 + VPCLMULQDQ, no AVX-512
-OS        Linux 6.17 x86-64
-Rust      1.96.0
+git commit
+Rust version
+OS and kernel
+CPU model and logical topology
+selected runtime backend
+matrix-pack digests
+sample count and warm-up policy
+p50 and nearest-rank p95
 ```
 
-Each table reports 20 measured samples after warm-up. p95 uses the
-nearest-rank estimator.
+## Wallet authorization
 
-## Wallet authorization path
-
-The wallet benchmark includes page construction, logical hashing, one
+The wallet harness measures page construction, logical hashing, one
 authorization capsule, complete intent encode/decode and local capsule
 admission. It excludes network latency and block `HistoryStep` proving.
 
-| Case | Pages | Total p50 | Total p95 | Proof / intent size |
-|---|---:|---:|---:|---:|
-| 1 input | 1 | 228.30 ms | 352.47 ms | 56.49 / 56.81 KiB |
-| 100 inputs | 13 | 217.32 ms | 255.46 ms | 56.58 / 60.69 KiB |
-| 1,020 inputs | 128 | 233.06 ms | 285.81 ms | 56.11 / 96.50 KiB |
-
-The 1,020-input case still produces one authorization capsule. Larger input
-sets increase page hashing and serialized intent size, but not the number of
-wallet proofs.
-
-Reproduce the harness with:
-
 ```sh
-NOID_WALLET_BENCH_SAMPLES=20 cargo run --release \
+NOID_WALLET_BENCH_SAMPLES=20 cargo run --release --locked \
   --manifest-path research/two_class/Cargo.toml \
   --bin two-class-wallet-bench
 ```
 
-## HistoryStep classes
+The production C1 wallet uses 65 Fiat–Shamir queries. One `PagedSpend` still
+contains one authorization capsule whether it occupies one page or the full
+128 pages. The canonical serialized authorization has a 92,696-byte worst-case
+bound.
 
-Complete preparation is assembly plus proving. Verification measures the
-terminal verifier used by a full node.
+## HistoryStep
 
-| Class | Useful rows | Prepare p50 / p95 | Verify p50 / p95 | Terminal |
-|---|---:|---:|---:|---:|
-| B64, `m=23` | 5,705,307 | 11.472 / 14.387 s | 0.666 / 0.720 s | 766,549 B |
-| B255, `m=24` | 15,368,233 | 24.189 / 29.755 s | 0.770 / 1.012 s | 807,189 B |
+The isolated production benchmark requires a completed and authenticated
+matrix pack. Run each class separately so the output identifies the exact
+parent and child class.
 
-On this host, B64 passed the strict 15-second p95 preparation gate with 613 ms
-of margin. B255 did not, so the production capacity selector correctly kept
-the miner at B64. Both classes remain inexpensive for an ordinary node to
-verify relative to proving them.
+```sh
+NOID_PACK_ROOT=../parano1d-artifacts/history-step-pack-v1
+source "$NOID_PACK_ROOT/pins.env"
+export NOID_HISTORY_STEP_PACK_DIR="$NOID_PACK_ROOT"
 
-The benchmark used Thin LTO, one codegen unit and `target-cpu=native` to
-measure the exact host. Official binaries keep a portable process baseline and
-select proof and PoW kernels at runtime; therefore release-package timing must
-also be checked on its destination.
+NOID_HISTORY_STEP_BENCH_FILTER=B64 \
+NOID_HISTORY_STEP_BENCH_SAMPLES=20 \
+cargo bench --locked -p bench_prover --bench history_step_proof
 
-## Reading the figures
+NOID_HISTORY_STEP_BENCH_FILTER=B255 \
+NOID_HISTORY_STEP_BENCH_SAMPLES=20 \
+cargo bench --locked -p bench_prover --bench history_step_proof
+```
 
-The wallet table measures local authorization, not time to confirmation. The
-HistoryStep table measures block preparation, not expected proof-of-work search
-time. Network propagation and nonce search vary independently.
+`cargo bench` uses the optimized bench profile. Each reported sample covers
+production proof construction and terminal creation. Verification includes
+bounded wire decoding and complete terminal verification. The benchmark also
+reports field-proof bytes, C1 sidecar bytes and opening-claim count.
 
-For a miner, qualify the complete path:
+## End-to-end block production
+
+The isolated proof time is not the complete mining latency. Capacity decisions
+must measure:
 
 ```text
 select intents
-  + assemble witness
+  + assemble the current block trace
+  + replay and bind the parent terminal
   + prove HistoryStep
-  + search nonce
-  + submit and accept block
+  + search the nonce
+  + submit and accept the block
 ```
 
-Optimizing one internal phase does not justify enabling a larger proof class
-if complete preparation misses the target interval.
-
-The archived reports in the source repository record command lines, commits,
-matrix digests and raw samples under `research/two_class/results/`.
+Nonce search and network propagation vary independently from proof
+construction. B64 and B255 qualification must use the complete production path
+on the final host. Official binaries keep a portable baseline and select the
+`pclmul`, `avx2+vpclmul`, `avx512bw+vpclmul` or `neon+pmull` backend at runtime.

@@ -43,7 +43,8 @@ NODE READY
 ```
 
 x86-64 发布版节点要求 SSE4.1 和 PCLMULQDQ，ARM64 则要求 NEON 和
-PMULL。程序会自动选择更宽的 AVX2、VPCLMULQDQ 或 AVX-512 路径。
+PMULL。运行时会自动选择 `pclmul`、`avx2+vpclmul`、`avx512bw+vpclmul`
+或 `neon+pmull` 后端。
 
 虚拟机注意事项、内存需求与磁盘容量规划见
 [硬件与容量](../operate/hardware.md)。

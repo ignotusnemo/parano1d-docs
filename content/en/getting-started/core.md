@@ -44,7 +44,8 @@ NODE READY
 ```
 
 Production requires SSE4.1 and PCLMULQDQ on x86-64, or NEON and PMULL on
-ARM64. Wider AVX2, VPCLMULQDQ and AVX-512 paths are selected automatically.
+ARM64. Runtime dispatch selects the `pclmul`, `avx2+vpclmul`,
+`avx512bw+vpclmul` or `neon+pmull` backend automatically.
 
 For virtual-machine caveats, memory and disk planning, see
 [Hardware and capacity](../operate/hardware.md).

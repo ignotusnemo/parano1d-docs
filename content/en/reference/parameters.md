@@ -40,16 +40,26 @@ touched segments         256
 ## Proof system
 
 ```text
-field                    GF(2^128)
+committed trace field    GF(2^128)
+wide challenge field     GF(2^256)
+challenge support        2^255
 Poseidon2b width         4
 S-box                    x^7
 full rounds              8
 partial rounds           58
 B64                      m=23, up to 64 positions
 B255                     m=24, up to 255 positions
-FRI security score       128 bits conjectured (Toy Problem)
-wallet generalized RBR   96.047 bits classical
-fixed-block work score   95.022 bits classical
+wallet queries           65
+History/BaseFold queries 133
+B64 codeword             2^20 at rate 1/4
+B255 codeword            2^21 at rate 1/4
+serialized authorization max 92,696 bytes
+target FRI security      128 bits
+Block–Tiwari provable    127 bits
+Block–Tiwari conjectured 127 bits
+ideal-QROM boundary      64.707407428576 bits
+NIST Post-Quantum Cryptography Category 1
+Category 1 gate-depth floor 173.273866314232 bits
 ```
 
 ## Monetary

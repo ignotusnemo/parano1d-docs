@@ -1,78 +1,76 @@
 # 性能测量
 
-性能数据描述的是指定机器上的实测实现。它们不是共识常量，也不能只根据
-核心数量推算到无关 CPU。
+性能只对特定源码修订、证明配置、工件包、构建配置和主机成立。它不是共识常量，
+也不能只按核心数量推算。
 
-参考系统：
+`research/two_class/results/` 中的归档表格生成于实际部署 C1 配置之前。它们仍是
+旧实现的可复现记录，但不是当前实际部署性能。当前数据必须从活动源码和经过认证
+的矩阵包重新生成。
+
+报告至少应记录：
 
 ```text
-CPU       Intel Core i7-1365U
-Topology  10 cores / 12 threads
-ISA       AVX2 + VPCLMULQDQ, no AVX-512
-OS        Linux 6.17 x86-64
-Rust      1.96.0
+Git 提交
+Rust 版本
+操作系统与内核
+CPU 型号与逻辑拓扑
+运行时选中的后端
+矩阵包摘要
+样本数与预热策略
+p50 与最近秩 p95
 ```
 
-每张表都报告预热后的 20 个实测样本，p95 使用最近秩估计法（nearest-rank estimator）。
+## 钱包授权
 
-## 钱包授权路径
-
-钱包基准测试包含页面构建、逻辑哈希、一份授权证明封装、完整交易意图的
-编码与解码，以及本地授权证明封装准入；不包含网络延迟和区块 `HistoryStep`
-证明。
-
-| 场景 | 页数 | 总 p50 | 总 p95 | 证明 / 交易意图大小 |
-|---|---:|---:|---:|---:|
-| 1 个输入 | 1 | 228.30 ms | 352.47 ms | 56.49 / 56.81 KiB |
-| 100 个输入 | 13 | 217.32 ms | 255.46 ms | 56.58 / 60.69 KiB |
-| 1,020 个输入 | 128 | 233.06 ms | 285.81 ms | 56.11 / 96.50 KiB |
-
-1,020 输入场景仍只生成一份授权证明封装。更多输入会增加页面哈希和序列化
-交易意图的大小，但不会增加钱包证明数量。
-
-复现实验：
+钱包测试包含页面构建、逻辑哈希、一份授权证明封装、完整交易意图编码与解码，
+以及本地授权证明封装准入；不包含网络延迟和区块 `HistoryStep` 证明。
 
 ```sh
-NOID_WALLET_BENCH_SAMPLES=20 cargo run --release \
+NOID_WALLET_BENCH_SAMPLES=20 cargo run --release --locked \
   --manifest-path research/two_class/Cargo.toml \
   --bin two-class-wallet-bench
 ```
 
-## HistoryStep 类别
+实际部署的 C1 钱包使用 65 次 Fiat–Shamir 查询。无论 `PagedSpend` 只有一页还是
+占满 128 页，都只包含一份授权证明封装。规范序列化授权的最坏情况上界为
+92,696 字节。
 
-完整准备时间包含见证组装与证明生成。验证时间测量完整节点对终端证明的
-验证耗时。
+## HistoryStep
 
-| 类别 | 有效行 | 准备 p50 / p95 | 验证 p50 / p95 | 终端证明 |
-|---|---:|---:|---:|---:|
-| B64, `m=23` | 5,705,307 | 11.472 / 14.387 s | 0.666 / 0.720 s | 766,549 B |
-| B255, `m=24` | 15,368,233 | 24.189 / 29.755 s | 0.770 / 1.012 s | 807,189 B |
+隔离的实际部署基准测试需要一份完整且经过认证的矩阵包。两个类别应分别运行，
+使输出明确标识父类别与子类别。
 
-在该主机上，B64 以 613 ms 余量通过严格的 15 秒 p95 准备门槛。B255
-没有通过，因此生产用容量选择器正确地让矿工保持在 B64。相比生成证明，
-普通节点验证两类证明的成本都很低。
+```sh
+NOID_PACK_ROOT=../parano1d-artifacts/history-step-pack-v1
+source "$NOID_PACK_ROOT/pins.env"
+export NOID_HISTORY_STEP_PACK_DIR="$NOID_PACK_ROOT"
 
-基准测试使用 Thin LTO、单个代码生成单元和 `target-cpu=native` 来测量
-实际主机。发布版二进制文件保留可移植的指令集基线，并在运行时选择证明与 PoW
-内核，因此也必须在目标机器上检查发布包的速度。
+NOID_HISTORY_STEP_BENCH_FILTER=B64 \
+NOID_HISTORY_STEP_BENCH_SAMPLES=20 \
+cargo bench --locked -p bench_prover --bench history_step_proof
 
-## 如何理解数据
+NOID_HISTORY_STEP_BENCH_FILTER=B255 \
+NOID_HISTORY_STEP_BENCH_SAMPLES=20 \
+cargo bench --locked -p bench_prover --bench history_step_proof
+```
 
-钱包表测量本地授权，不是确认时间。HistoryStep 表测量区块准备，不是预期
-PoW 搜索时间。网络传播与 nonce 搜索独立变化。
+`cargo bench` 使用优化后的 bench profile。每个样本覆盖实际部署证明生成与终端
+创建。验证数据包含有界网络格式解码和完整终端验证。基准测试还会输出主证明字节
+数、C1 sidecar 字节数以及 opening claim 数量。
 
-矿工应评估完整路径：
+## 端到端区块生产
+
+隔离证明时间不等于完整挖矿延迟。容量判断必须测量整条路径：
 
 ```text
 选择交易意图
-  + 组装见证数据
+  + 组装当前区块轨迹
+  + 重放并绑定父终端
   + 生成 HistoryStep 证明
   + 搜索 nonce
   + 提交并接受区块
 ```
 
-如果完整准备无法满足目标区块间隔，只优化一个内部阶段不足以启用更大的
-证明类别。
-
-源码仓库在 `research/two_class/results/` 中保存了带命令行、Git 提交、矩阵
-摘要和原始样本的归档报告。
+nonce 搜索与网络传播独立于证明生成而变化。B64 与 B255 都必须在最终主机上通过
+完整实际部署路径测量。官方二进制保留可移植基线，并在运行时选择
+`pclmul`、`avx2+vpclmul`、`avx512bw+vpclmul` 或 `neon+pmull` 后端。

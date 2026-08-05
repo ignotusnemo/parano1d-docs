@@ -160,7 +160,7 @@ UTXO 写入槽位时分配的新标识符；代码字段为 `creation_id`。它�
 <a id="accepted-block-bundle"></a>
 ### 已接受区块包（accepted block bundle）
 
-规范区块字节及其匹配的 `HistoryStep` 终端证明组成的原子对。
+直接接纳区块时使用的网络对象：规范区块字节及其匹配的 `HistoryStep` 终端证明。两者一同验证和转发。认证追赶同步在验证精确后缀链尖的递归终端证明后，可以省略重复的中间终端证明字节。
 
 <a id="body-retention-window"></a>
 ### 区块体保留窗口（block-body retention window）
@@ -302,8 +302,9 @@ Parano1d 在 `GF(2^128)` 上使用的四通道置换，服务于地址、交易�
 <a id="binary-tower-field"></a>
 ### 二进制塔域（binary tower field）
 
-通过二次扩域逐层构造的特征二有限域。Parano1d 的证明算术使用
-`GF(2^128)`。
+通过二次扩域逐层构造的特征二有限域。Poseidon2b 与已承诺执行轨迹使用
+`GF(2^128)`；实际部署 C1 配置的 Fiat–Shamir 挑战、终端声明和递归区域认证
+使用其二次扩域 `GF(2^256)`。
 
 <a id="domain-separation"></a>
 ### 域分离（domain separation）
@@ -354,6 +355,18 @@ FRI 是低次数测试框架；FRI-Binius 与 BaseFold 是适配二进制域证�
 网络初始采用的两种 `HistoryStep` 证明类别。两者证明同一个关系，但有效物理页
 容量不同。
 
+<a id="block-tiwari-fs-fri"></a>
+### Block–Tiwari FS-FRI 安全性
+
+Block 和 Tiwari 为非交互式 FRI 定义的具体经典随机预言机期望工作量指标。
+可证明值与猜想值使用不同的 RBR 前提，即使整数位表示相同也不例外。
+
+<a id="c1-profile"></a>
+### C1 配置
+
+源码中实际部署宽挑战配置的标识符。其代数挑战从 `GF(2^256)` 中基数为
+`2^255` 的迹为 1 仿射集合采样。配置名称本身不构成 NIST 类别结论。
+
 <a id="completeness"></a>
 ### 完备性（completeness）
 
@@ -362,8 +375,8 @@ FRI 是低次数测试框架；FRI-Binius 与 BaseFold 是适配二进制域证�
 <a id="soundness"></a>
 ### 可靠性（soundness）
 
-对于错误命题，验证者错误接受的概率不超过协议声明的可忽略上界。不同可靠性
-模型不能只因都以“位”为单位就视为同一指标。
+对于错误命题，验证者错误接受的概率不超过协议声明的上界。该数值只有连同
+对手模型、密码学前提和组合范围才有意义。
 
 <a id="round-by-round-soundness"></a>
 ### 逐轮可靠性（round-by-round soundness，RBR）
@@ -397,8 +410,15 @@ Plonky2、RISC Zero 等 FRI 实现公开采用的一种基于码率、查询数�
 <a id="post-quantum-resistance"></a>
 ### 后量子抗性（post-quantum resistance）
 
-本文档按透明、基于哈希的 FRI/STARK 系统通行用法描述交易证明栈：它不依赖
-椭圆曲线交易签名或可信设置。具体数值必须连同其命名的安全模型一起阅读。
+Parano1d 的交易共识不依赖椭圆曲线签名或可信设置。其端到端 QROM 定理在明确
+前提下，把从创世开始的无效 State 游戏与 NIST 后量子密码学 Category 1 资源
+门槛比较。
+
+<a id="nist-category-one"></a>
+### NIST 后量子密码学 Category 1
+
+以穷举 AES-128 密钥为参照并包含公开 `MAXDEPTH` 限制的 NIST 资源目标。
+Parano1d 针对从创世开始的端到端无效 State 游戏评估这一目标。
 
 ## 网络
 

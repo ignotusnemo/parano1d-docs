@@ -12,7 +12,7 @@
 `State` начинается с `2^24` возможных слотов и может по одному уровню
 расширяться до `2^32`.
 
-![Расширение `State` по финализированному окну](../assets/architecture/live-state-expansion.svg)
+![Расширение `State` по финализированному окну](../../../assets/architecture/live-state-expansion.svg)
 
 ## Жизненный цикл слота
 

@@ -11,7 +11,7 @@
 Поэтому единицей независимого производства блоков является полная
 доказывающая нода, а не отдельный вычислитель хешей.
 
-![Путь блока в proof-native архитектуре](../assets/architecture/proof-native-block-flow.svg)
+![Путь блока в proof-native архитектуре](../../../assets/architecture/proof-native-block-flow.svg)
 
 ## Роли ноды и вычислителя nonce
 

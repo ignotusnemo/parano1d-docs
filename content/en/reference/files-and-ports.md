@@ -46,7 +46,7 @@ transport. A bearer token authenticates requests but does not encrypt them.
 | Data | Window |
 |---|---:|
 | Headers | Permanent |
-| Complete accepted blocks | 18 |
+| Canonical block bodies | 18 |
 | Reorganizable suffix | 18 |
 | Maximum reorganization | 17 |
 | Undo records | 36 |

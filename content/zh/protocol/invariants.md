@@ -8,9 +8,11 @@
 
 [分叉选择](../reference/glossary.md#fork-choice)只在保留具备[硬最终性](../reference/glossary.md#hard-finality)的前缀的有效候选链之间比较[累计工作量](../reference/glossary.md#cumulative-work)。工作量相同时，以更小的链尖区块哈希作为确定性决胜规则。
 
-## 原子有效性
+## 由证明授权的有效性
 
-区块及其匹配的 `HistoryStep` [终端证明](../reference/glossary.md#terminal)构成一个[被接受的区块包](../reference/glossary.md#accepted-block-bundle)，任一对象都不能脱离另一个进入规范链。
+直接接纳区块时，区块及其匹配的 `HistoryStep` [终端证明](../reference/glossary.md#terminal)构成一个[被接受的区块包](../reference/glossary.md#accepted-block-bundle)。认证追赶同步也可以先验证精确后代后缀链尖的终端证明，再导入其递归关系覆盖的链接区块体。每个区块体仍须通过相同的原生区块头、PoW、交易周期锚点、交易与精确 State 根检查。
+
+任何规范区块都不能只凭区块体字节和工作量证明获得接纳。它必须由自身匹配的终端证明授权，或者由递归后缀精确包含该区块的已验证后代终端证明授权。
 
 终端证明绑定无 nonce 语义区块头，包括交易承诺与转换后 State 承诺。含 nonce 区块头再单独检查工作量证明和父链接。
 
@@ -73,6 +75,8 @@ State 扩展只读取已经具备硬最终性的 18 区块头窗口。至少需�
 - 重建出的精确全局 State 根。
 
 候选数据先写入独立的临时区，再通过单个事务成为规范 State。中断或无效传输不会留下安装到一半的 State。
+
+边界后的后缀只有在其精确链尖终端证明验证完成后才能接纳。随后，相互链接的区块体按顺序检查并物化；已验证递归关系已经携带有效性，因此无需传输中间终端证明。
 
 ## 策略边界
 

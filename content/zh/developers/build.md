@@ -52,6 +52,17 @@ cargo build --locked \
 开发版二进制文件可测试解析、UI 和非生产用证明路径。能够生产区块的发布版需要
 下文所述经过认证的 HistoryStep 矩阵包。
 
+## 复现可靠性证书
+
+实际部署计算与证明文档位于
+[`noid_soundness`](https://github.com/ignotusnemo/parano1d/tree/main/noid_soundness)。
+
+```sh
+cargo run --release --locked -p noid_soundness
+cargo run --release --locked -p noid_soundness -- --exact
+cargo test --release --locked -p noid_soundness
+```
+
 ## 生成证明矩阵包
 
 规范矩阵包包含：
@@ -109,8 +120,8 @@ cat target/release-builds/LAST_RELEASE
 ## 可移植二进制
 
 x86-64 版本针对可移植的指令集基线编译。检查主机后，运行时分派机制
-会选择 PCLMULQDQ、带 VPCLMULQDQ 的 AVX2 或 AVX-512。ARM64 选择
-NEON 与 PMULL。
+会选择 `pclmul`、`avx2+vpclmul` 或 `avx512bw+vpclmul`。ARM64 选择
+`neon+pmull`。
 
 发布产物不得使用 `target-cpu=native` 构建，否则二进制会在运行时硬件
 检查之前就依赖构建机器。

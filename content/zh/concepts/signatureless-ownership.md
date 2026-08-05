@@ -34,11 +34,17 @@ Parano1d 让旧区块体不再是共识必需数据，从而减少普通节点�
 
 ## 后量子边界
 
-交易所有权不包含椭圆曲线签名方案。地址派生与授权使用 Poseidon2b，以及 `GF(2^128)` 上的二进制证明栈。
+交易所有权不包含椭圆曲线签名方案。地址派生与已承诺授权轨迹使用 Poseidon2b
+和 `GF(2^128)`。实际部署的 C1 配置从 `GF(2^256)` 中基数为 `2^255` 的
+迹为 1 的集合采样授权挑战。
 
 libp2p 使用的 Ed25519 身份位于这条边界之外。它只标识网络对等节点，不能授权交易、创造价值，也不能满足任何共识所有权规则。
 
-按照成熟 FRI 系统采用的同一 [Toy Problem 猜想](../reference/glossary.md#toy-problem-conjecture)，实际部署的钱包与 `HistoryStep` 参数的 FRI 安全性评分均为 **128 位**。这里所说的[后量子抗性](../reference/glossary.md#post-quantum-resistance)及其数值范围，必须连同命名的安全模型理解。参数与组合方式见[证明栈](../architecture/proof-stack.md)，比较方法和各项指标的精确名称见[安全模型](../protocol/security-model.md)。
+实际部署配置在 128 位目标下，Block–Tiwari FS-FRI 的可证明值和猜想值均为
+127 位。另一项端到端 QROM 定理把钱包授权纳入从创世开始的无效 State 游戏，
+并在固定 Poseidon2b 差分界与相干响应成本前提下，证明网络当前状态自创世块起的
+端到端后量子可靠性达到 NIST PQC Category 1 水平。构造见[证明栈](../architecture/proof-stack.md)，精确命题见
+[安全模型](../protocol/security-model.md)。
 
 ## 实际含义
 

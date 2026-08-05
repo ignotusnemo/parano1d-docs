@@ -237,6 +237,10 @@ TxInfo {
 }
 ```
 
+`circulating_supply_micronoid` is the exact sum of all UTXO values in Live
+State, expressed in μNOID. It is encoded as a decimal string so JSON does not
+lose precision.
+
 ```text
 StateInfo {
   log_slots: u32

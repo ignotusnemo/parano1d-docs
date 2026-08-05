@@ -6,8 +6,10 @@ particular Parano1d object; ordinary lowercase use keeps its general meaning.
 
 ## Accepted block bundle
 
-The atomic pair of canonical block bytes and the matching `HistoryStep`
-terminal. A node accepts, stores and relays the two together.
+The wire object used for direct block admission: canonical block bytes and the
+matching `HistoryStep` terminal. The two are verified and relayed together.
+Authenticated catch-up may omit redundant intermediate terminal bytes after a
+recursive terminal for the exact suffix tip has verified.
 
 ## Active address
 
@@ -38,6 +40,12 @@ that authority to the complete logical transaction ID.
 The two production `HistoryStep` proof classes authenticated by the official
 matrix pack. They prove the same relation with effective capacities of 64 and
 255 user pages respectively.
+
+## Block–Tiwari FS-FRI security
+
+The concrete classical random-oracle expected-work metric defined by Block and
+Tiwari for non-interactive FRI. Provable and conjectured values use different
+RBR premises even when their whole-bit presentations coincide.
 
 ## BaseFold
 
@@ -84,6 +92,12 @@ prefix are eligible.
 A cryptographic commitment binds a prover to data without placing all of that
 data in the verifier's initial view. An opening reveals or proves a requested
 value at a point while checking consistency with the commitment.
+
+## C1 profile
+
+The source identifier for the production wide-challenge proof profile. Its
+algebraic challenges are sampled from a trace-one affine support of size
+`2^255` in `GF(2^256)`. The name alone is not a NIST category result.
 
 ## Completeness
 
@@ -150,9 +164,14 @@ proofs or mine.
 
 ## GF(2^128)
 
-The 128-bit binary extension field shared by the proof stack and Poseidon2b.
-Field addition is bitwise XOR; field multiplication follows the pinned binary
-tower representation.
+The 128-bit binary extension field used by Poseidon2b and committed trace
+arithmetic. Field addition is bitwise XOR; field multiplication follows the
+pinned binary tower representation.
+
+## GF(2^256)
+
+The quadratic extension of Parano1d's `GF(2^128)` field used for production C1
+Fiat–Shamir challenges, terminal claims and recursive region authentication.
 
 ## GKR
 
@@ -273,6 +292,12 @@ the P2P protocol ID. It is distinct from an individual node's peer identity.
 
 A coarse grouping of related IP address ranges used only for connection
 diversity and resource limits. It has no role in consensus or wallet identity.
+
+## NIST Post-Quantum Cryptography Category 1
+
+The NIST resource target referenced to exhaustive key search against AES-128,
+including the published `MAXDEPTH` limits. Parano1d evaluates this target for
+the end-to-end from-genesis invalid-State game.
 
 ## Nonce
 

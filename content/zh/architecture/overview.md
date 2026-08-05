@@ -49,11 +49,11 @@ Parano1d 把每一项证明责任放在相应[见证数据](../reference/glossar
 
 [槽位](../reference/glossary.md#slot)位于每个包含 `2^16` 条记录的 [State 分段](../reference/glossary.md#state-segment)中。空分段是虚拟的；清除最后一个占用槽位会删除该分段；分配输出时会先复用空槽位，再扩展 State。新的 [`creation_id`](../reference/glossary.md#creation-id) 可防止旧引用在同一索引复用后重新生效。
 
-节点保留用于[累计工作量](../reference/glossary.md#cumulative-work)比较的紧凑区块头，以及用于常规同步和浅层[链重组](../reference/glossary.md#reorganization)的最近 18 个完整区块。更早的交易体不是当前共识验证所需数据。付款收据可以在[区块体保留窗口](../reference/glossary.md#body-retention-window)结束后，继续提供可独立验证的包含证据。
+节点保留用于[累计工作量](../reference/glossary.md#cumulative-work)比较的紧凑区块头，以及用于常规同步和浅层[链重组](../reference/glossary.md#reorganization)的最近 18 个规范区块体。更早的交易体不是当前共识验证所需数据。付款收据可以在[区块体保留窗口](../reference/glossary.md#body-retention-window)结束后，继续提供可独立验证的包含证据。
 
 ## 加入网络
 
-较小的高度差通过保留的完整区块补齐。差距较大时，新节点把区块头与经过认证的 State [快照](../reference/glossary.md#snapshot)写入临时区；安装 State 前，它会验证累计工作链、[最终性边界](../reference/glossary.md#finality-boundary)和匹配的 `HistoryStep` 终端证明，随后正常验证近期后缀。
+较小的高度差通过保留的区块体以及后缀链尖上的一个已验证递归终端证明补齐。差距较大时，新节点把区块头与经过认证的 State [快照](../reference/glossary.md#snapshot)写入临时区；安装 State 前，它会验证累计工作链、[最终性边界](../reference/glossary.md#finality-boundary)和匹配的边界终端证明，随后验证近期后缀链尖上的一个终端证明并应用相互链接的区块体。
 
 快照不是可信 State。它只是 State 的传输载体，其 State 根和历史边界都由共识认证。
 

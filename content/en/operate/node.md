@@ -13,8 +13,9 @@ The production proof backend requires:
 - x86-64 with SSE4.1 and PCLMULQDQ; or
 - ARM64 with NEON and PMULL.
 
-AVX2, VPCLMULQDQ and AVX-512 are selected automatically when available. The
-scalar reference backend is not used by a production node.
+Runtime dispatch selects the `pclmul`, `avx2+vpclmul`,
+`avx512bw+vpclmul` or `neon+pmull` backend automatically. The scalar reference
+backend is not used by a production node.
 
 The node listens for P2P connections on TCP port `9400`. Its JSON-RPC endpoint
 should remain bound to `127.0.0.1:9401`.

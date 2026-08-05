@@ -20,48 +20,78 @@ An accepted canonical tip establishes that:
 Proof of work orders valid transitions. It does not repair invalid proofs.
 Recursive proofs establish validity. They do not replace fork choice.
 
-## Industry proof-security profile
+## Production soundness
 
-Security figures are reported with the same scoped labels used by established
-FRI and STARK implementations. The production parameters are pinned to the
-source revision used by the executable calculator.
+The production profile has two distinct security statements. Block–Tiwari
+measures the classical random-oracle Fiat–Shamir compilation of FRI. The
+end-to-end theorem measures acceptance of an invalid recursive State by a
+quantum adversary.
 
-| Published system and metric | Published value | Parano1d under the corresponding metric |
-|---|---:|---:|
-| [Plonky2 default FRI](https://github.com/0xPolygonZero/plonky2#security), Toy Problem conjecture | **100 bits conjectured**; default Poseidon estimated at about **95 bits** | **128 bits conjectured**, using the literal Plonky2 formula and production field cap |
-| [RISC Zero soundness calculator](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35), Toy Problem conjecture | **97 bits conjectured** at `SEGMENT_SIZE = 2^20`; **95 bits conjectured** at `2^24` | **128 bits conjectured**, using the corresponding rate/query calculation |
-| [ethSTARK / StarkWare](https://www.starknet.io/blog/safe-and-sound-a-deep-dive-into-stark-security/), round-by-round and `t/e(t)` operation-count analysis | **96-bit RBR** IOP premise; **95-bit** compiled-STARK result under its stated operation-count definition | **96.047-bit** wallet generalized-RBR knowledge bound; **95.022-bit** fixed-invalid-block work-accounted finite composition |
+| Security statement | Current production result |
+|---|---:|
+| Target FRI security | **128 bits** |
+| Provable Block–Tiwari FS-FRI security | **127 bits** |
+| Conjectured Block–Tiwari FS-FRI security | **127 bits** |
+| Sequential ideal-QROM half-success boundary | **64.707407428576 bits** |
+| NIST Post-Quantum Cryptography Category | **Category 1** |
+| Dominant Category 1 gate-depth floor | **173.273866314232 bits** |
+| Margin over the NIST `2^170` reference | **3.273866314232 bits** |
+| Complete ideal bound at the Category 1 envelope | **0.053364140323608411** |
 
-The first Parano1d value is the literal Plonky2/Toy Problem score
+### Block–Tiwari FS-FRI
+
+[Block and Tiwari](https://eprint.iacr.org/2024/1161) define concrete FS-FRI
+security as
 
 ```text
-min(field bits, query count * log2(inverse rate) + pre-query grind bits).
+log2(minimum expected classical random-oracle query work),
 ```
 
-The wallet uses 64 queries at rate `1/32` with a 16-bit pre-query grind;
-`HistoryStep` uses 125 queries at rate `1/4` with the same grind. Both raw
-scores exceed 128 bits and are capped by `GF(2^128)`.
+where the minimum ranges over every positive integer query budget. Applying
+their definitions, 256-bit random-oracle setting and whole-bit presentation to
+the production B64 and B255 profiles gives exact expected-work values in
+`[127, 128)` for both the provable and conjectured RBR premises. Their equality
+after integer presentation does not identify those premises.
 
-The last row reports different scalar conventions. `96.047` is the negative
-base-two logarithm of the largest generalized round-by-round knowledge-error
-bound among the moves of the interactive wallet base IOP. `95.022` is the
-fixed-invalid-block finite composition when the mandatory grind is charged
-only to the query term that follows it. Neither is silently substituted for
-the 128-bit conjectured FRI score.
+The [Block–Tiwari derivation](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/block-tiwari.md) proves
+the local RBR inputs for every production layer, solves both integer
+optimizations and reproduces the comparison with the systems in their
+published table.
 
-All production inputs, formulas, finite ceilings and regression tests are in
-the [Parano1d soundness workbench](https://github.com/ignotusnemo/parano1d-soundness).
-The corresponding Parano1d Lab
-[analysis](https://lab.parano1d.org/research/parano1d-soundness-industry-metrics/)
-explains the comparison in full.
+### End-to-end Category 1
 
-In the terminology used for transparent STARK and FRI systems, the transaction
-proof stack is post-quantum resistant: it is transparent and hash-based,
-requires no trusted setup and contains no elliptic-curve transaction
-signature. Poseidon2b is used for addresses, commitments and transcripts; the
-proof arithmetic is over the binary tower field `GF(2^128)`. The numerical
-claims above remain attached to their exact published conventions rather than
-being collapsed into a different end-to-end metric.
+The security game asks whether one stateful quantum adversary can make the
+production verifier accept an invalid terminal State whose recursive ancestry
+starts at genesis. One resource budget covers wallet authorization, the block
+relation, parent links, the exact State transition, recursive verification and
+every adversarial ancestor on which the terminal depends.
+
+`C1` is the source identifier for the production wide-challenge profile. It
+uses 65 wallet queries, 133 History queries, a 256-bit transcript digest and
+algebraic challenges sampled uniformly from a trace-one affine set of
+cardinality `2^255` in `GF(2^256)`. Committed trace arithmetic and Poseidon2b
+remain over `GF(2^128)`.
+
+The depth-aware theorem evaluates all NIST Post-Quantum Cryptography Category 1
+`MAXDEPTH` points against the AES-128 gate-depth reference `2^170`. The base-two
+logarithm of its dominant half-success gate-depth floor is
+`173.273866314232` bits, and its complete ideal success bound at the Category 1
+envelope is at most `0.053364140323608411`.
+
+The fixed Poseidon2b production corollary requires
+`Delta_P2b^C1 < 0.446635859676391589`. It also assumes the minimum coherent
+response cost stated by the resource theorem. Under these premises, the theorem
+gives provable end-to-end post-quantum soundness for state validation from
+genesis at NIST PQC Category 1: every adversary inside the Category 1 resource
+envelope has success probability below one half in the from-genesis
+invalid-State game.
+
+The [end-to-end QROM derivation](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/category-one.md)
+states the game, reductions, finite terms and assumptions. The
+[`noid_soundness` certificate](https://github.com/ignotusnemo/parano1d/tree/main/noid_soundness) imports the
+production constants and evaluates every normative inequality with exact
+integer or rational arithmetic. This is a cryptographic Category 1 resource
+assessment, not a claim of NIST review or certification.
 
 ## Trust boundaries
 

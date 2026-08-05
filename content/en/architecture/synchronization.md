@@ -1,28 +1,33 @@
 # Synchronization
 
-Synchronization has two paths. A node close to the tip verifies retained
-complete blocks. A node farther behind authenticates a finalized snapshot and
-then verifies the recent suffix. Neither path trusts a peer's claim about
-State.
+Synchronization has two paths. A node close to the tip verifies a retained
+block-body suffix and one recursive terminal at its tip. A node farther behind
+first authenticates a finalized snapshot and then verifies the same form of
+recent suffix. Neither path trusts a peer's claim about State.
 
 ![Authenticated snapshot synchronization](../assets/architecture/snapshot-sync.svg)
 
 ## Short gaps
 
-Every full node retains the latest 18 complete accepted blocks. If a joining
-node is no more than 18 blocks behind, it requests those atomic
-`{block, HistoryStep terminal}` bundles and processes them in order.
+Every full node retains the latest 18 canonical block bodies. If a joining
+node is no more than 18 blocks behind, it authenticates the linked headers,
+downloads the corresponding bodies and obtains one `HistoryStep` terminal for
+the suffix tip. The terminal is verified before any suffix body is committed.
+Its recursion covers the exact ancestry from the node's installed boundary to
+that tip, so intermediate terminal bytes need not be transferred again.
 
-For each bundle it checks:
+The bodies are then processed in order. For each body the node checks:
 
-- parent and height continuity;
+- equality with the authenticated header, parent and height continuity;
 - exact difficulty and timestamp rules;
 - Poseidon2b proof of work;
 - transaction and State commitments;
-- the recursive `HistoryStep`;
+- the exact post-State root during materialization;
 - fork-choice and hard-finality constraints.
 
-The node then materializes the proven writes.
+Direct admission of a newly announced block still uses its ordinary atomic
+`{block, HistoryStep terminal}` bundle. Compact suffix synchronization changes
+only redundant proof transport, not the validity relation.
 
 ## Snapshot path
 
@@ -35,7 +40,8 @@ A gap of 19 blocks or more uses the snapshot protocol:
 5. download and verify the referenced State segments;
 6. reconstruct the exact global State root;
 7. install the staged State transactionally;
-8. verify and apply the retained complete suffix.
+8. obtain and verify one terminal for the retained suffix tip, then apply its
+   linked block bodies.
 
 The manifest binds the boundary height, `state_root`, `log_slots`,
 `active_slot_count`, `alloc_counter`, and the exact segment identifiers, roots
@@ -61,7 +67,7 @@ The full cost profile is:
 | Header validation | Chain height |
 | Boundary terminal verification | Constant |
 | State transfer and installation | Live State |
-| Recent suffix | At most 18 complete blocks |
+| Recent suffix | At most 18 block bodies plus one tip terminal |
 
 Parano1d removes historical execution replay; it does not pretend that proof
 of work can be compared without reading headers or that current State can be
@@ -90,7 +96,7 @@ The finalized boundary is not reorganizable. Fork choice considers only
 candidate chains that preserve it, and the accepted rollback depth must be
 less than 18. The maximum canonical reorganization is therefore 17 blocks.
 
-Recent undo data and complete blocks cover this suffix. A deeper competing
+Recent undo data and block bodies cover this suffix. A deeper competing
 history is rejected rather than reconstructed through a snapshot.
 
 For the exact fork rule, see [Consensus](../protocol/consensus.md). Network

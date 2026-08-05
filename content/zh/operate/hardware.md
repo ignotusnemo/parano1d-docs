@@ -30,9 +30,8 @@ parano1d-miner --check-hardware
 NODE READY
 ```
 
-报告也会列出选中的运行时后端。在 x86-64 上，程序会自动选择更宽的
-PCLMULQDQ、带 VPCLMULQDQ 的 AVX2 或 AVX-512 路径；ARM64 发布版路径
-使用 NEON 与 PMULL。
+报告也会列出选中的运行时后端。x86-64 会选择 `pclmul`、
+`avx2+vpclmul` 或 `avx512bw+vpclmul`，ARM64 会选择 `neon+pmull`。
 
 ## 虚拟机
 
@@ -62,13 +61,12 @@ grep -m1 '^flags' /proc/cpuinfo \
 |---|---|---:|---|
 | 钱包或普通节点 | 至少 2 个现代 vCPU | 4 GiB | SSD，初期保留 20 GiB |
 | 公共种子/完整节点 | 至少 4 个现代 vCPU | 8 GiB | SSD 或 NVMe，并监控余量 |
-| B64 矿工 | 至少 12 个现代逻辑 CPU | 至少 8 GiB | SSD 或 NVMe |
+| B64 矿工 | 对实际主机做基准测试 | 至少 8 GiB | SSD 或 NVMe |
 | B255 矿工 | 对实际主机做基准测试 | 至少 16 GiB | 优先 NVMe |
 
 CPU 代际、时钟、内存带宽和选中的无进位乘法后端，比服务商的 vCPU 标签
-更重要。挖矿能力必须在最终主机上测量。发布参考值为：12 线程 Intel Core
-i7-1365U 在饱和 B64 准备上的 p95 为 14.387 秒。完整数据和测量边界见
-[性能测量](../reference/performance.md)。
+更重要。挖矿能力必须使用实际部署的 C1 配置和经过认证的矩阵包，在最终主机上
+测量。具体流程见[性能测量](../reference/performance.md)。
 
 普通节点不会持续构建区块证明，但仍需验证钱包授权和收到的
 `HistoryStep` 终端证明。避免使用 CPU 可用量在负载下相差一个数量级的
@@ -97,7 +95,7 @@ i7-1365U 在饱和 B64 准备上的 p95 为 14.387 秒。完整数据和测量�
 
 - 永久的紧凑区块头；
 - 当前物化的精确 Live State 和所有者索引；
-- 最近 18 个完整区块；
+- 最近 18 个规范区块体；
 - 36 个区块的 State 撤销数据；
 - 对等身份与对等节点存储；
 - 证明缓存与快照临时区；

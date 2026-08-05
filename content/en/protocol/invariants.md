@@ -14,10 +14,17 @@ Fork choice compares accumulated work only among valid candidates that preserve
 the hard-finalized prefix. Equal-work tips use the smaller block hash as the
 deterministic tie-break.
 
-## Atomic validity
+## Proof-authorized validity
 
-A block and its matching `HistoryStep` terminal are one accepted bundle.
-Neither object can enter the canonical chain without the other.
+Direct block admission uses one accepted bundle containing the block and its
+matching `HistoryStep` terminal. Authenticated catch-up may instead verify one
+terminal at an exact descendant suffix tip before importing the linked bodies
+covered by its recursion. Every body still passes the same native header, PoW,
+transaction-epoch anchor, transaction and exact State-root checks.
+
+No canonical block is admitted from body bytes and proof of work alone. It is
+authorized either by its matching terminal or by a verified descendant
+terminal whose exact recursive suffix includes it.
 
 The terminal binds the nonce-free semantic header, including transaction and
 post-State commitments. The nonce-bearing header is then checked separately
@@ -104,6 +111,11 @@ node checks that all of the following agree:
 
 Candidate data is staged separately and becomes canonical in one transaction.
 An interrupted or invalid transfer cannot leave a partially installed State.
+
+The post-boundary suffix is admitted only after the terminal for its exact tip
+has verified. Its linked bodies are then checked and materialized in order;
+intermediate terminal transfer is unnecessary because validity is already
+carried by the verified recursion.
 
 ## Policy boundary
 

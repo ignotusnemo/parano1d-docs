@@ -14,6 +14,7 @@
 | `noid_ivc_prover` | 递归证明者实现 |
 | `noid_gkr` | [FROST-GKR](../research/frost-gkr.md) 关系与钱包授权 |
 | `noid_recursive` | `HistoryStep`、精确 State 关系与递归接受 |
+| `noid_soundness` | 与源码绑定的 Block–Tiwari、QROM 与 Category 1 证书 |
 | `bench_prover` | 矩阵生成、固定值工具与证明基准测试 |
 
 ## 协议对象

@@ -193,8 +193,6 @@ ChainInfo {
   circulating_supply_micronoid: decimal string
 }
 
-`circulating_supply_micronoid` 是 Live State 中所有 UTXO 数值之和，以 μNOID 为单位。该字段使用十进制字符串编码，以避免超出 JSON 数字的精确表示范围。
-
 BlockHeaderInfo {
   height: u64
   hash: string
@@ -225,6 +223,9 @@ TxInfo {
   tx_position: u32
 }
 ```
+
+`circulating_supply_micronoid` 是 Live State 中所有 UTXO 数值之和，以
+μNOID 为单位。该字段使用十进制字符串编码，避免 JSON 数字精度造成截断。
 
 ```text
 StateInfo {

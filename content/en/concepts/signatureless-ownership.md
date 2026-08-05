@@ -55,19 +55,22 @@ after its body has been pruned.
 ## Post-quantum boundary
 
 Transaction ownership contains no elliptic-curve signature scheme. Address
-derivation and authorization use Poseidon2b and the binary proof stack over
-`GF(2^128)`.
+derivation and committed authorization traces use Poseidon2b and `GF(2^128)`.
+The production C1 profile samples authorization challenges from a
+`2^255`-element trace-one support in `GF(2^256)`.
 
 The Ed25519 identity used by libp2p is outside this boundary. It identifies a
 network peer; it cannot authorize a transaction, create value or satisfy any
 consensus ownership rule.
 
-Under the same Toy Problem convention used by established FRI systems, the
-production wallet and `HistoryStep` parameters each provide a **128-bit
-conjectured FRI security score**. See
-[Proof stack](../architecture/proof-stack.md) for the parameters and
-[Security model](../protocol/security-model.md) for the comparison and exact
-metric labels.
+The production profile has 127 provable and 127 conjectured Block–Tiwari
+FS-FRI bits against a 128-bit target. The separate end-to-end QROM theorem
+includes wallet authorization in the from-genesis invalid-State game and
+gives provable end-to-end post-quantum soundness for state validation from
+genesis at NIST PQC Category 1 under its fixed Poseidon2b delta and coherent
+response-cost premises. See the
+[Proof stack](../architecture/proof-stack.md) for the construction and the
+[Security model](../protocol/security-model.md) for the exact statements.
 
 ## Operational consequence
 

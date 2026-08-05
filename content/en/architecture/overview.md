@@ -73,18 +73,19 @@ empty slot before extending State. A fresh `creation_id` prevents an old
 reference from becoming valid when the same index is reused.
 
 Nodes retain compact headers for cumulative-work comparison and the latest 18
-complete blocks for ordinary synchronization and shallow reorgs. Older
+canonical block bodies for ordinary synchronization and shallow reorgs. Older
 transaction bodies are not required by active consensus. Payment receipts
 preserve independently verifiable inclusion evidence after a body leaves that
 window.
 
 ## Joining the network
 
-A short gap is filled with retained complete blocks. For a deeper gap, the
-joining node stages headers and an authenticated snapshot of Live State.
-It verifies the cumulative-work chain, the finalized boundary and the matching
-`HistoryStep` terminal before installing the State. The recent suffix is then
-verified normally.
+A short gap is filled with retained block bodies and one verified recursive
+terminal at the suffix tip. For a deeper gap, the joining node stages headers
+and an authenticated snapshot of Live State. It verifies the cumulative-work
+chain, the finalized boundary and the matching boundary terminal before
+installing the State, then verifies one terminal for the recent suffix tip and
+applies its linked bodies.
 
 The snapshot is not trusted State. It is a transport for State whose root and
 history boundary are authenticated by consensus.

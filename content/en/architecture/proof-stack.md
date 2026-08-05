@@ -2,7 +2,8 @@
 
 Parano1d uses one binary arithmetic stack for ownership, State transitions,
 Merkle relations, recursive continuity and proof of work commitments. The
-shared field is the binary tower field `GF(2^128)`.
+committed trace field is the binary tower field `GF(2^128)`. The production
+wide-challenge layer uses its quadratic extension `GF(2^256)`.
 
 ![Parano1d proof stack](../assets/architecture/proof-stack.svg)
 
@@ -39,7 +40,9 @@ The downstream pipeline combines:
 - batched sumcheck;
 - zerocheck;
 - lincheck;
-- FRI-Binius/BaseFold over the binary field.
+- FRI-Binius/BaseFold over the binary field;
+- one joint `GF(2^256)` transcript for the three Link and six Block recursive
+  regions.
 
 The resulting proof system is transparent: it requires no trusted setup.
 The released binaries embed authenticated B64 and B255 matrix packs, including
@@ -52,8 +55,8 @@ The wallet proves knowledge of the 256-bit preimage behind `input_owner`,
 bound to the logical transaction ID. The proof is freshly randomized and
 witness-hiding. It contains no State path.
 
-The serialized authorization stays below a 61,000-byte worst-case bound. The
-wire format permits up to 256 KiB so decoding remains explicitly bounded while
+The serialized authorization has a 92,696-byte worst-case bound. The wire
+format permits up to 256 KiB so decoding remains explicitly bounded while
 leaving room for the canonical proof object.
 
 ## HistoryStep
@@ -75,20 +78,24 @@ choice.
 
 ## Security accounting
 
-The production proof parameters have three independently labelled public
-metrics:
+The production wide-challenge profile uses 65 wallet queries and 133 History
+queries. Its current security results are:
 
-| Metric | Parano1d value |
+| Security statement | Production result |
 |---|---:|
-| Literal Plonky2 / Toy Problem FRI score | **128 bits conjectured** |
-| Wallet generalized round-by-round knowledge bound | **96.047 bits classical** |
-| Fixed-invalid-block work-accounted finite composition | **95.022 bits classical** |
+| Target FRI security | **128 bits** |
+| Provable Block–Tiwari FS-FRI security | **127 bits** |
+| Conjectured Block–Tiwari FS-FRI security | **127 bits** |
+| Sequential ideal-QROM half-success boundary | **64.707407428576 bits** |
+| NIST Post-Quantum Cryptography Category | **Category 1** |
+| Dominant Category 1 gate-depth floor | **173.273866314232 bits** |
 
-The first value follows the same conjectured rate/query convention published
-by Plonky2 and RISC Zero. The other two expose finite and round-by-round
-structure instead of relabelling it as the same metric. Production constants,
-formulas and tests are published in the
-[Parano1d soundness workbench](https://github.com/ignotusnemo/parano1d-soundness).
+The Block–Tiwari values measure classical random-oracle FS-FRI expected work.
+The Category 1 result concerns the separate end-to-end from-genesis
+invalid-State game and is conditional on the fixed Poseidon2b delta and
+coherent response-cost premises stated in the theorem. Production constants,
+reductions and exact calculations are in
+[`noid_soundness`](https://github.com/ignotusnemo/parano1d/tree/main/noid_soundness).
 
 For claim boundaries and non-proof assumptions, see
 [Security model](../protocol/security-model.md). Implementation crates are

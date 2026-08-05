@@ -1,23 +1,23 @@
 # 同步
 
-同步有两条路径。只落后[规范链尖](../reference/glossary.md#canonical-chain)少量区块的节点验证保留的完整区块；落后较多的节点认证已达最终性的[快照](../reference/glossary.md#snapshot)，再验证近期后缀。两条路径都不会信任对等节点对 [State](../reference/glossary.md#state) 的单方面声明。
+同步有两条路径。只落后[规范链尖](../reference/glossary.md#canonical-chain)少量区块的节点验证保留的区块体后缀以及后缀链尖上的一个递归终端证明；落后较多的节点先认证已达最终性的[快照](../reference/glossary.md#snapshot)，再验证同样形式的近期后缀。两条路径都不会信任对等节点对 [State](../reference/glossary.md#state) 的单方面声明。
 
 ![认证快照同步](../../../assets/architecture/snapshot-sync.svg)
 
 ## 较小高度差
 
-每个全节点保留最近 18 个完整的已接受区块。新节点落后不超过 18 个区块时，请求原子包 `{block, HistoryStep 终端证明}` 并按顺序处理。这里的[终端证明](../reference/glossary.md#terminal)是固定形状的 `HistoryStep` 证明对象。
+每个全节点保留最近 18 个规范区块体。新节点落后不超过 18 个区块时，先认证相互链接的区块头，再下载对应区块体，并取得后缀链尖上的一个 `HistoryStep` [终端证明](../reference/glossary.md#terminal)。任何后缀区块体写入规范链之前，该终端证明必须先完成验证。它的递归关系覆盖从节点当前边界到该链尖的精确祖先序列，因此无需再次传输中间高度的终端证明。
 
-每个区块包都要检查：
+随后按顺序处理区块体。每个区块体都要检查：
 
-- 父区块与高度连续性；
+- 与认证区块头完全相同，且父区块与高度连续；
 - 精确难度和时间戳规则；
 - Poseidon2b 工作量证明；
 - 交易与 State 承诺；
-- 递归 [`HistoryStep`](../reference/glossary.md#historystep)；
+- 物化过程中得到的精确转换后 State 根；
 - [分叉选择](../reference/glossary.md#fork-choice)与[硬最终性](../reference/glossary.md#hard-finality)限制。
 
-通过后，节点物化已经证明的写入。
+新宣布区块的直接接纳仍使用普通原子包 `{block, HistoryStep 终端证明}`。紧凑后缀同步只消除重复证明传输，不改变有效性关系。
 
 ## 快照路径
 
@@ -30,7 +30,7 @@
 5. 下载并验证清单引用的 [State 分段](../reference/glossary.md#state-segment)；
 6. 重建精确的全局 State 根；
 7. 以事务方式安装临时区中的 State；
-8. 验证并应用保留的完整后缀。
+8. 取得并验证保留后缀链尖上的一个终端证明，再应用相互链接的区块体。
 
 清单绑定边界高度、`state_root`、`log_slots`、`active_slot_count`、`alloc_counter`，以及精确的分段标识、根和长度。分段数据会逐一对照这些承诺。
 
@@ -49,7 +49,7 @@
 | 区块头验证 | 链高度 |
 | 边界终端证明验证 | 常数 |
 | [State](../reference/glossary.md#state) 传输与安装 | State 数据量 |
-| 近期后缀 | 最多 18 个完整区块 |
+| 近期后缀 | 最多 18 个区块体加一个链尖终端证明 |
 
 Parano1d 消除的是历史执行重放；它并不声称无需读取区块头就能比较工作量证明，也不声称无需传输 Live State 就能完成同步。
 
@@ -67,6 +67,6 @@ Parano1d 消除的是历史执行重放；它并不声称无需读取区块头�
 
 最终性边界之前的前缀不可重组。分叉选择只考虑保留该边界的候选链，允许的回滚深度必须小于 18，因此规范链重组最大为 17 个区块。
 
-近期[撤销数据](../reference/glossary.md#undo-data)与完整区块覆盖这一后缀。更深的竞争历史会被拒绝，而不是通过快照重建。
+近期[撤销数据](../reference/glossary.md#undo-data)与区块体覆盖这一后缀。更深的竞争历史会被拒绝，而不是通过快照重建。
 
 精确分叉规则见[共识](../protocol/consensus.md)，网络消息边界见[网络](networking.md)。

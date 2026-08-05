@@ -13,8 +13,8 @@
 - x86-64，支持 SSE4.1 和 PCLMULQDQ；或
 - ARM64，支持 NEON 和 PMULL。
 
-AVX2、VPCLMULQDQ 和 AVX-512 会在可用时自动选择。发布版节点不使用标量
-参考后端。
+运行时会自动选择 `pclmul`、`avx2+vpclmul`、`avx512bw+vpclmul`
+或 `neon+pmull` 后端。发布版节点不使用标量参考后端。
 
 节点通过 TCP `9400` 接受 P2P 连接。JSON-RPC 应保持绑定
 `127.0.0.1:9401`。

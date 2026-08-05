@@ -1,6 +1,6 @@
 # Parano1d
 
-**A proof-native Layer 1 network secured by proof of work**
+**由工作量证明确定规范顺序的证明原生 Layer 1。网络当前状态自创世块起的端到端后量子可靠性，已证明达到 NIST PQC Category 1 水平**
 
 传统区块链存在一个根本性的架构缺陷：为了验证现在，节点必须重放过去。新全节点要从创世区块开始下载整条链并重新执行每一笔交易，因为当前状态本身无法证明其有效性。这不是暂时的工程限制，而是传统模型固有的代价。
 
@@ -50,7 +50,7 @@ Parano1d 消除了这种依赖。
 
 每个 `HistoryStep` 证明当前区块关系，并在同一个关系中验证前一个终端证明。证明大小与验证工作量不会随区块高度增长。
 
-在线节点保存精确的 Live State、用于[累计工作量](reference/glossary.md#cumulative-work)的紧凑区块头，以及供竞争矿工和[链重组](reference/glossary.md#reorganization)使用的最近 18 个完整区块。新加入节点用匹配的终端证明认证已达最终性的 State，再按常规方式验证近期后缀。
+在线节点保存精确的 Live State、用于[累计工作量](reference/glossary.md#cumulative-work)的紧凑区块头，以及供竞争矿工和[链重组](reference/glossary.md#reorganization)使用的最近 18 个规范区块体。新加入节点用匹配的终端证明认证已达最终性的 State，再验证近期后缀链尖上的一个递归终端证明，最后应用相互链接的区块体。
 
 Parano1d 消除的是对历史执行的依赖，并非不保存 State。Live State 传输量仍随其中的 UTXO 数量增长；不再随链龄增长的，是证明“该 State 为何有效”所需的执行量。
 
@@ -72,21 +72,38 @@ State 是一个精确的、带索引的稀疏 UTXO 向量。支出会清空槽�
 
 ## 统一的二进制证明栈
 
-协议构建在[二进制塔域](reference/glossary.md#binary-tower-field) `GF(2^128)` 上。Poseidon2b 是地址、交易、Merkle 树、State 根、[交互记录](reference/glossary.md#transcript)、区块标识和工作量证明共同使用的置换。
+已承诺执行轨迹的算术运行在[二进制塔域](reference/glossary.md#binary-tower-field)
+`GF(2^128)` 上。实际部署的宽挑战层把 Fiat–Shamir 挑战、终端声明和递归区域
+认证提升到 `GF(2^256)`。Poseidon2b 是地址、交易、Merkle 树、State 根、
+[交互记录](reference/glossary.md#transcript)、区块标识和工作量证明共同使用的置换。
 
 [FROST-GKR](research/frost-gkr.md) 把批量 Poseidon2b 与 Merkle 路径压入共享布尔超立方体上的直接七次关系。批量 [sumcheck、zerocheck 与 lincheck](reference/glossary.md#sumcheck-family) 以及 [FRI-Binius](reference/glossary.md#fri-family) 在无需[可信设置](reference/glossary.md#trusted-setup)的前提下闭合二进制 [R1CS](reference/glossary.md#r1cs) 关系。钱包授权、精确 State 转换和递归链验证因而能在同一算术系统中组合，而不是事后拼接多个互不相同的证明系统。
 
-## 行业证明安全性指标
+## 可靠性
 
-Parano1d 沿用成熟 FRI 与 STARK 项目公开采用的、带明确适用范围的约定报告证明安全性。在 Plonky2 和 RISC Zero 采用的 [Toy Problem 猜想](reference/glossary.md#toy-problem-conjecture)原公式约定下，实际部署的钱包与 `HistoryStep` 参数都达到 `GF(2^128)` 的域上限：**基于猜想的 FRI 安全性为 128 位**。
+| 安全性命题 | 当前实际部署结果 |
+|---|---:|
+| FRI 目标安全性 | **128 位** |
+| 可证明 Block–Tiwari FS-FRI 安全性 | **127 位** |
+| 基于猜想的 Block–Tiwari FS-FRI 安全性 | **127 位** |
+| 顺序理想 QROM 半成功边界 | **64.707407428576 位** |
+| NIST 后量子密码学类别 | **Category 1** |
+| Category 1 主导 gate-depth 下界 | **173.273866314232 位** |
+| 相对 NIST `2^170` 参考值的余量 | **3.273866314232 位** |
+| Category 1 资源包络下的完整理想上界 | **0.053364140323608411** |
 
-| 已发布系统与指标 | 已发布数值 | Parano1d 在对应指标下的数值 |
-|---|---:|---:|
-| [Plonky2 默认 FRI](https://github.com/0xPolygonZero/plonky2#security)，Toy Problem 猜想 | 基于猜想的 100 位安全性 | 基于同一猜想的 128 位安全性 |
-| [RISC Zero 可靠性计算器](https://github.com/risc0/risc0/blob/release-3.0/risc0/zkp/src/prove/soundness.rs#L15-L35)，Toy Problem 猜想 | `2^20` 时为基于猜想的 97 位安全性，`2^24` 时为 95 位 | 基于同一猜想的 128 位安全性 |
-| [ethSTARK / StarkWare](https://www.starknet.io/blog/safe-and-sound-a-deep-dive-into-stark-security/)，[逐轮可靠性（RBR）](reference/glossary.md#round-by-round-soundness)与 `t/e(t)` 操作次数分析 | 96 位 RBR [IOP](reference/glossary.md#iop) 前提；编译后 STARK 结果为 95 位 | 钱包广义 RBR [知识误差](reference/glossary.md#knowledge-error)上界对应 96.047 位；按攻击计算量折算的固定无效区块有限次组合对应 95.022 位 |
+[Block 和 Tiwari](https://eprint.iacr.org/2024/1161)把具体 FS-FRI 安全性定义为：
+在所有正整数查询预算中，期望经典随机预言机查询工作量的最小值。对实际部署的
+B64 与 B255 配置应用其定义和整数位表示后，可证明值与基于猜想的值均为 127 位。
+完整计算以及与已发布系统的比较见
+[Block–Tiwari 推导](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/block-tiwari.md)。
 
-这些指标保留各自的原始名称，因为它们描述的是不同的安全游戏。完整的[安全模型](protocol/security-model.md)逐项定义 Parano1d 的数值，并链接可复现的公式与测试。按照透明 STARK 与 FRI 系统通行的术语，交易证明栈具有后量子抗性：它采用透明、基于哈希的构造，不需要可信设置，也不含椭圆曲线交易签名。
+另一项端到端安全游戏考察单个有状态量子对手能否使实际部署的验证器接受一个
+递归谱系始于创世区块的无效终端 State。在定理明确给出的固定 Poseidon2b 差分
+界与相干响应成本前提下，网络当前状态自创世块起的端到端后量子可靠性，已证明达到
+NIST PQC Category 1 水平。完整推导见
+[QROM 与 Category 1 推导](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/category-one.md)，命题边界见
+[安全模型](protocol/security-model.md)。
 
 ## 协议概况
 

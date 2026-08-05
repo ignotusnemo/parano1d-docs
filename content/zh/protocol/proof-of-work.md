@@ -44,10 +44,10 @@ pow_digest < difficulty_target
 
 同一个固定置换按 nonce 批次计算。发布版二进制文件会在运行时选择主机支持的最佳实现：
 
-- x86-64 上以 PCLMULQDQ 为基线；
-- 可用时使用带 VPCLMULQDQ 的 AVX2；
-- 支持主机上的 AVX-512；
-- ARM64 上带 PMULL 的 NEON。
+- x86-64 上以 `pclmul` 为基线；
+- 可用时使用 `avx2+vpclmul`；
+- 支持主机上的 `avx512bw+vpclmul`；
+- ARM64 上的 `neon+pmull`。
 
 批量执行只改变吞吐量，不改变摘要。标量实现是用于交叉校验的参考实现，不作为发布版运行时的回退路径。
 

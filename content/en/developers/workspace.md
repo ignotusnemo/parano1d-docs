@@ -14,6 +14,7 @@ The repository is split by proof and trust boundary rather than by binary.
 | `noid_ivc_prover` | Recursive prover implementation |
 | `noid_gkr` | [FROST-GKR](../research/frost-gkr.md) relations and wallet authorization |
 | `noid_recursive` | `HistoryStep`, exact-State relation and recursive acceptance |
+| `noid_soundness` | Source-bound Block–Tiwari, QROM and Category 1 certificate |
 | `bench_prover` | Matrix generation, pin tools and proof benchmarks |
 
 ## Protocol objects

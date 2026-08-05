@@ -55,6 +55,17 @@ cargo build --locked \
 сборки нужен описанный ниже аутентифицированный пакет матриц
 `HistoryStep`.
 
+## Воспроизведение сертификата безопасности
+
+Штатные расчёты и доказательства находятся в
+[`noid_soundness`](https://github.com/ignotusnemo/parano1d/tree/main/noid_soundness).
+
+```sh
+cargo run --release --locked -p noid_soundness
+cargo run --release --locked -p noid_soundness -- --exact
+cargo test --release --locked -p noid_soundness
+```
+
 ## Создание пакета матриц доказательства
 
 Канонический пакет содержит:
@@ -114,8 +125,8 @@ cat target/release-builds/LAST_RELEASE
 ## Переносимые бинарники
 
 Релизы x86-64 собираются для переносимого базового набора инструкций. После
-проверки машины реализация выбирается при запуске: PCLMULQDQ, AVX2 с VPCLMULQDQ или
-AVX-512. На ARM64 выбирается NEON с PMULL.
+проверки машины при запуске выбирается `pclmul`, `avx2+vpclmul` или
+`avx512bw+vpclmul`. На ARM64 выбирается `neon+pmull`.
 
 Не собирайте официальные артефакты с `target-cpu=native`: бинарник начнёт
 зависеть от машины сборки ещё до проверки оборудования при запуске.

@@ -31,9 +31,9 @@ A successful node report ends with:
 NODE READY
 ```
 
-The report also names the selected runtime backend. On x86-64, wider
-PCLMULQDQ, AVX2 with VPCLMULQDQ and AVX-512 paths are chosen automatically.
-On ARM64, the production path uses NEON with PMULL.
+The report also names the selected runtime backend. Runtime dispatch chooses
+`pclmul`, `avx2+vpclmul` or `avx512bw+vpclmul` on x86-64 and `neon+pmull` on
+ARM64.
 
 ## Virtual machines
 
@@ -64,15 +64,14 @@ The following are operational starting points, not consensus minima:
 |---|---|---:|---|
 | Wallet or ordinary node | 2 or more modern vCPUs | 4 GiB | SSD, 20 GiB free to start |
 | Public seed/full node | 4 or more modern vCPUs | 8 GiB | SSD or NVMe with monitored headroom |
-| B64 miner | 12 or more modern logical CPUs | 8 GiB or more | SSD or NVMe |
+| B64 miner | Benchmark the exact host | 8 GiB or more | SSD or NVMe |
 | B255 miner | Benchmark the exact host | 16 GiB or more | NVMe preferred |
 
 CPU generation, clock, memory bandwidth and the selected carry-less
 multiplication backend matter more than a provider's vCPU label. Mining
-capacity must be measured on the final host. The reference launch measurement
-for saturated B64 preparation is 14.387 seconds at p95 on a 12-thread Intel
-Core i7-1365U. The full tables and measurement boundaries are in
-[Performance measurements](../reference/performance.md).
+capacity must be measured on the final host with the production C1 profile and
+authenticated matrix pack. The required procedure is in
+[Performance measurement](../reference/performance.md).
 
 An ordinary node does not continuously build block proofs, but it still
 verifies wallet authorizations and incoming `HistoryStep` terminals. Avoid
@@ -106,7 +105,7 @@ storage contains:
 
 - permanent compact headers;
 - the exact current sparse UTXO State and owner index;
-- the latest 18 complete blocks;
+- the latest 18 canonical block bodies;
 - 36 blocks of State undo data;
 - peer identity and peer store;
 - proof cache and temporary snapshot staging;

@@ -64,7 +64,7 @@ coverage without turning large-network propagation into all-peer broadcast.
 Typed exchanges serve:
 
 - header batches;
-- complete retained blocks;
+- retained block bodies and recursive suffix-tip terminals;
 - snapshot manifests and State segments;
 - recent mempool inventory and missing intents.
 

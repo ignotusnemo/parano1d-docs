@@ -74,6 +74,7 @@ NOID_CPU_BACKEND=scalar \
 
 | Сценарий | Покрытие |
 |---|---|
+| `live_cli_wallet_scenarios.py` | CLI трёх нод, ретрансляция, адреса, отправка, история и жизненный цикл чека |
 | `live_single_transaction_scenario.py` | Кошелёк → мемпул → майнер → канонический блок |
 | `live_multi_transaction_mempool_scenario.py` | Три непротиворечивые логические транзакции и ретрансляция |
 | `live_large_mempool_single_miner_scenario.py` | Обработка 128 логических транзакций блоками B64 |
