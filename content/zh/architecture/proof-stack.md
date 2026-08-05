@@ -2,7 +2,7 @@
 
 Parano1d 使用同一个二进制算术栈处理所有权、State 转换、Merkle 关系、递归连续性
 以及工作量证明承诺。已承诺执行轨迹使用[二进制塔域](../reference/glossary.md#binary-tower-field)
-`GF(2^128)`；实际部署的宽挑战层使用其二次扩域 `GF(2^256)`。
+`GF(2^128)`；实际部署的扩展挑战值层使用其二次扩域 `GF(2^256)`。
 
 ![Parano1d 证明栈](../../../assets/architecture/proof-stack.svg)
 
@@ -39,7 +39,7 @@ FROST-GKR 把批量 Poseidon2b 执行与 Merkle 路径表示为共享布尔超�
 
 ## 钱包授权
 
-钱包证明自己知道 `input_owner` 背后的 256 位原像，并把证明绑定到逻辑交易 ID。证明每次重新随机化、隐藏[见证](../reference/glossary.md#witness)数据，且不包含 State 路径。
+钱包证明自己知道 `input_owner` 背后的 256 位原像，并把证明绑定到逻辑交易 ID。证明每次重新随机化、隐藏[见证数据](../reference/glossary.md#witness)，且不包含 State 路径。
 
 序列化授权的最坏情况上界为 92,696 字节。网络格式允许最高 256 KiB，使解码
 保持明确有界，同时为规范证明对象保留空间。
@@ -49,31 +49,31 @@ FROST-GKR 把批量 Poseidon2b 执行与 Merkle 路径表示为共享布尔超�
 区块证明者确立完整公开转换，并在新关系中验证前一个终端。因此，新终端绑定：
 
 ```text
-previous validity
+前一步有效性
         +
-current block relation
+当前区块关系
         +
-exact post-state
+精确的转换后状态
 ```
 
 证明大小与终端验证不会随链高度增长。永久区块头留在递归之外，用于累计工作量和分叉选择。
 
-## 安全性核算
+## 安全性分析
 
-实际部署的宽挑战配置使用 65 次钱包查询和 133 次 History 查询，得到以下结果：
+实际部署的扩展挑战值配置使用 65 次钱包查询和 133 次 History 查询，得到以下结果：
 
-| 安全性命题 | 实际部署结果 |
+| 安全性结论 | 实际部署结果 |
 |---|---:|
 | FRI 目标安全性 | **128 位** |
 | 可证明 Block–Tiwari FS-FRI 安全性 | **127 位** |
 | 基于猜想的 Block–Tiwari FS-FRI 安全性 | **127 位** |
-| 顺序理想 QROM 半成功边界 | **64.707407428576 位** |
+| 顺序理想 QROM 中成功概率为二分之一的边界 | **64.707407428576 位** |
 | NIST 后量子密码学类别 | **Category 1** |
-| Category 1 主导 gate-depth 下界 | **173.273866314232 位** |
+| Category 1 门数与深度乘积的主导下界 | **173.273866314232 位** |
 
 Block–Tiwari 数值衡量经典随机预言机模型中的 FS-FRI 期望工作量。Category 1
-结果属于另一项从创世开始的端到端无效 State 游戏，并以定理明确声明的固定
-Poseidon2b 差分界与相干响应成本为前提。实际部署常量、归约和精确计算见
+结果属于另一项从创世开始的端到端无效 State 可靠性游戏，并以定理明确声明的
+固定 Poseidon2b 偏差上界与相干响应成本为前提。实际部署常量、归约和精确计算见
 [`noid_soundness`](https://github.com/ignotusnemo/parano1d/tree/main/noid_soundness)。
 
 声明边界与证明系统之外的假设见[安全模型](../protocol/security-model.md)，实现 crate 见[工作区结构](../developers/workspace.md)。

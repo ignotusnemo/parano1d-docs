@@ -33,7 +33,7 @@ shasum -a 256 parano1d-gui-vVERSION-macos-aarch64.dmg
 Get-FileHash .\parano1d-gui-vVERSION-windows-x86_64-setup.exe -Algorithm SHA256
 ```
 
-Полученный хеш должен совпасть с соответствующей строкой в `SHA256SUMS`.
+Полученный хэш должен совпасть с соответствующей строкой в `SHA256SUMS`.
 
 ## Установка
 

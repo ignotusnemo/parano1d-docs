@@ -20,7 +20,7 @@ Parano1d [地址](../reference/glossary.md#address)是 256 位秘密经 [Poseido
 
 [授权证明封装](../reference/glossary.md#authorization-envelope)每次都会重新随机化并隐藏见证数据。重复使用同一地址不会产生重复签名或稳定的证明[交互记录](../reference/glossary.md#transcript)。秘密始终留在生成证明的钱包内，并在使用后可靠清零。
 
-授权中不包含 UTXO Merkle 路径。它证明的是所有权，而不是此刻是否可以支出。因此，它不依赖某一个 Live State 根；构造交易期间，公开的 State 见证可以继续推进。
+授权中不包含 UTXO Merkle 路径。它证明的是所有权，而不是此刻是否可以支出。因此，它不依赖某一个 Live State 根；构造交易期间，作为公开见证数据的 Live State 可以继续更新。
 
 矿工另行证明所引用输入仍存在于 Live State，并证明完整 State 转换有效。
 
@@ -36,13 +36,13 @@ Parano1d 让旧区块体不再是共识必需数据，从而减少普通节点�
 
 交易所有权不包含椭圆曲线签名方案。地址派生与已承诺授权轨迹使用 Poseidon2b
 和 `GF(2^128)`。实际部署的 C1 配置从 `GF(2^256)` 中基数为 `2^255` 的
-迹为 1 的集合采样授权挑战。
+迹为 1 的集合采样授权挑战值。
 
 libp2p 使用的 Ed25519 身份位于这条边界之外。它只标识网络对等节点，不能授权交易、创造价值，也不能满足任何共识所有权规则。
 
 实际部署配置在 128 位目标下，Block–Tiwari FS-FRI 的可证明值和猜想值均为
-127 位。另一项端到端 QROM 定理把钱包授权纳入从创世开始的无效 State 游戏，
-并在固定 Poseidon2b 差分界与相干响应成本前提下，证明网络当前状态自创世块起的
+127 位。另一项端到端 QROM 定理把钱包授权纳入从创世开始的无效 State 可靠性游戏，
+并在固定 Poseidon2b 偏差上界与相干响应成本前提下，证明网络当前状态自创世块起的
 端到端后量子可靠性达到 NIST PQC Category 1 水平。构造见[证明栈](../architecture/proof-stack.md)，精确命题见
 [安全模型](../protocol/security-model.md)。
 

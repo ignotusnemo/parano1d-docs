@@ -56,7 +56,7 @@ cargo bench --locked -p bench_prover --bench history_step_proof
 
 `cargo bench` 使用优化后的 bench profile。每个样本覆盖实际部署证明生成与终端
 创建。验证数据包含有界网络格式解码和完整终端验证。基准测试还会输出主证明字节
-数、C1 sidecar 字节数以及 opening claim 数量。
+数、C1 sidecar 字节数以及求值声明数量。
 
 ## 端到端区块生产
 

@@ -16,7 +16,7 @@ Parano1d 消除了这种依赖。
 
 | | 传统区块链 | Parano1d |
 |---|---|---|
-| 验证 | 每个全节点都重新执行 | 见证数据持有者生成证明，网络负责验证 |
+| 验证 | 每个全节点都重新执行 | 掌握见证数据的一方生成证明，网络负责验证 |
 | 初始同步 | 从创世区块重建状态 | 认证已达最终性的 State 并验证近期后缀 |
 | 所有权 | 公钥签名 | 每次支出新生成的 [Poseidon2b](reference/glossary.md#poseidon2b) 原像知识[零知识证明](reference/glossary.md#zero-knowledge-proof) |
 | 当前状态 | 由累积历史推导 | 精确的 Live State 本身就是共识对象 |
@@ -73,7 +73,7 @@ State 是一个精确的、带索引的稀疏 UTXO 向量。支出会清空槽�
 ## 统一的二进制证明栈
 
 已承诺执行轨迹的算术运行在[二进制塔域](reference/glossary.md#binary-tower-field)
-`GF(2^128)` 上。实际部署的宽挑战层把 Fiat–Shamir 挑战、终端声明和递归区域
+`GF(2^128)` 上。实际部署的扩展挑战值层把 Fiat–Shamir 挑战值、终端声明和递归区域
 认证提升到 `GF(2^256)`。Poseidon2b 是地址、交易、Merkle 树、State 根、
 [交互记录](reference/glossary.md#transcript)、区块标识和工作量证明共同使用的置换。
 
@@ -81,16 +81,16 @@ State 是一个精确的、带索引的稀疏 UTXO 向量。支出会清空槽�
 
 ## 可靠性
 
-| 安全性命题 | 当前实际部署结果 |
+| 安全性结论 | 当前实际部署结果 |
 |---|---:|
 | FRI 目标安全性 | **128 位** |
 | 可证明 Block–Tiwari FS-FRI 安全性 | **127 位** |
 | 基于猜想的 Block–Tiwari FS-FRI 安全性 | **127 位** |
-| 顺序理想 QROM 半成功边界 | **64.707407428576 位** |
+| 顺序理想 QROM 中成功概率为二分之一的边界 | **64.707407428576 位** |
 | NIST 后量子密码学类别 | **Category 1** |
-| Category 1 主导 gate-depth 下界 | **173.273866314232 位** |
+| Category 1 门数与深度乘积的主导下界 | **173.273866314232 位** |
 | 相对 NIST `2^170` 参考值的余量 | **3.273866314232 位** |
-| Category 1 资源包络下的完整理想上界 | **0.053364140323608411** |
+| Category 1 资源边界上的理想模型完整上界 | **0.053364140323608411** |
 
 [Block 和 Tiwari](https://eprint.iacr.org/2024/1161)把具体 FS-FRI 安全性定义为：
 在所有正整数查询预算中，期望经典随机预言机查询工作量的最小值。对实际部署的
@@ -98,9 +98,9 @@ B64 与 B255 配置应用其定义和整数位表示后，可证明值与基于�
 完整计算以及与已发布系统的比较见
 [Block–Tiwari 推导](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/block-tiwari.md)。
 
-另一项端到端安全游戏考察单个有状态量子对手能否使实际部署的验证器接受一个
-递归谱系始于创世区块的无效终端 State。在定理明确给出的固定 Poseidon2b 差分
-界与相干响应成本前提下，网络当前状态自创世块起的端到端后量子可靠性，已证明达到
+另一项端到端可靠性游戏考察单个能够跨查询保留状态的量子对手能否使实际部署的
+验证器接受一个递归证明链始于创世区块的无效终端 State。在定理明确给出的固定
+Poseidon2b 偏差上界与相干响应成本前提下，网络当前状态自创世块起的端到端后量子可靠性，已证明达到
 NIST PQC Category 1 水平。完整推导见
 [QROM 与 Category 1 推导](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/category-one.md)，命题边界见
 [安全模型](protocol/security-model.md)。

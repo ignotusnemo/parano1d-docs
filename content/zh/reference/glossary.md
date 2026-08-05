@@ -73,7 +73,7 @@ UTXO 写入槽位时分配的新标识符；代码字段为 `creation_id`。它�
 <a id="undo-data"></a>
 ### 撤销数据（undo data）
 
-节点为近期可重组后缀保存的本地回滚记录。它不是共识见证数据，也不能替代
+节点为近期可重组后缀保存的本地回滚记录。它不能作为共识依据，也不能替代
 候选分支自身的有效证明。
 
 <a id="historystep"></a>
@@ -284,9 +284,9 @@ Parano1d 的钱包证明隐藏支出秘密，不隐藏公开金额和所有者�
 在不立即公开完整内容的情况下绑定一个值或多项式的密码学对象。
 
 <a id="opening"></a>
-### 打开证明与打开断言（opening proof and opening claim）
+### 打开证明与求值声明（opening proof and opening claim）
 
-证明某个承诺对象在指定点具有声明值的证明及其公开断言。
+证明某个承诺对象在指定点具有所声明值的证明，以及相应的公开求值声明。
 
 <a id="transcript"></a>
 ### 交互记录（transcript）
@@ -296,14 +296,14 @@ Parano1d 的钱包证明隐藏支出秘密，不隐藏公开金额和所有者�
 <a id="poseidon2b"></a>
 ### Poseidon2b
 
-Parano1d 在 `GF(2^128)` 上使用的四通道置换，服务于地址、交易、Merkle
+Parano1d 在 `GF(2^128)` 上使用的宽度为 4 的代数置换，服务于地址、交易、Merkle
 节点、`State` 根、证明交互记录、区块 ID 和 PoW 摘要。
 
 <a id="binary-tower-field"></a>
 ### 二进制塔域（binary tower field）
 
 通过二次扩域逐层构造的特征二有限域。Poseidon2b 与已承诺执行轨迹使用
-`GF(2^128)`；实际部署 C1 配置的 Fiat–Shamir 挑战、终端声明和递归区域认证
+`GF(2^128)`；实际部署 C1 配置的 Fiat–Shamir 挑战值、终端声明和递归区域认证
 使用其二次扩域 `GF(2^256)`。
 
 <a id="domain-separation"></a>
@@ -364,7 +364,7 @@ Block 和 Tiwari 为非交互式 FRI 定义的具体经典随机预言机期望�
 <a id="c1-profile"></a>
 ### C1 配置
 
-源码中实际部署宽挑战配置的标识符。其代数挑战从 `GF(2^256)` 中基数为
+源码中实际部署扩展挑战值配置的标识符。其代数挑战值从 `GF(2^256)` 中基数为
 `2^255` 的迹为 1 仿射集合采样。配置名称本身不构成 NIST 类别结论。
 
 <a id="completeness"></a>
@@ -387,13 +387,13 @@ Block 和 Tiwari 为非交互式 FRI 定义的具体经典随机预言机期望�
 <a id="knowledge-error"></a>
 ### 知识误差（knowledge error）
 
-知识证明中，验证者接受但抽取器不能提取有效见证数据的概率上界。
+知识证明中，验证者接受但提取器不能提取有效见证数据的概率上界。
 
 <a id="grinding"></a>
-### 穷举（grinding）
+### Grinding（多次试探）
 
 在提交查询或挑战之前允许攻击者尝试多个候选值的计算工作。安全性公式必须明确
-说明 grinding 位数被计入哪一个概率项。
+说明 grinding 工作量被计入哪一个概率项。
 
 <a id="toy-problem-conjecture"></a>
 ### Toy Problem 猜想
@@ -408,17 +408,17 @@ Plonky2、RISC Zero 等 FRI 实现公开采用的一种基于码率、查询数�
 证明栈不需要此类设置。
 
 <a id="post-quantum-resistance"></a>
-### 后量子抗性（post-quantum resistance）
+### 后量子安全性（post-quantum resistance）
 
 Parano1d 的交易共识不依赖椭圆曲线签名或可信设置。其端到端 QROM 定理在明确
-前提下，把从创世开始的无效 State 游戏与 NIST 后量子密码学 Category 1 资源
+前提下，把从创世开始的无效 State 可靠性游戏与 NIST 后量子密码学 Category 1 资源
 门槛比较。
 
 <a id="nist-category-one"></a>
 ### NIST 后量子密码学 Category 1
 
 以穷举 AES-128 密钥为参照并包含公开 `MAXDEPTH` 限制的 NIST 资源目标。
-Parano1d 针对从创世开始的端到端无效 State 游戏评估这一目标。
+Parano1d 针对从创世开始的端到端无效 State 可靠性游戏评估这一目标。
 
 ## 网络
 
