@@ -57,8 +57,8 @@ parano1d-cli peers
 parano1d-cli mining
 ```
 
-The process prepares its embedded B64 and B255 proof matrices and selects the
-best available CPU backend. Every process starts block production with B64;
+The process prepares its embedded B25 and B255 proof matrices and selects the
+best available CPU backend. Every process starts block production with B25;
 larger B255 templates are used only when measured complete preparation timing
 supports them.
 

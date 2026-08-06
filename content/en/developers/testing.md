@@ -77,7 +77,7 @@ exercise real processes, RPC, P2P, MDBX and the production proof path.
 | `live_cli_wallet_scenarios.py` | Three-node CLI, relay, address, send, history and receipt lifecycle |
 | `live_single_transaction_scenario.py` | Wallet → mempool → miner → canonical block |
 | `live_multi_transaction_mempool_scenario.py` | Three non-conflicting intents and relay |
-| `live_large_mempool_single_miner_scenario.py` | 128 intents drained by B64 blocks |
+| `live_large_mempool_single_miner_scenario.py` | 128 intents drained by B25 blocks |
 | `live_large_mempool_two_miners_scenario.py` | Large mempool under miner competition |
 | `live_two_miner_fork_reorg_scenario.py` | Competing children and shallow reorg |
 | `live_connected_miner_restart_sync_scenario.py` | Restarting miners and stale-parent prevention |

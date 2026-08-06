@@ -42,9 +42,10 @@ Equality fails.
 
 ## ASERT
 
-The target block interval is 15 seconds. ASERT uses a six-block reference epoch
-and a 90-second half-life. At each height, validation derives the exact target
-from the canonical anchor, elapsed time and height delta.
+The target interval between accepted blocks is 15 seconds. Proof preparation,
+nonce search and propagation all occupy that interval. ASERT uses a six-block
+reference epoch and a 90-second half-life. At each height, validation derives
+the exact target from the canonical anchor, elapsed time and height delta.
 
 A timestamp must also be greater than median time past over the previous 11
 headers and no more than 120 seconds ahead of the validating node's wall clock.

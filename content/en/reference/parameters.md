@@ -47,11 +47,11 @@ Poseidon2b width         4
 S-box                    x^7
 full rounds              8
 partial rounds           58
-B64                      m=23, up to 64 positions
+B25                      m=22, up to 25 positions
 B255                     m=24, up to 255 positions
 wallet queries           65
 History/BaseFold queries 133
-B64 codeword             2^20 at rate 1/4
+B25 codeword             2^19 at rate 1/4
 B255 codeword            2^21 at rate 1/4
 serialized authorization max 92,696 bytes
 target FRI security      128 bits

@@ -77,7 +77,7 @@ pins.env
 SHA256SUMS
 ```
 
-Generate B64 and B255 matrices from honest fixtures:
+Generate B25 and B255 matrices from honest fixtures:
 
 ```sh
 mkdir -p ../parano1d-artifacts

@@ -75,7 +75,7 @@ pins.env
 SHA256SUMS
 ```
 
-从诚实执行样例生成 B64 和 B255 矩阵：
+从诚实执行样例生成 B25 和 B255 矩阵：
 
 ```sh
 mkdir -p ../parano1d-artifacts

@@ -61,9 +61,10 @@ boundary from height and reject deeper alternatives.
 
 ## Difficulty
 
-The target block interval is 15 seconds. ASERT adjusts the target using
-six-block reference epochs and a 90-second half-life. The target is encoded as
-a 256-bit little-endian integer.
+The target interval between accepted blocks is 15 seconds. Proof preparation,
+nonce search and propagation share that interval. ASERT adjusts the target
+using six-block reference epochs and a 90-second half-life. The target is
+encoded as a 256-bit little-endian integer.
 
 Validation derives the one exact target from canonical header history. Miners
 do not choose among a range of acceptable difficulties.

@@ -43,7 +43,7 @@ Block production proceeds in this order:
 1. The node waits until it is synchronized and has the required authenticated
    peer quorum.
 2. It reads its canonical tip, current State and admissible mempool intents.
-3. It selects the B64 or B255 proof class and fixes every semantic field of the
+3. It selects the B25 or B255 proof class and fixes every semantic field of the
    candidate block except its nonce.
 4. It computes the exact slot writes and resulting UTXO root.
 5. It proves the new `HistoryStep`, including recursive continuity from the
@@ -84,7 +84,7 @@ least two authenticated peers. The active wallet address receives newly
 constructed payouts. Changing the active address affects the next template;
 an existing immutable template keeps its original payout.
 
-The page reports the selected CPU backend, B64/B255 readiness, current mining
+The page reports the selected CPU backend, B25/B255 readiness, current mining
 state and locally found blocks. See
 [Mining in the wallet](../wallet/mining.md) for shutdown behavior and the mined
 block table.
@@ -170,24 +170,24 @@ Wider kernels are selected at runtime when the host exposes them. The hardware
 check establishes that the production backend can run; it does not guarantee
 competitive mining performance.
 
-Every mining process begins with the B64 proof class. B255 is used only when
+Every mining process begins with the B25 proof class. B255 is used only when
 measured complete preparation time supports the larger relation. Both classes
 prove the same consensus statement:
 
-| Class | Relation | User-page capacity |
+| Class | Relation | Effective page positions |
 |---|---|---:|
-| B64 | `m=23` | up to 64 |
+| B25 | `m=22` | up to 25 |
 | B255 | `m=24` | up to 255 |
 
 Proof construction and PoW are ordered all-core phases sharing one thread
-budget. They are not two competing all-core jobs. On a public infrastructure
-server, leaving some CPU capacity outside `--cpu-threads` keeps the operating
+budget. They are not two competing all-core jobs. On a public host, leaving
+some CPU capacity outside `--cpu-threads` keeps the operating
 system and peer service responsive.
 
 The network targets a 15-second mean block interval. This is not a deadline:
 individual blocks may arrive sooner or much later. Proof latency still matters
 because a candidate becomes stale when another miner advances the tip. Measure
-the complete B64 preparation path on the intended machine rather than judging
+the complete B25 preparation path on the intended machine rather than judging
 it only by CPU model or advertised vCPU count.
 
 See [Hardware and capacity](../operate/hardware.md) and
@@ -196,7 +196,9 @@ floor and published reference timings.
 
 ## Difficulty, rewards and confirmations
 
-ASERT adjusts the Poseidon2b target to maintain the 15-second mean interval.
+ASERT adjusts the Poseidon2b target against the complete interval between
+accepted blocks. Proof preparation, nonce search and propagation share that
+15-second mean target.
 The chain with the greatest cumulative valid work wins; an equal-work tie uses
 the canonical block-hash tie-break.
 

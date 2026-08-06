@@ -49,7 +49,7 @@ log2(minimum expected classical random-oracle query work),
 
 where the minimum ranges over every positive integer query budget. Applying
 their definitions, 256-bit random-oracle setting and whole-bit presentation to
-the production B64 and B255 profiles gives exact expected-work values in
+the production B25 and B255 profiles gives exact expected-work values in
 `[127, 128)` for both the provable and conjectured RBR premises. Their equality
 after integer presentation does not identify those premises.
 

@@ -64,7 +64,7 @@ The following are operational starting points, not consensus minima:
 |---|---|---:|---|
 | Wallet or ordinary node | 2 or more modern vCPUs | 4 GiB | SSD, 20 GiB free to start |
 | Public seed/full node | 4 or more modern vCPUs | 8 GiB | SSD or NVMe with monitored headroom |
-| B64 miner | Benchmark the exact host | 8 GiB or more | SSD or NVMe |
+| B25 miner | Benchmark the exact host | 8 GiB or more | SSD or NVMe |
 | B255 miner | Benchmark the exact host | 16 GiB or more | NVMe preferred |
 
 CPU generation, clock, memory bandwidth and the selected carry-less

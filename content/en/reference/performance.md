@@ -1,26 +1,26 @@
 # Performance measurement
 
-Performance is a property of one source revision, proof profile, artifact pack,
-build profile and host. It is not a consensus constant and cannot be inferred
-from core count alone.
+Performance belongs to one source revision, proof profile, authenticated matrix
+pack, build profile and host. It is not a consensus constant and cannot be
+inferred from core count alone.
 
-The archived tables under `research/two_class/results/` predate the production
-C1 profile. They remain reproducible records of that earlier implementation,
-but they are not current production measurements. Current figures must be
-generated from the active source and authenticated matrix pack.
+The measurements below use Parano1d revision
+`39626b22d53cf2f2c480a7e28446c197dca68043`, the production C1 profile and the
+authenticated B25/B255 matrix pack. The table contains isolated production
+benchmarks only.
 
-Record at least:
+| Host | Class | `HistoryStep` construction | Statistic | Terminal |
+|---|---|---:|---|---:|
+| Low-cost AVX2 laptop, 12 threads | B25 | **10.734 s** | p50 of 3 samples | 971,732 B |
+| Low-cost AVX2 laptop, 12 threads | B255 | **34.938 s** | 1 isolated sample | 1,081,108 B |
+| AVX-512 PC, 24 threads | B25 | **6.905 s** | p50 of 3 samples | 971,732 B |
+| AVX-512 PC, 24 threads | B255 | **21.053 s** | p50 of 3 samples | 1,081,108 B |
 
-```text
-git commit
-Rust version
-OS and kernel
-CPU model and logical topology
-selected runtime backend
-matrix-pack digests
-sample count and warm-up policy
-p50 and nearest-rank p95
-```
+PoW nonce search is not included in the table. ASERT targets the complete
+elapsed interval between accepted blocks. It does not assign a separate
+15-second budget to nonce search. Proof preparation, nonce search and network
+propagation all occupy the same observed block interval, and ASERT adjusts the
+nonce target against that complete cadence.
 
 ## Wallet authorization
 
@@ -34,10 +34,9 @@ NOID_WALLET_BENCH_SAMPLES=20 cargo run --release --locked \
   --bin two-class-wallet-bench
 ```
 
-The production C1 wallet uses 65 Fiat–Shamir queries. One `PagedSpend` still
-contains one authorization capsule whether it occupies one page or the full
-128 pages. The canonical serialized authorization has a 92,696-byte worst-case
-bound.
+The production C1 wallet uses 65 Fiat–Shamir queries. One `PagedSpend` contains
+one authorization capsule whether it occupies one page or the full 128 pages.
+The canonical serialized authorization has a 92,696-byte worst-case bound.
 
 ## HistoryStep
 
@@ -50,7 +49,7 @@ NOID_PACK_ROOT=../parano1d-artifacts/history-step-pack-v1
 source "$NOID_PACK_ROOT/pins.env"
 export NOID_HISTORY_STEP_PACK_DIR="$NOID_PACK_ROOT"
 
-NOID_HISTORY_STEP_BENCH_FILTER=B64 \
+NOID_HISTORY_STEP_BENCH_FILTER=B25 \
 NOID_HISTORY_STEP_BENCH_SAMPLES=20 \
 cargo bench --locked -p bench_prover --bench history_step_proof
 
@@ -59,15 +58,17 @@ NOID_HISTORY_STEP_BENCH_SAMPLES=20 \
 cargo bench --locked -p bench_prover --bench history_step_proof
 ```
 
-`cargo bench` uses the optimized bench profile. Each reported sample covers
-production proof construction and terminal creation. Verification includes
-bounded wire decoding and complete terminal verification. The benchmark also
-reports field-proof bytes, C1 sidecar bytes and opening-claim count.
+`cargo bench` uses the optimized bench profile. Transaction construction,
+wallet proving, block-template construction and matrix authentication are
+setup. `history_step_ms` covers parent-terminal decoding, bounded input and
+authorization preparation, recursive assembly, nonce sealing, proof
+construction and terminal encoding. `verify_ms` covers bounded wire decoding
+and complete terminal verification.
 
 ## End-to-end block production
 
-The isolated proof time is not the complete mining latency. Capacity decisions
-must measure:
+The isolated proof measurement is not the complete mining latency. Capacity
+decisions must measure:
 
 ```text
 select intents
@@ -79,6 +80,6 @@ select intents
 ```
 
 Nonce search and network propagation vary independently from proof
-construction. B64 and B255 qualification must use the complete production path
+construction. B25 and B255 qualification must use the complete production path
 on the final host. Official binaries keep a portable baseline and select the
 `pclmul`, `avx2+vpclmul`, `avx512bw+vpclmul` or `neon+pmull` backend at runtime.

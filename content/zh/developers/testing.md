@@ -75,7 +75,7 @@ RPC、P2P、MDBX 和生产用证明路径。
 | `live_cli_wallet_scenarios.py` | 三节点 CLI、中继、地址、发送、历史与收据生命周期 |
 | `live_single_transaction_scenario.py` | 钱包 → 内存池 → 矿工 → 规范区块 |
 | `live_multi_transaction_mempool_scenario.py` | 三笔互不冲突的交易意图与中继 |
-| `live_large_mempool_single_miner_scenario.py` | 由 B64 区块清空 128 笔交易意图 |
+| `live_large_mempool_single_miner_scenario.py` | 由 B25 区块清空 128 笔交易意图 |
 | `live_large_mempool_two_miners_scenario.py` | 矿工竞争下的大型内存池 |
 | `live_two_miner_fork_reorg_scenario.py` | 竞争子区块与浅层重组 |
 | `live_connected_miner_restart_sync_scenario.py` | 矿工重启与过期父区块防护 |

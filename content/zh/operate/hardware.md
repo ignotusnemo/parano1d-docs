@@ -61,7 +61,7 @@ grep -m1 '^flags' /proc/cpuinfo \
 |---|---|---:|---|
 | 钱包或普通节点 | 至少 2 个现代 vCPU | 4 GiB | SSD，初期保留 20 GiB |
 | 公共种子/完整节点 | 至少 4 个现代 vCPU | 8 GiB | SSD 或 NVMe，并监控余量 |
-| B64 矿工 | 对实际主机做基准测试 | 至少 8 GiB | SSD 或 NVMe |
+| B25 矿工 | 对实际主机做基准测试 | 至少 8 GiB | SSD 或 NVMe |
 | B255 矿工 | 对实际主机做基准测试 | 至少 16 GiB | 优先 NVMe |
 
 CPU 代际、时钟、内存带宽和选中的无进位乘法后端，比服务商的 vCPU 标签

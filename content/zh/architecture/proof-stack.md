@@ -35,7 +35,7 @@ FROST-GKR 把批量 Poseidon2b 执行与 Merkle 路径表示为共享布尔超�
 - 二进制域上的 [FRI-Binius/BaseFold](../reference/glossary.md#fri-family)；
 - 一个 `GF(2^256)` 联合交互记录，用于三个 Link 递归区域和六个 Block 递归区域。
 
-最终证明系统是透明的，不需要[可信设置](../reference/glossary.md#trusted-setup)。发布的可执行文件内嵌经过认证的 [B64 与 B255](../reference/glossary.md#b64-b255) 矩阵包以及预期摘要。使用不同矩阵包的构建无法悄悄冒充规范关系。
+最终证明系统是透明的，不需要[可信设置](../reference/glossary.md#trusted-setup)。发布的可执行文件内嵌经过认证的 [B25 与 B255](../reference/glossary.md#b25-b255) 矩阵包以及预期摘要。使用不同矩阵包的构建无法悄悄冒充规范关系。
 
 ## 钱包授权
 

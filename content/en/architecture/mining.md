@@ -30,19 +30,22 @@ segment and proof-class limits. It then:
 
 Everything except the header nonce is now immutable.
 
-## B64 and B255
+## B25 and B255
 
 The proof stack ships two authenticated matrix classes:
 
 | Class | Hypercube dimension | Effective page capacity |
 |---|---:|---:|
-| B64 | `m=23` | Up to 64 |
+| B25 | `m=22` | Up to 25 |
 | B255 | `m=24` | Up to 255 |
 
-Every miner begins with B64. The node may use B255 when complete proof
+Every miner begins with B25. The node may use B255 when complete proof
 preparation timing shows that the larger relation is appropriate for the
 15-second block target. The decision uses measured end-to-end preparation, not
 only one internal proving phase.
+
+ASERT applies that target to the complete interval between accepted blocks.
+Proof preparation, nonce search and propagation share the same interval.
 
 The classes prove the same consensus relation. They are capacity choices, not
 different block-validity rules.

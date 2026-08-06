@@ -35,11 +35,11 @@ The detached, freshly randomized zero-knowledge proof attached to one logical
 transaction. It proves knowledge of the secret behind `input_owner` and binds
 that authority to the complete logical transaction ID.
 
-## B64 / B255
+## B25 / B255
 
 The two production `HistoryStep` proof classes authenticated by the official
-matrix pack. They prove the same relation with effective capacities of 64 and
-255 user pages respectively.
+matrix pack. They prove the same relation with capacities of 25 and 255
+effective page positions respectively.
 
 ## Block–Tiwari FS-FRI security
 

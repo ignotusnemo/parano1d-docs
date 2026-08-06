@@ -159,7 +159,7 @@ systems joined afterward.
 [Block and Tiwari](https://eprint.iacr.org/2024/1161) define concrete FS-FRI
 security as the minimum expected classical random-oracle query work over every
 positive integer query budget. Their definitions and whole-bit presentation
-give 127 provable bits and 127 conjectured bits for the production B64 and B255
+give 127 provable bits and 127 conjectured bits for the production B25 and B255
 profiles. The complete calculation and published-system comparison are in the
 [Block–Tiwari derivation](https://github.com/ignotusnemo/parano1d/blob/main/noid_soundness/docs/block-tiwari.md).
 
@@ -176,8 +176,8 @@ and the [security model](protocol/security-model.md).
 | Parameter | Value |
 |---|---:|
 | Mean block target | 15 seconds |
-| Default miner class | B64, `m=23`, up to 64 user pages |
-| Large miner class | B255, `m=24`, up to 255 user pages |
+| Default miner class | B25, `m=22`, up to 25 effective page positions |
+| Large miner class | B255, `m=24`, up to 255 effective page positions |
 | Maximum logical transactions per block | 255 |
 | Maximum one-page throughput | 17 TPS |
 | Maximum inputs in one transaction | 1,020 |

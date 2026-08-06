@@ -349,11 +349,11 @@ Poseidon2b 与 Merkle 关系，再通过多线性 sumcheck 归约。
 FRI 是低次数测试框架；FRI-Binius 与 BaseFold 是适配二进制域证明栈的具体
 组合。文档中的安全性指标始终保留其所依据的明确模型。
 
-<a id="b64-b255"></a>
-### B64 / B255
+<a id="b25-b255"></a>
+### B25 / B255
 
-网络初始采用的两种 `HistoryStep` 证明类别。两者证明同一个关系，但有效物理页
-容量不同。
+网络采用的两种 `HistoryStep` 证明类别。两者证明同一个关系，B25 容纳最多
+25 个有效页面位置，B255 容纳最多 255 个。
 
 <a id="block-tiwari-fs-fri"></a>
 ### Block–Tiwari FS-FRI 安全性

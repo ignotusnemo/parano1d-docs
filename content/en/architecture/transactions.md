@@ -95,7 +95,7 @@ time.
 Miners order admissible groups by fee rate, breaking ties by transaction ID.
 Groups remain indivisible. Selection also respects:
 
-- the active proof class, B64 or B255;
+- the active proof class, B25 or B255;
 - at most 1,020 live inputs per block;
 - at most 510 user outputs per block;
 - at most 256 distinct State segments touched;

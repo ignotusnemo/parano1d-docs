@@ -45,7 +45,7 @@ The downstream pipeline combines:
   regions.
 
 The resulting proof system is transparent: it requires no trusted setup.
-The released binaries embed authenticated B64 and B255 matrix packs, including
+The released binaries embed authenticated B25 and B255 matrix packs, including
 their expected digests. A build using a different pack cannot silently present
 it as the canonical relation.
 
