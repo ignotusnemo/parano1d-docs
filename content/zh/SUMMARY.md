@@ -72,7 +72,6 @@
 - [从源码构建](developers/build.md)
 - [Workspace 结构](developers/workspace.md)
 - [测试](developers/testing.md)
-- [发布工程](developers/releases.md)
 
 ## 参考
 

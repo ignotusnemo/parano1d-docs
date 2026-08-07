@@ -72,7 +72,6 @@
 - [Сборка из исходного кода](developers/build.md)
 - [Структура рабочего пространства](developers/workspace.md)
 - [Тестирование](developers/testing.md)
-- [Подготовка релизов](developers/releases.md)
 
 ## Справочник
 

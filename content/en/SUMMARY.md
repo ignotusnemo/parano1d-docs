@@ -72,7 +72,6 @@
 - [Build from source](developers/build.md)
 - [Workspace map](developers/workspace.md)
 - [Testing](developers/testing.md)
-- [Release engineering](developers/releases.md)
 
 ## Reference
 
