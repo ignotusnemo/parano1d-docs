@@ -148,6 +148,11 @@ wallet authorization, Merkle and State computations; the surrounding
 FRI-Binius/BaseFold layer closes the resulting multilinear claims without a
 trusted setup.
 
+The committed trace and the FROST-GKR relation remain over `GF(2^128)`. The
+production proof stack lifts Fiat-Shamir challenges, terminal claims and
+recursive region authentication into `GF(2^256)`. This wider layer surrounds
+the reduction; it does not change the three-column trace, the degree-nine
+relation or the `GF(2^128)` benchmark reported in the paper.
+
 FROST-GKR is therefore a reusable research result as well as a concrete part
-of Parano1d's proof architecture. The paper is authored by Andrew Boyle;
-FROST-GKR is research by **Parano1d Lab**.
+of Parano1d's proof architecture. It is research by **Parano1d Lab**.

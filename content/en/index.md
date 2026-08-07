@@ -1,6 +1,6 @@
-# Parano1d. Proof-native Layer 1
+# Parano1d ①
 
-**Ordered by proof of work. State validated from genesis in O(1). Provable end-to-end post-quantum soundness at NIST PQC Category 1.**
+**Proof-native Layer 1 ordered by proof of work.**
 
 Blockchains have a fundamental architectural flaw: to validate the present,
 you must replay the past. A new full node downloads the chain from genesis and

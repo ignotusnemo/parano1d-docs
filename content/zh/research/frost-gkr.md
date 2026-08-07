@@ -127,5 +127,10 @@ Poseidon2b 执行的归约；应用关系将其承诺端点连接到钱包授权
 State 计算，外围 FRI-Binius/BaseFold 层则在无需可信设置的情况下闭合所得
 多线性断言。
 
+FROST-GKR 的承诺轨迹与关系仍在 `GF(2^128)` 上运算。实际部署的证明栈将
+Fiat-Shamir 挑战值、终端断言和递归区域认证提升到 `GF(2^256)`。这一扩展层
+位于 FROST-GKR 归约之外，不会改变三列轨迹、次数为九的关系，也不会改变论文中
+基于 `GF(2^128)` 的基准结果。
+
 因此，FROST-GKR 既是一项可复用的研究成果，也是 Parano1d 证明架构的具体
-组成部分。论文作者为 Andrew Boyle；FROST-GKR 是 **Parano1d Lab** 的研究成果。
+组成部分。FROST-GKR 是 **Parano1d Lab** 的研究成果。
