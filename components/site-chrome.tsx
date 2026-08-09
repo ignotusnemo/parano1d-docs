@@ -52,6 +52,7 @@ const repositoryGateCopy: Record<
     body: string;
     launch: string;
     contact: string;
+    github: string;
     dismiss: string;
   }
 > = {
@@ -61,8 +62,9 @@ const repositoryGateCopy: Record<
     eyebrow: "Source code",
     title: "Code opens before launch.",
     body: "The core repository remains private during the final preparation stage. The code for the upcoming release will be published before the public network launches.",
-    launch: "Public network launch · August 2026",
+    launch: "Public network launch · Aug 12, 2026",
     contact: "Contact developer",
+    github: "GitHub",
     dismiss: "Close"
   },
   ru: {
@@ -71,8 +73,9 @@ const repositoryGateCopy: Record<
     eyebrow: "Исходный код",
     title: "Код откроется перед запуском.",
     body: "Основной репозиторий остаётся закрытым на финальном этапе подготовки. Код будущего релиза будет опубликован перед запуском публичной сети.",
-    launch: "Запуск публичной сети · август 2026",
+    launch: "Запуск публичной сети · 12 августа 2026",
     contact: "Связаться с разработчиком",
+    github: "GitHub",
     dismiss: "Закрыть"
   },
   zh: {
@@ -81,8 +84,9 @@ const repositoryGateCopy: Record<
     eyebrow: "源代码",
     title: "代码将在网络启动前公开。",
     body: "核心代码仓库将在最终准备阶段保持私有。即将发布版本的代码将在公共网络启动前公开。",
-    launch: "公共网络启动 · 2026 年 8 月",
+    launch: "公共网络启动 · 2026 年 8 月 12 日",
     contact: "联系开发者",
+    github: "GitHub",
     dismiss: "关闭"
   }
 };
@@ -907,6 +911,16 @@ export default function SiteChrome({
               <p>
                 {repositoryGateCopy[locale].contact} ·{" "}
                 <a href="mailto:dev@parano1d.org">dev@parano1d.org</a>
+              </p>
+              <p>
+                {repositoryGateCopy[locale].github} ·{" "}
+                <a
+                  href="https://github.com/ignotusnemo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  github.com/ignotusnemo
+                </a>
               </p>
             </div>
             <button
