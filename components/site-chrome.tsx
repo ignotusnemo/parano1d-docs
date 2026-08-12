@@ -40,7 +40,7 @@ const openGroupMemory = new Map<Locale, Set<string>>();
 let desktopSidebarCollapsedMemory = false;
 
 // Set to false when the core repository becomes public.
-const PRIVATE_REPOSITORY_GATE = true;
+const PRIVATE_REPOSITORY_GATE = false;
 
 const repositoryGateCopy: Record<
   Locale,
