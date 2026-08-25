@@ -29,8 +29,8 @@ Public daemon options are:
 | `--miner-address ADDRESS` | Mining payout address; active wallet owner is the default |
 | `--cpu-threads N` | Shared internal-miner thread budget |
 | `--data-dir PATH` | Chain, wallet and runtime data directory |
-| `--p2p-listen HOST:PORT` | P2P listener; default `0.0.0.0:9400` |
-| `--rpc-listen HOST:PORT` | JSON-RPC listener; default `127.0.0.1:9401` |
+| `--p2p-listen HOST:PORT` | P2P listener; default `0.0.0.0:9600` |
+| `--rpc-listen HOST:PORT` | JSON-RPC listener; default `127.0.0.1:9601` |
 | `--seed ENDPOINT` | Add a bootstrap endpoint; repeatable |
 | `--log LEVEL` | Tracing filter such as `error`, `warn`, `info` or `debug` |
 | `--mining-key TOKEN` | Require a bearer token on RPC |
@@ -72,7 +72,7 @@ only its 128-bit nonce.
 
 | Option | Default | Meaning |
 |---|---|---|
-| `--rpc URL` | `http://127.0.0.1:9401` | Node JSON-RPC endpoint |
+| `--rpc URL` | `http://127.0.0.1:9601` | Node JSON-RPC endpoint |
 | `--key TOKEN` | — | Bearer token matching the node's `--mining-key` |
 | `--threads N` | `0` | PoW threads; zero uses every visible logical CPU |
 | `--coinbase ADDRESS` | — | Custom `o1…` payout when the node explicitly permits it |
@@ -84,7 +84,7 @@ Typical local use:
 
 ```sh
 parano1d-miner \
-  --rpc http://127.0.0.1:9401 \
+  --rpc http://127.0.0.1:9601 \
   --key 'LONG-RANDOM-TOKEN' \
   --threads 12
 ```
@@ -104,7 +104,7 @@ and performs wallet operations through local JSON-RPC.
 -j, --json      raw JSON output
 ```
 
-The default endpoint is `http://127.0.0.1:9401`. Environment variable
+The default endpoint is `http://127.0.0.1:9601`. Environment variable
 `NOID_RPC` changes it. `--rpc` takes precedence.
 
 Amounts entered by CLI wallet commands are in NOID with up to six decimal

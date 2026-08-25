@@ -3,7 +3,7 @@
 Core exposes JSON-RPC 2.0 over HTTP. The default endpoint is:
 
 ```text
-http://127.0.0.1:9401
+http://127.0.0.1:9601
 ```
 
 Every method has the `paranoid_` namespace prefix. Parameters are positional
@@ -18,7 +18,7 @@ curl --silent --show-error \
     "method": "paranoid_getChainInfo",
     "params": []
   }' \
-  http://127.0.0.1:9401
+  http://127.0.0.1:9601
 ```
 
 ## Conventions

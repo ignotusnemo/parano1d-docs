@@ -47,7 +47,7 @@ sudo systemctl restart parano1d
 
 ## 就绪条件
 
-普通挖矿需要两个经过认证的对等节点，以及已同步的链。检查：
+普通挖矿需要一个经过认证的对等节点，以及已同步的链。检查：
 
 ```sh
 parano1d-cli status

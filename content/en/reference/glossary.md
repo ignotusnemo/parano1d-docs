@@ -26,7 +26,7 @@ an output owner without publishing a public key.
 
 The absolutely scheduled exponentially weighted target algorithm used to
 derive the exact proof-of-work target at every height. Parano1d uses a
-six-block reference epoch, a 90-second half-life and a 15-second target
+six-block reference epoch, a 120-second half-life and a 20-second target
 interval.
 
 ## Authorization capsule
@@ -285,8 +285,9 @@ The atomic currency unit. One NOID is 1,000,000 μNOID.
 
 ## Network identity
 
-The mainnet protocol identity fixed by genesis data, consensus parameters and
-the P2P protocol ID. It is distinct from an individual node's peer identity.
+The public network identity fixed by genesis data, consensus parameters, the
+proof-bank identity and the P2P protocol ID. It is distinct from an individual
+node's peer identity and from a Git commit or build host.
 
 ## Network group
 

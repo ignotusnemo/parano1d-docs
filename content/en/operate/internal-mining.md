@@ -48,7 +48,7 @@ sudo systemctl restart parano1d
 
 ## Readiness
 
-Ordinary mining requires two authenticated peers and a synchronized chain.
+Ordinary mining requires one authenticated peer and a synchronized chain.
 Check:
 
 ```sh

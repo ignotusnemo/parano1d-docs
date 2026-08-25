@@ -61,9 +61,9 @@ boundary from height and reject deeper alternatives.
 
 ## Difficulty
 
-The target interval between accepted blocks is 15 seconds. Proof preparation,
+The target interval between accepted blocks is 20 seconds. Proof preparation,
 nonce search and propagation share that interval. ASERT adjusts the target
-using six-block reference epochs and a 90-second half-life. The target is
+using six-block reference epochs and a 120-second half-life. The target is
 encoded as a 256-bit little-endian integer.
 
 Validation derives the one exact target from canonical header history. Miners
@@ -93,7 +93,7 @@ resources. Those choices cannot make a transaction invalid once it appears in
 a valid block, except where the same minimum fee formula is explicitly checked
 by consensus.
 
-Likewise, mining requires two authenticated peers in the official node. That
+Likewise, mining requires one authenticated peer in the official node. That
 is an operational isolation guard, not a block-validity vote.
 
 ## Genesis and network identity

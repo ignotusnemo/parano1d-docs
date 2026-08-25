@@ -36,17 +36,17 @@ parano1d-cli peers
 ```
 
 Confirm outbound DNS and TCP access, local time, and the P2P listener setting.
-If accepting inbound connections, allow TCP `9400` in both host and upstream
+If accepting inbound connections, allow TCP `9600` in both host and upstream
 firewalls.
 
-Do not open RPC `9401` as a substitute for P2P.
+Do not open RPC `9601` as a substitute for P2P.
 
 ## Mining button or process is unavailable
 
 Mining needs:
 
 - synchronization with the canonical tip;
-- two authenticated peers;
+- one authenticated peer;
 - a ready embedded HistoryStep runtime;
 - a valid payout owner;
 - supported CPU instructions.
@@ -107,7 +107,7 @@ recovery work.
 
 ## Port already in use
 
-Find which process owns `9400` or `9401`. Only one node may bind a listener and
+Find which process owns `9600` or `9601`. Only one node may bind a listener and
 one process may own a data directory.
 
 Use distinct listener ports and distinct data directories for independent

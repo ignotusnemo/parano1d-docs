@@ -3,7 +3,7 @@
 Core 通过 HTTP 提供 JSON-RPC 2.0。默认端点：
 
 ```text
-http://127.0.0.1:9401
+http://127.0.0.1:9601
 ```
 
 所有方法都带有 `paranoid_` namespace 前缀。参数使用位置 JSON 数组。
@@ -17,7 +17,7 @@ curl --silent --show-error \
     "method": "paranoid_getChainInfo",
     "params": []
   }' \
-  http://127.0.0.1:9401
+  http://127.0.0.1:9601
 ```
 
 ## 约定

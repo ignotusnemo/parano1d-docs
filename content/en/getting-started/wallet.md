@@ -85,8 +85,8 @@ The top status bar shows connection and synchronization state. The wallet can
 display its local data while catching up, but spendable balance and current
 slot availability are final only when the node reports **ONLINE**.
 
-The private node accepts inbound and outbound P2P traffic on TCP `9400`.
-Ordinary wallet use works through outbound peers; allowing inbound TCP `9400`
+The private node accepts inbound and outbound P2P traffic on TCP `9600`.
+Ordinary wallet use works through outbound peers; allowing inbound TCP `9600`
 also contributes connectivity to the network.
 
 ## Receive and send

@@ -4,11 +4,11 @@ Parano1d uses libp2p for peer identity, discovery, relay and synchronization.
 The public network protocol is identified as:
 
 ```text
-/noid/mainnet/1.0.0
+/noid/mainnet/860e70453390bf81/1
 ```
 
-The default P2P listener is TCP `9400`. JSON-RPC is a separate local
-administration interface on `127.0.0.1:9401`.
+The default P2P listener is TCP `9600`. JSON-RPC is a separate local
+administration interface on `127.0.0.1:9601`.
 
 ## Peer identity and consensus identity
 
@@ -30,24 +30,30 @@ Nodes combine three discovery sources:
 Successful peer addresses are persisted and reused. The peer store keeps up to
 500 peers and limits the number of remembered addresses for any one peer.
 
-The automatic connection manager targets 12 outbound peer identities. DNS
-seeds provide the initial neighbours; as stable ordinary peers become
-available through discovery, seed connections are replaced without first
-dropping below the target. Seeds are therefore bootstrap anchors, not a
-permanent exclusive topology.
+GossipSub maintains a four-neighbour propagation mesh, while the automatic
+topology manager targets eight ordinary neighbours for exact-object diversity
+and failover. This is a connectivity floor, not a cap on the node's total peer
+count: inbound, direct, LAN and relay-backed peers may increase it further. At
+most four unselected incoming peers satisfy that floor, so each node still
+selects at least four ordinary neighbours independently. DNS seeds provide the
+first two paths; as stable ordinary peers become available, seed connections
+are replaced without first dropping below the target. Discovery uses identity
+jitter, one active lookup and exponential retry backoff. Seeds are therefore
+bootstrap anchors, not a permanent exclusive topology.
 
-DNS records point to network endpoints, not chain state. Changing software or
-resetting a node does not require changing its DNS name if the public address
-remains the same.
+Embedded seed names are resolved first through the operating system so scoped
+VPN resolvers work, while the DNS multiaddress remains available for later
+A/AAAA re-resolution. DNS records point to network endpoints, not chain state.
+Changing software or resetting a node does not require changing its DNS name
+if the public address remains the same.
 
 ## Gossip
 
-GossipSub carries transaction intents and block announcements.
-
-A complete atomic block bundle is sent inline when it fits below the inline
-limit. Larger blocks are announced by header and pulled through a typed
-request-response exchange. Gossip messages have a strict maximum size so a
-peer cannot turn ordinary relay into unbounded allocation.
+GossipSub carries transaction intents and small header-first block
+announcements. Bodies and recursive terminals are never required to share the
+header control lane: they are pulled afterwards by exact content identity.
+Gossip messages have a strict maximum size so a peer cannot turn ordinary
+relay into unbounded allocation.
 
 A transaction is relayed only after local mempool admission has verified its
 canonical structure, authorization and current conflicts. Receiving gossip is
@@ -65,14 +71,18 @@ Typed exchanges serve:
 
 - header batches;
 - retained block bodies and recursive suffix-tip terminals;
-- snapshot manifests and State segments;
+- small snapshot headers, content-addressed manifest pages and State segments;
 - recent mempool inventory and missing intents.
 
 Direct catch-up requests ask for at most 512 headers at a time. Snapshot
-header staging uses batches of up to 4,096 headers; the fixed framing still
-keeps each response below 0.83 MiB at the canonical 212-byte header size.
-Snapshot State is transferred as a manifest followed by individually
-authenticated segments rather than as one unbounded message.
+header staging uses batches of up to 4,096 headers. Each batch is compressed
+with zstd. Both the compressed input and decompressed output have strict size
+limits; the output is at most 0.83 MiB of canonical 212-byte headers. Decoded
+headers enter the existing validation and storage path unchanged.
+Snapshot State is transferred as a small manifest header, bounded descriptor
+pages and individually authenticated segments rather than as one unbounded
+message. One immutable plan may obtain different exact objects from different
+peers; losing a source does not discard already verified progress.
 
 When a peer connects, nodes can reconcile recent mempool contents. Every
 received intent still passes ordinary local admission.
@@ -101,7 +111,7 @@ infrastructure should span independent networks and operators.
 
 ## Mining peer gate
 
-Ordinary mining requires two authenticated peers. This prevents an unattended
+Ordinary mining requires one authenticated peer. This prevents an unattended
 node from extending an isolated private view merely because its network link
 failed.
 
@@ -111,7 +121,7 @@ proof verification and cumulative-work consensus.
 
 ## Interface boundaries
 
-P2P port `9400` is intended for public exposure. RPC port `9401` is not. RPC
+P2P port `9600` is intended for public exposure. RPC port `9601` is not. RPC
 includes wallet and process-control methods and has no public transport
 authentication layer; keep it on loopback or behind an authenticated private
 tunnel.

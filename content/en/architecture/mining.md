@@ -41,7 +41,7 @@ The proof stack ships two authenticated matrix classes:
 
 Every miner begins with B25. The node may use B255 when complete proof
 preparation timing shows that the larger relation is appropriate for the
-15-second block target. The decision uses measured end-to-end preparation, not
+20-second block target. The decision uses measured end-to-end preparation, not
 only one internal proving phase.
 
 ASERT applies that target to the complete interval between accepted blocks.
@@ -69,7 +69,7 @@ Templates are rebuilt on events that change useful work:
 - the first transaction entering a coinbase-only template;
 - invalidation of selected transactions.
 
-A 75-second heartbeat is a safety net, not the normal refresh loop. Already
+A 100-second heartbeat is a safety net, not the normal refresh loop. Already
 proved templates remain bound to their original payout and transaction set;
 they are not mutated after proof construction.
 
@@ -79,8 +79,8 @@ The internal miner runs inside the node process. The node owns transaction
 selection, proof construction, PoW and block submission. CPU thread count and
 payout address can be controlled through Core or the GUI.
 
-Mining starts only when the node is synchronized and has at least two
-authenticated peers. A locally found block is sealed, committed and announced
+Mining starts only when the node is synchronized and has at least one
+authenticated peer. A locally found block is sealed, committed and announced
 through the same acceptance path used for a peer block.
 
 ## External miner

@@ -17,7 +17,7 @@ parano1d --mode extminer --mining-key 'LONG-RANDOM-TOKEN'
 
 ```sh
 parano1d-miner \
-  --rpc http://127.0.0.1:9401 \
+  --rpc http://127.0.0.1:9601 \
   --key 'LONG-RANDOM-TOKEN'
 ```
 
@@ -40,7 +40,7 @@ parano1d-miner --key 'LONG-RANDOM-TOKEN' --threads 8
 ```sh
 parano1d \
   --mode extminer \
-  --rpc-listen 0.0.0.0:9401 \
+  --rpc-listen 0.0.0.0:9601 \
   --mining-key 'LONG-RANDOM-TOKEN'
 ```
 

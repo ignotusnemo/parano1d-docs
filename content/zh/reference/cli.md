@@ -29,8 +29,8 @@ parano1d
 | `--miner-address ADDRESS` | 挖矿奖励地址；默认使用钱包活动地址 |
 | `--cpu-threads N` | 内置矿工共享线程预算 |
 | `--data-dir PATH` | 链、钱包和运行时数据目录 |
-| `--p2p-listen HOST:PORT` | P2P 监听；默认 `0.0.0.0:9400` |
-| `--rpc-listen HOST:PORT` | JSON-RPC 监听；默认 `127.0.0.1:9401` |
+| `--p2p-listen HOST:PORT` | P2P 监听；默认 `0.0.0.0:9600` |
+| `--rpc-listen HOST:PORT` | JSON-RPC 监听；默认 `127.0.0.1:9601` |
 | `--seed ENDPOINT` | 添加引导端点；可重复 |
 | `--log LEVEL` | Tracing 过滤器，如 `error`、`warn`、`info`、`debug` |
 | `--mining-key TOKEN` | 要求 RPC 提供 Bearer 令牌 |
@@ -68,7 +68,7 @@ parano1d --mode extminer --mining-key 'LONG-RANDOM-TOKEN'
 
 | 参数 | 默认值 | 含义 |
 |---|---|---|
-| `--rpc URL` | `http://127.0.0.1:9401` | 节点 JSON-RPC 端点 |
+| `--rpc URL` | `http://127.0.0.1:9601` | 节点 JSON-RPC 端点 |
 | `--key TOKEN` | — | 与节点 `--mining-key` 匹配的 Bearer 令牌 |
 | `--threads N` | `0` | PoW 线程；零表示使用全部可见逻辑 CPU |
 | `--coinbase ADDRESS` | — | 节点显式允许时使用的自定义 `o1…` 奖励地址 |
@@ -80,7 +80,7 @@ parano1d --mode extminer --mining-key 'LONG-RANDOM-TOKEN'
 
 ```sh
 parano1d-miner \
-  --rpc http://127.0.0.1:9401 \
+  --rpc http://127.0.0.1:9601 \
   --key 'LONG-RANDOM-TOKEN' \
   --threads 12
 ```
@@ -99,7 +99,7 @@ parano1d-miner \
 -j, --json      原始 JSON 输出
 ```
 
-默认端点是 `http://127.0.0.1:9401`。环境变量 `NOID_RPC` 可修改；
+默认端点是 `http://127.0.0.1:9601`。环境变量 `NOID_RPC` 可修改；
 `--rpc` 优先级更高。
 
 CLI 钱包命令输入的金额以 NOID 为单位，最多六位小数：

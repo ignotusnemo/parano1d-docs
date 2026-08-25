@@ -18,7 +18,7 @@ benchmarks only.
 
 PoW nonce search is not included in the table. ASERT targets the complete
 elapsed interval between accepted blocks. It does not assign a separate
-15-second budget to nonce search. Proof preparation, nonce search and network
+20-second budget to nonce search. Proof preparation, nonce search and network
 propagation all occupy the same observed block interval, and ASERT adjusts the
 nonce target against that complete cadence.
 

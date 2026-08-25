@@ -3,9 +3,9 @@
 ## Core
 
 ```text
-block target             15 seconds
+block target             20 seconds
 ASERT epoch               6 blocks
-ASERT half-life          90 seconds
+ASERT half-life         120 seconds
 median-time-past         11 headers
 future drift            120 seconds
 transaction epoch       144 blocks

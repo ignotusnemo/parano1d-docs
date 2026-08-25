@@ -10,7 +10,7 @@ it with `F5`.
 Mining becomes available when:
 
 - the node is synchronized;
-- at least two authenticated peers are connected;
+- at least one authenticated peer is connected;
 - the active or configured payout address is valid;
 - the CPU passes the production hardware check.
 

@@ -26,8 +26,8 @@ Unix 上，`wallet.key` 和 `p2p_identity.key` 仅允许所有者访问。前者
 
 | 端口 | 绑定 | 用途 | 是否公开 |
 |---:|---|---|---|
-| TCP 9400 | `0.0.0.0` | libp2p | 是 |
-| TCP 9401 | `127.0.0.1` | JSON-RPC | 否 |
+| TCP 9600 | `0.0.0.0` | libp2p | 是 |
+| TCP 9601 | `127.0.0.1` | JSON-RPC | 否 |
 
 远程外部挖矿只能通过受保护的私有或 TLS 传输使用 RPC。Bearer token
 认证请求，但不加密传输。
@@ -36,8 +36,10 @@ Unix 上，`wallet.key` 和 `p2p_identity.key` 仅允许所有者访问。前者
 
 | 项目 | 值 |
 |---|---|
+| 网络 | `mainnet` |
+| 创世区块 ID | `860e70453390bf815718e933aa4927167a13d098b0151391eefd722ee1add610` |
 | 网络魔数（network magic） | `NOID` |
-| libp2p 协议 | `/noid/mainnet/1.0.0` |
+| libp2p 协议 | `/noid/mainnet/860e70453390bf81/1` |
 | 交易与区块 gossip | GossipSub |
 | 发现 | DNS 种子、Kademlia、mDNS |
 

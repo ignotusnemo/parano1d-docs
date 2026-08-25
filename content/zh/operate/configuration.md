@@ -13,7 +13,7 @@ TOML 格式错误会直接阻止启动，程序不会静默覆盖它。
 
 ```toml
 [network]
-listen = "0.0.0.0:9400"
+listen = "0.0.0.0:9600"
 seeds = []
 
 [storage]
@@ -21,7 +21,7 @@ backend = "mdbx"
 path = "~/.parano1d/data"
 
 [rpc]
-listen = "127.0.0.1:9401"
+listen = "127.0.0.1:9601"
 
 [mining]
 enabled = false
@@ -33,14 +33,14 @@ miner_address = ""
 ## 网络
 
 `network.listen` 接受 `HOST:PORT` 或 libp2p multiaddress。绑定
-`0.0.0.0:9400` 可接受公网 IPv4 连接。
+`0.0.0.0:9600` 可接受公网 IPv4 连接。
 
 `network.seeds` 用于添加引导节点，支持以下形式：
 
 ```text
-198.51.100.10:9400
-seed.example.org:9400
-/ip4/198.51.100.10/tcp/9400
+198.51.100.10:9600
+seed.example.org:9600
+/ip4/198.51.100.10/tcp/9600
 dnsaddr:seed.example.org
 ```
 
@@ -63,7 +63,7 @@ dnsaddr:seed.example.org
 RPC 应保持监听：
 
 ```text
-127.0.0.1:9401
+127.0.0.1:9601
 ```
 
 该接口包含钱包提交和进程控制功能，并不是带有通用认证的公网浏览器 API。

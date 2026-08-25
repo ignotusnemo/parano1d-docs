@@ -80,7 +80,7 @@ The native wallet supervises its own full node. Open **Mining** with `F5`,
 choose the CPU thread budget and select **Start mining**.
 
 Mining becomes available after the node is synchronized and connected to at
-least two authenticated peers. The active wallet address receives newly
+least one authenticated peer. The active wallet address receives newly
 constructed payouts. Changing the active address affects the next template;
 an existing immutable template keeps its original payout.
 
@@ -120,7 +120,7 @@ parano1d-cli mining
 ```
 
 Core waits rather than mining an isolated local view when it is unsynchronized
-or has fewer than two authenticated peers. The complete server and systemd
+or has no authenticated peer. The complete server and systemd
 procedure is in [Internal mining](../operate/internal-mining.md).
 
 ## Run an external worker
@@ -137,7 +137,7 @@ Run the worker against its loopback RPC endpoint:
 
 ```sh
 parano1d-miner \
-  --rpc http://127.0.0.1:9401 \
+  --rpc http://127.0.0.1:9601 \
   --key '<long-random-token>' \
   --threads 12
 ```
@@ -184,7 +184,7 @@ budget. They are not two competing all-core jobs. On a public host, leaving
 some CPU capacity outside `--cpu-threads` keeps the operating
 system and peer service responsive.
 
-The network targets a 15-second mean block interval. This is not a deadline:
+The network targets a 20-second mean block interval. This is not a deadline:
 individual blocks may arrive sooner or much later. Proof latency still matters
 because a candidate becomes stale when another miner advances the tip. Measure
 the complete B25 preparation path on the intended machine rather than judging
@@ -198,7 +198,7 @@ floor and published reference timings.
 
 ASERT adjusts the Poseidon2b target against the complete interval between
 accepted blocks. Proof preparation, nonce search and propagation share that
-15-second mean target.
+20-second mean target.
 The chain with the greatest cumulative valid work wins; an equal-work tie uses
 the canonical block-hash tie-break.
 

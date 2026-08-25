@@ -42,9 +42,9 @@ Equality fails.
 
 ## ASERT
 
-The target interval between accepted blocks is 15 seconds. Proof preparation,
+The target interval between accepted blocks is 20 seconds. Proof preparation,
 nonce search and propagation all occupy that interval. ASERT uses a six-block
-reference epoch and a 90-second half-life. At each height, validation derives
+reference epoch and a 120-second half-life. At each height, validation derives
 the exact target from the canonical anchor, elapsed time and height delta.
 
 A timestamp must also be greater than median time past over the previous 11

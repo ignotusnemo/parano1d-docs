@@ -16,8 +16,8 @@
 运行时会自动选择 `pclmul`、`avx2+vpclmul`、`avx512bw+vpclmul`
 或 `neon+pmull` 后端。发布版节点不使用标量参考后端。
 
-节点通过 TCP `9400` 接受 P2P 连接。JSON-RPC 应保持绑定
-`127.0.0.1:9401`。
+节点通过 TCP `9600` 接受 P2P 连接。JSON-RPC 应保持绑定
+`127.0.0.1:9601`。
 
 主要可变存储随 Live State 中的 UTXO 数量变化。每个 212 字节的紧凑区块头会
 永久保存，而完整区块体只保留最近 18 个。
@@ -73,7 +73,7 @@ sudo install -d -o root -g parano1d -m 0750 /etc/parano1d
 
 ```toml
 [network]
-listen = "0.0.0.0:9400"
+listen = "0.0.0.0:9600"
 seeds = []
 
 [storage]
@@ -81,7 +81,7 @@ backend = "mdbx"
 path = "/var/lib/parano1d"
 
 [rpc]
-listen = "127.0.0.1:9401"
+listen = "127.0.0.1:9601"
 
 [mining]
 enabled = false
@@ -154,11 +154,11 @@ Live State 的大小。
 
 ## 网络访问
 
-在主机和服务商防火墙中允许入站 TCP `9400`。若服务器位于 NAT 后，将
-TCP `9400` 转发给节点。节点只靠出站连接也能同步，但接受入站连接才能
+在主机和服务商防火墙中允许入站 TCP `9600`。若服务器位于 NAT 后，将
+TCP `9600` 转发给节点。节点只靠出站连接也能同步，但接受入站连接才能
 更好地为网络服务。
 
-不要公开 TCP `9401`。远程管理应使用 SSH 隧道或其他经过认证的私有
+不要公开 TCP `9601`。远程管理应使用 SSH 隧道或其他经过认证的私有
 传输。
 
 ## 停止或更新

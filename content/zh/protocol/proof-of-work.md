@@ -36,7 +36,7 @@ pow_digest < difficulty_target
 
 ## ASERT
 
-已接受区块之间的目标间隔为 15 秒。证明准备、nonce 搜索与区块传播共同占用
+已接受区块之间的目标间隔为 20 秒。证明准备、nonce 搜索与区块传播共同占用
 这一完整间隔。[ASERT](../reference/glossary.md#asert) 使用六区块参考周期和 90
 秒半衰期。在每个高度，验证过程根据规范锚点、经过时间与高度差推导精确目标值。
 

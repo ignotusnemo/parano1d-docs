@@ -7,9 +7,10 @@ stated otherwise.
 
 | Parameter | Value |
 |---|---:|
-| Target block interval | 15 seconds |
+| Mainnet genesis timestamp | 2026-08-21 16:00:00 UTC (`1787328000`) |
+| Target block interval | 20 seconds |
 | ASERT reference epoch | 6 blocks |
-| ASERT half-life | 90 seconds |
+| ASERT half-life | 120 seconds |
 | Median-time-past window | 11 headers |
 | Maximum future timestamp drift | 120 seconds |
 | Transaction epoch | 144 blocks |
@@ -85,8 +86,8 @@ development payout counts as one position.
 | Parameter | Value |
 |---|---:|
 | Header encoding | 212 bytes |
-| P2P TCP port | 9400 |
-| Local RPC TCP port | 9401 |
+| P2P TCP port | 9600 |
+| Local RPC TCP port | 9601 |
 | Direct-sync header request | 512 headers |
 | Header protocol batch cap | 4,096 headers |
 | Mempool transaction count | 1,024 |

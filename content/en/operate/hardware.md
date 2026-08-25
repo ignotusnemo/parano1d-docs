@@ -129,11 +129,11 @@ State plus one staged replacement and normal database growth.
 ## Network
 
 Allow persistent outbound TCP connections and, for a public node, inbound TCP
-`9400`. A 100 Mbit/s unmetered connection is a sensible baseline. Latency is
+`9600`. A 100 Mbit/s unmetered connection is a sensible baseline. Latency is
 less important than stability and the absence of aggressive connection or
 traffic caps.
 
-RPC on TCP `9401` is an administrative interface. Keep it on loopback unless a
+RPC on TCP `9601` is an administrative interface. Keep it on loopback unless a
 private or authenticated transport protects it.
 
 ## Capacity checks

@@ -14,7 +14,7 @@ replaced.
 
 ```toml
 [network]
-listen = "0.0.0.0:9400"
+listen = "0.0.0.0:9600"
 seeds = []
 
 [storage]
@@ -22,7 +22,7 @@ backend = "mdbx"
 path = "~/.parano1d/data"
 
 [rpc]
-listen = "127.0.0.1:9401"
+listen = "127.0.0.1:9601"
 
 [mining]
 enabled = false
@@ -34,14 +34,14 @@ Command-line values override their corresponding file values.
 ## Network
 
 `network.listen` accepts `HOST:PORT` or a libp2p multiaddress. Bind
-`0.0.0.0:9400` to accept public IPv4 connections.
+`0.0.0.0:9600` to accept public IPv4 connections.
 
 `network.seeds` adds bootstrap peers. Accepted forms include:
 
 ```text
-198.51.100.10:9400
-seed.example.org:9400
-/ip4/198.51.100.10/tcp/9400
+198.51.100.10:9600
+seed.example.org:9600
+/ip4/198.51.100.10/tcp/9600
 dnsaddr:seed.example.org
 ```
 
@@ -65,7 +65,7 @@ The command-line `--data-dir` overrides this path.
 Keep RPC on:
 
 ```text
-127.0.0.1:9401
+127.0.0.1:9601
 ```
 
 The interface includes wallet submission and process control. It is not a

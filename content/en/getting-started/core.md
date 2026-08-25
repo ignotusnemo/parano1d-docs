@@ -73,8 +73,8 @@ In another terminal:
 ./parano1d-cli state
 ```
 
-The default P2P listener is `0.0.0.0:9400`. RPC remains on
-`127.0.0.1:9401`.
+The default P2P listener is `0.0.0.0:9600`. RPC remains on
+`127.0.0.1:9601`.
 
 Stop cleanly with:
 
