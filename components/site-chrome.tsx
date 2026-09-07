@@ -149,24 +149,24 @@ function ExternalGlyph() {
   );
 }
 
-function GitHubGlyph() {
+function SourceGlyph() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        fill="currentColor"
-        stroke="none"
-        d="M12 2.4a9.8 9.8 0 0 0-3.1 19.1c.5.1.7-.2.7-.5v-1.9c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 0 1.6 1.1 1.6 1.1.9 1.6 2.4 1.1 2.9.8.1-.7.4-1.1.6-1.3-2.3-.3-4.6-1.1-4.6-4.9 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.8-2.3 4.6-4.6 4.9.4.3.7 1 .7 2V21c0 .3.2.6.7.5A9.8 9.8 0 0 0 12 2.4Z"
-      />
+      <path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-16-2 20" />
     </svg>
   );
 }
 
 function ExternalLinks({
   className,
-  label
+  label,
+  sourceLabel,
+  onOpenSource
 }: {
   className: string;
   label: string;
+  sourceLabel: string;
+  onOpenSource: (opener: HTMLButtonElement) => void;
 }) {
   return (
     <nav className={className} aria-label={label}>
@@ -182,15 +182,16 @@ function ExternalLinks({
         <span>Lab</span>
         <ExternalGlyph />
       </a>
-      <a
-        className="github-link"
-        href="https://github.com/ignotusnemo/parano1d"
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        className="source-link"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="source-dialog"
+        onClick={(event) => onOpenSource(event.currentTarget)}
       >
-        <GitHubGlyph />
-        <span>GitHub</span>
-      </a>
+        <SourceGlyph />
+        <span>{sourceLabel}</span>
+      </button>
     </nav>
   );
 }
@@ -267,6 +268,33 @@ export default function SiteChrome({
   const [activeHeading, setActiveHeading] = useState(toc[0]?.id ?? "");
   const searchInput = useRef<HTMLInputElement>(null);
   const sidebar = useRef<HTMLElement>(null);
+  const sourceDialog = useRef<HTMLDialogElement>(null);
+  const sourceReturnFocus = useRef<HTMLElement | null>(null);
+  const sourceBodyOverflow = useRef<string | null>(null);
+
+  const openSource = (opener: HTMLButtonElement) => {
+    if (!sourceDialog.current || sourceDialog.current.open) return;
+    sourceReturnFocus.current = opener.closest(".sidebar")
+      ? document.querySelector<HTMLElement>(".mobile-menu-button") : opener;
+    setNavigationOpen(false);
+    setSearchOpen(false);
+    document.querySelectorAll(".language-switcher[open]").forEach((menu) => menu.removeAttribute("open"));
+    sourceBodyOverflow.current = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    sourceDialog.current.showModal();
+  };
+
+  const restoreAfterSource = () => {
+    if (sourceBodyOverflow.current !== null) {
+      document.body.style.overflow = sourceBodyOverflow.current;
+      sourceBodyOverflow.current = null;
+    }
+    sourceReturnFocus.current?.focus({ preventScroll: true });
+  };
+
+  useEffect(() => () => {
+    if (sourceBodyOverflow.current !== null) document.body.style.overflow = sourceBodyOverflow.current;
+  }, []);
 
   const rememberSidebarPosition = () => {
     if (!sidebar.current) return;
@@ -350,6 +378,7 @@ export default function SiteChrome({
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (sourceDialog.current?.open) return;
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setSearchOpen(true);
@@ -497,6 +526,8 @@ export default function SiteChrome({
           <ExternalLinks
             className="top-external-links"
             label={copy.externalLinks}
+            sourceLabel={copy.source}
+            onOpenSource={openSource}
           />
         </div>
 
@@ -600,6 +631,8 @@ export default function SiteChrome({
         <ExternalLinks
           className="sidebar-external-links"
           label={copy.externalLinks}
+          sourceLabel={copy.source}
+          onOpenSource={openSource}
         />
       </aside>
 
@@ -669,6 +702,32 @@ export default function SiteChrome({
           <p>{copy.noSubsections}</p>
         )}
       </aside>
+
+      <dialog
+        ref={sourceDialog}
+        id="source-dialog"
+        className="source-dialog"
+        aria-labelledby="source-dialog-title"
+        onClose={restoreAfterSource}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) event.currentTarget.close();
+        }}
+      >
+        <div className="source-dialog-card">
+          <button className="source-dialog-close" type="button" aria-label={copy.sourceClose} onClick={() => sourceDialog.current?.close()} autoFocus>
+            <MenuGlyph close />
+          </button>
+          <h2 id="source-dialog-title">{copy.sourceTitle}</h2>
+          <div className="source-providers">
+            <a className="source-provider" href="https://git.parano1d.org/ignotusnemo/parano1d" target="_blank" rel="noopener noreferrer">
+              <span><b>Forgejo</b><small>git.parano1d.org</small></span><span aria-hidden="true">↗</span>
+            </a>
+            <button className="source-provider" type="button" disabled aria-disabled="true">
+              <span><b>GitHub</b><small>{copy.sourceUnavailable}</small></span>
+            </button>
+          </div>
+        </div>
+      </dialog>
 
       {searchOpen ? (
         <div

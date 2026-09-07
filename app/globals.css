@@ -236,7 +236,7 @@ kbd {
   gap: 4px;
 }
 
-.top-links a {
+.top-links a, .top-links .source-link {
   min-height: 34px;
   padding: 0 10px;
   display: inline-flex;
@@ -250,7 +250,7 @@ kbd {
   transition: color 140ms ease, background 140ms ease;
 }
 
-.top-links a:hover {
+.top-links a:hover, .top-links .source-link:hover {
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-strong);
 }
@@ -1177,11 +1177,11 @@ kbd {
   box-shadow: 0 1px 2px rgba(25, 31, 39, 0.04);
 }
 
-.top-links a {
+.top-links a, .top-links .source-link {
   color: #646b74;
 }
 
-.top-links a:hover {
+.top-links a:hover, .top-links .source-link:hover {
   background: #f1f2f3;
   color: #171a1f;
 }
@@ -1725,7 +1725,7 @@ kbd {
   gap: 4px;
 }
 
-.top-links a {
+.top-links a, .top-links .source-link {
   min-height: 36px;
   padding: 0 11px;
   border-radius: 9px;
@@ -1737,7 +1737,7 @@ kbd {
   text-transform: none;
 }
 
-.top-links a:hover {
+.top-links a:hover, .top-links .source-link:hover {
   background: #f1f3f2;
   color: #146f40;
 }
@@ -2469,7 +2469,7 @@ kbd {
     padding-right: 0;
   }
 
-  .top-links a {
+  .top-links a, .top-links .source-link {
     padding-inline: 7px;
   }
 
@@ -2751,7 +2751,7 @@ kbd {
   gap: 3px;
 }
 
-.top-links .github-link {
+.top-links .source-link {
   min-height: 34px;
   margin-left: 2px;
   padding-inline: 11px;
@@ -2764,7 +2764,7 @@ kbd {
     0 5px 14px rgba(22, 29, 34, 0.035);
 }
 
-.top-links .github-link:hover {
+.top-links .source-link:hover {
   border-color: #c8d1cc;
   background: linear-gradient(180deg, #ffffff 0%, #eef4f0 100%);
   box-shadow:
@@ -2773,7 +2773,7 @@ kbd {
     0 6px 16px rgba(22, 29, 34, 0.05);
 }
 
-.top-links .github-link svg {
+.top-links .source-link svg {
   width: 15px;
   height: 15px;
 }
@@ -2796,7 +2796,7 @@ kbd {
     border-top: 1px solid #e2e5e3;
   }
 
-  .sidebar-external-links a {
+  .sidebar-external-links a, .sidebar-external-links .source-link {
     min-height: 42px;
     padding: 0 13px;
     display: flex;
@@ -2814,13 +2814,13 @@ kbd {
       0 6px 16px rgba(24, 31, 38, 0.035);
   }
 
-  .sidebar-external-links a:hover {
+  .sidebar-external-links a:hover, .sidebar-external-links .source-link:hover {
     border-color: #cdd9d2;
     background: linear-gradient(180deg, #ffffff 0%, #eff6f2 100%);
     color: #11713f;
   }
 
-  .sidebar-external-links a > span {
+  .sidebar-external-links a > span, .sidebar-external-links .source-link > span {
     flex: 1;
   }
 
@@ -2834,10 +2834,10 @@ kbd {
     stroke-width: 1.6;
   }
 
-  .sidebar-external-links .github-link svg {
+  .sidebar-external-links .source-link svg {
     order: -1;
-    fill: currentColor;
-    stroke: none;
+    fill: none;
+    stroke: currentColor;
   }
 }
 

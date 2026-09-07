@@ -26,6 +26,10 @@ export type UiCopy = {
   next: string;
   technicalDocumentation: string;
   sourceDefinesConsensus: string;
+  source: string;
+  sourceTitle: string;
+  sourceClose: string;
+  sourceUnavailable: string;
   onThisPage: string;
   noSubsections: string;
   searchDialog: string;
@@ -86,6 +90,10 @@ export const uiCopy: Record<Locale, UiCopy> = {
     next: "Next",
     technicalDocumentation: "ParanO(1)d technical documentation",
     sourceDefinesConsensus: "Source code defines consensus behavior.",
+    source: "Source",
+    sourceTitle: "Source code",
+    sourceClose: "Close source selection",
+    sourceUnavailable: "Temporarily unavailable",
     onThisPage: "On this page",
     noSubsections: "No subsections",
     searchDialog: "Search documentation",
@@ -116,6 +124,10 @@ export const uiCopy: Record<Locale, UiCopy> = {
     technicalDocumentation: "Техническая документация ParanO(1)d",
     sourceDefinesConsensus:
       "Поведение консенсуса определяется исходным кодом.",
+    source: "Исходники",
+    sourceTitle: "Исходный код",
+    sourceClose: "Закрыть выбор репозитория",
+    sourceUnavailable: "Временно недоступен",
     onThisPage: "На этой странице",
     noSubsections: "Нет подразделов",
     searchDialog: "Поиск по документации",
@@ -145,6 +157,10 @@ export const uiCopy: Record<Locale, UiCopy> = {
     next: "下一页",
     technicalDocumentation: "ParanO(1)d 技术文档",
     sourceDefinesConsensus: "共识行为以源代码为准。",
+    source: "源码",
+    sourceTitle: "源代码",
+    sourceClose: "关闭仓库选择",
+    sourceUnavailable: "暂时不可用",
     onThisPage: "本页内容",
     noSubsections: "无子章节",
     searchDialog: "搜索文档",

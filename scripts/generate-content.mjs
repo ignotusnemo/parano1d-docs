@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import { sourceLinks } from "./source-links.mjs";
 
 const siteRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const contentRoot = resolve(siteRoot, "content");
@@ -75,7 +76,7 @@ const documents = Object.fromEntries(
     const entries = Object.fromEntries(
       walkMarkdown(localeRoot).map((sourcePath) => [
         sourcePath,
-        readFileSync(resolve(localeRoot, sourcePath), "utf8")
+        sourceLinks(readFileSync(resolve(localeRoot, sourcePath), "utf8"))
       ])
     );
     return [locale, entries];
@@ -85,7 +86,7 @@ const documents = Object.fromEntries(
 const summaries = Object.fromEntries(
   locales.map((locale) => [
     locale,
-    readFileSync(resolve(contentRoot, locale, "SUMMARY.md"), "utf8")
+    sourceLinks(readFileSync(resolve(contentRoot, locale, "SUMMARY.md"), "utf8"))
   ])
 );
 

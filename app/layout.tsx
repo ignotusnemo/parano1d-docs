@@ -5,6 +5,7 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import "@fontsource/noto-sans-mono/400.css";
 import "./globals.css";
+import "./source-dialog.css";
 import "katex/dist/katex.min.css";
 
 const siteUrl = "https://docs.parano1d.org";
