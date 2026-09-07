@@ -722,6 +722,9 @@ export default function SiteChrome({
             <a className="source-provider" href="https://git.parano1d.org/ignotusnemo/parano1d" target="_blank" rel="noopener noreferrer">
               <span><b>Forgejo</b><small>git.parano1d.org</small></span><span aria-hidden="true">↗</span>
             </a>
+            <a className="source-provider" href="https://gitlab.com/ignotusnemo/parano1d" target="_blank" rel="noopener noreferrer">
+              <span><b>GitLab</b><small>gitlab.com</small></span><span aria-hidden="true">↗</span>
+            </a>
             <button className="source-provider" type="button" disabled aria-disabled="true">
               <span><b>GitHub</b><small>{copy.sourceUnavailable}</small></span>
             </button>
