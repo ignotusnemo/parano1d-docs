@@ -9,6 +9,7 @@
 | `~/.parano1d/data/` | Default Core and GUI node data | Consensus data |
 | `DATA_DIR/wallet.key` | 256-bit wallet master secret | Spending authority |
 | `DATA_DIR/wallet.receipts` | Saved outgoing receipts | Local payment evidence |
+| `DATA_DIR/wallet.labels` | Persistent address labels | Local display only |
 | `DATA_DIR/wallet.history` | Local wallet history | Local presentation |
 | `DATA_DIR/p2p_identity.key` | Stable libp2p Ed25519 identity | Network identity only |
 | `DATA_DIR/peers.json` | Successful public outbound peers | Discovery hint |
@@ -21,6 +22,28 @@ On Windows, `~` means the user profile directory.
 
 `wallet.key` and `p2p_identity.key` are owner-only files on Unix. The first
 controls funds; the second does not.
+
+## Wallet artifact storage
+
+`wallet.receipts` and `wallet.history` use checksummed local journals. A normal
+save appends only changed receipts or the changed history suffix. Periodic
+atomic snapshots compact obsolete records. The exported payment receipt and
+all consensus formats are unchanged.
+
+Existing JSON artifacts remain readable and migrate on their first save. The
+original files are preserved as `wallet.receipts.legacy` and
+`wallet.history.legacy`. These are pre-migration recovery copies, not current
+backups. A conflicting existing recovery copy is never overwritten.
+
+A JSON-only reader cannot read the journal format. Individual exported receipts
+remain independent of this storage encoding. A master-secret backup alone does
+not restore old receipts.
+
+On startup, complete frames must pass checksum and schema checks. A partial
+final append is reported and ignored without discarding earlier committed
+frames. Missing initial snapshots and corrupted complete frames fail startup.
+The next successful write repairs an incomplete tail. These checks protect
+local storage integrity, not consensus validity or authorization to spend.
 
 ## Ports
 
@@ -48,7 +71,7 @@ transport. A bearer token authenticates requests but does not encrypt them.
 | Data | Window |
 |---|---:|
 | Headers | Permanent |
-| Canonical block bodies | 18 |
+| Canonical block bodies | 42 |
 | Reorganizable suffix | 18 |
 | Maximum reorganization | 17 |
 | Undo records | 36 |
@@ -66,7 +89,7 @@ Receipts preserve payment-specific inclusion evidence outside body retention.
 | Orphan accepted bundles | 36 / 128 MiB |
 | Peer-store entries | 500 |
 | Addresses per stored peer | 8 |
-| Automatic outbound peer target | 12 identities |
+| Automatic topology target | 8 ordinary peer identities |
 | Established inbound transports | 128 |
 | Established outbound transports | 64 |
 | Pending inbound / outbound transports | 64 / 32 |

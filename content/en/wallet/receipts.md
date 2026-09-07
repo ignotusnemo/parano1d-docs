@@ -31,6 +31,12 @@ history.
 Back up the file or export individual receipt text if payment evidence matters.
 Loss of receipts does not affect spendable balance.
 
+The store appends checksummed changes and periodically compacts them with an
+atomic snapshot instead of rewriting the entire collection on every change.
+Exported receipt text is independent of this local storage format.
+See [wallet artifact storage](../reference/files-and-ports.md#wallet-artifact-storage)
+for format and integrity checks.
+
 ## Verify
 
 The **Verify** tab accepts exported hexadecimal receipt text. Verification
