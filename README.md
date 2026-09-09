@@ -6,9 +6,9 @@ project documentation remains the source of truth.
 
 The site generator maps owned GitHub links to their Forgejo equivalents,
 preserving file paths, pinned commits and anchors without changing the upstream
-Markdown snapshot. The Source selector opens the canonical Forgejo repository
-or its public GitLab mirror; GitHub remains disabled while public access is
-unavailable. Third-party research citations are unchanged.
+Markdown snapshot. The Source selector identifies Forgejo as canonical and
+GitLab and GitHub as public mirrors; GitHub remains disabled while public
+access is unavailable. Third-party research citations are unchanged.
 
 ```sh
 npm install
