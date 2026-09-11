@@ -725,9 +725,9 @@ export default function SiteChrome({
             <a className="source-provider" href="https://gitlab.com/ignotusnemo/parano1d" target="_blank" rel="noopener noreferrer">
               <span><b>GitLab (mirror)</b><small>gitlab.com</small></span><span aria-hidden="true">↗</span>
             </a>
-            <button className="source-provider" type="button" disabled aria-disabled="true">
-              <span><b>GitHub (mirror)</b><small>{copy.sourceUnavailable}</small></span>
-            </button>
+            <a className="source-provider" href="https://github.com/proof-native/parano1d" target="_blank" rel="noopener noreferrer">
+              <span><b>GitHub (mirror)</b><small>github.com/proof-native</small></span><span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
       </dialog>
