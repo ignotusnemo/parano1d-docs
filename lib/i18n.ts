@@ -52,7 +52,7 @@ export const localeInfo: Record<Locale, LocaleInfo> = {
     shortName: "EN",
     docsTitle: "Parano1d Documentation",
     docsDescription:
-      "Technical documentation for Parano1d, a proof-native Layer 1 network secured by proof of work: protocol, wallet, mining, and APIs."
+      "Technical documentation for Parano1d, a proof-native Layer 1 network secured by proof of work: proof-native contracts, protocol, wallet, mining, and APIs."
   },
   ru: {
     htmlLang: "ru",
@@ -61,7 +61,7 @@ export const localeInfo: Record<Locale, LocaleInfo> = {
     shortName: "RU",
     docsTitle: "Документация Parano1d",
     docsDescription:
-      "Техническая документация Parano1d — proof-native-сети первого уровня, защищённой proof of work: протокол, кошелёк, майнинг и API."
+      "Техническая документация Parano1d — proof-native-сети первого уровня, защищённой proof of work: proof-native контракты, протокол, кошелёк, майнинг и API."
   },
   zh: {
     htmlLang: "zh-CN",
@@ -70,7 +70,7 @@ export const localeInfo: Record<Locale, LocaleInfo> = {
     shortName: "中文",
     docsTitle: "Parano1d 技术文档",
     docsDescription:
-      "Parano1d 技术文档：由工作量证明保护的证明原生第一层网络，涵盖协议、钱包、挖矿与 API。"
+      "Parano1d 技术文档：由工作量证明保护的证明原生第一层网络，涵盖 proof-native 合约、协议、钱包、挖矿与 API。"
   }
 };
 

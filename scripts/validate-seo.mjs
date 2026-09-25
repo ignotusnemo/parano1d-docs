@@ -1,5 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import sharp from "sharp";
 
 const outputDirectory = path.resolve("out");
 const siteUrl = "https://docs.parano1d.org";
@@ -164,6 +165,7 @@ for (const localePrefix of ["", "/ru", "/zh"]) {
   }
 }
 
+const photoKeyDimensions = await sharp(path.resolve("public/assets/wallet/photo-key.webp")).metadata();
 const photoKeyPage = renderedPages.get("/wallet/photo-key");
 if (!photoKeyPage) {
   failures.push("wallet/photo-key: page is missing");
@@ -172,7 +174,7 @@ if (!photoKeyPage) {
     photoKeyPage.file,
     photoKeyPage.html,
     "optimized Photo Key image with intrinsic dimensions",
-    /<img src="\/assets\/wallet\/photo-key\.webp"[^>]*srcset="\/assets\/wallet\/photo-key-960\.webp 960w, \/assets\/wallet\/photo-key\.webp 1920w"[^>]*sizes="[^"]+"[^>]*width="1920"[^>]*height="1200"[^>]*loading="eager"[^>]*fetchpriority="high"/
+    new RegExp(String.raw`<img src="/assets/wallet/photo-key\.webp"[^>]*srcset="/assets/wallet/photo-key-960\.webp ${Math.min(960, photoKeyDimensions.width)}w, /assets/wallet/photo-key\.webp ${photoKeyDimensions.width}w"[^>]*sizes="[^"]+"[^>]*width="${photoKeyDimensions.width}"[^>]*height="${photoKeyDimensions.height}"[^>]*loading="eager"[^>]*fetchpriority="high"`)
   );
 }
 

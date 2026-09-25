@@ -40,10 +40,11 @@ const optimizedImageVariants = {
   "/assets/wallet/photo-key.png": "/assets/wallet/photo-key.webp"
 };
 
+const photoKeyDimensions = await sharp(resolve(publicRoot, "assets/wallet/photo-key.png")).metadata();
 const responsiveImageVariants = {
   "/assets/wallet/photo-key.png": {
     srcset:
-      "/assets/wallet/photo-key-960.webp 960w, /assets/wallet/photo-key.webp 1920w",
+      `/assets/wallet/photo-key-960.webp ${Math.min(960, photoKeyDimensions.width)}w, /assets/wallet/photo-key.webp ${photoKeyDimensions.width}w`,
     sizes:
       "(max-width: 680px) calc(100vw - 66px), (max-width: 1240px) calc(100vw - 160px), 920px"
   }
