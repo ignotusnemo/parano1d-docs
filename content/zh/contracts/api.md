@@ -21,9 +21,7 @@
 `contract_calls`。v2 为 ABI 3、16 条指令、2 个持久寄存器，Small 63/504/63，
 Large 206/504/63。
 
-主网 v2 规则从 **H210537** 开始。新二进制在此之前可准备公开条款、观察 opening
-并读取本地元数据。充值、预览和调用要求**下一个候选高度**已激活且已认证 v2
-运行时可用。旧二进制不提供这些方法。
+充值、预览和调用要求已认证的 v2 运行时可用（`runtime_available = true`）。
 
 ## 方法
 
@@ -114,6 +112,17 @@ opening 创建多个独立实例。若响应丢失，应先查询审阅过的交
 
 交易体裁剪后，`getTx` 仍可能保留索引指针。该指针不是交易体或当前未花费证明。
 过去调用使用回执证据，当前余额使用 State 查询。
+
+## 索引公开调用
+
+索引器可从 `getMempoolInfo` 取得待处理交易的 txid，再逐笔调用
+`getMempoolEntry(txid)`。待处理的合约调用包含规范的 699 字节
+`contract_opening_hex`；普通付款的该字段为 `null`。`getBlockDetails(height)`
+在保留的区块体中以 `contract: "call"`、`"close"` 或 `null` 标记交易。
+详见 [RPC 参考](../reference/rpc.md)。
+
+索引器必须在调用仍处于内存池时保存 opening。区块保留合约标志，但之后无法
+通过 RPC 取回 opening。错过的内存池时段无法从 State 或已剪枝的区块体重建。
 
 ## 回执结果及限制
 

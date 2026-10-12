@@ -1,9 +1,9 @@
 # Contracts
 
-V2 brings **proof-native contracts** to mainnet at **H210537**. A contract holds
-NOID under a committed program and spending policy. The same recursive block
-proof that authenticates payments proves each contract transition. Users share
-one bounded core; they do not create a new proof system for each application.
+A **proof-native contract** holds NOID under a committed program and spending
+policy. The same recursive block proof that authenticates payments proves each
+contract transition. Users share one bounded core; they do not create a new
+proof system for each application.
 
 Read [From live value to live rights](../concepts/proof-native-contracts.md)
 for the architectural idea. This section explains how to build and use it.
@@ -17,13 +17,10 @@ for the architectural idea. This section explains how to build and use it.
 | Create, share and use contracts in the wallet | [GUI walkthrough](gui.md) |
 | Exchange receipts or recover after being offline | [Receipts and recovery](receipts-and-recovery.md) |
 
-## Activation and capacity
+## Block capacity
 
-The v2 release understands the contract API before activation. Public terms can
-be prepared and shared then; funding and calls require the **next candidate
-block** to use v2. Check `getContractProtocol.active_at_next_block` together
-with `runtime_available`. Installing the binary does not activate new consensus
-rules early. Existing v1 → v1.1 behavior remains unchanged.
+Use `getContractProtocol` to inspect the installed runtime and block limits.
+Funding and calls require `runtime_available = true`.
 
 | V2 class | Pages | Live inputs | Contract calls |
 | --- | ---: | ---: | ---: |

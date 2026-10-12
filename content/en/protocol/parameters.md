@@ -1,6 +1,6 @@
 # Consensus parameters — v2
 
-These are the active v2 rules, applicable from **mainnet H210537**. Before that height, the [archived profile](../archive/legacy-profiles.md) applies. Mainnet genesis is 2026-08-21 16:00:00 UTC (`1787328000`).
+These are the active v2 consensus rules. Mainnet genesis is 2026-08-21 16:00:00 UTC (`1787328000`).
 
 | Parameter | V2 value |
 | --- | --- |
@@ -48,6 +48,6 @@ wire-codec bound as a promised active capacity. Counts in blocks are consensus
 rules; minute equivalents use the target interval and are not deadlines.
 
 Issuance is 16 → 11.30 → 8 → 5.65 → 4 → 2.83 → 2 → 1.41 → 1 NOID,
-one step per 1,051,200 blocks from activation. See [network economics](economics.md)
+one step per 1,051,200 blocks on the height schedule. See [network economics](economics.md)
 for exact amounts, fees and rationale; [contracts](../contracts/index.md) for
 core limits, and [performance](../reference/performance.md) for measured costs.

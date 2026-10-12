@@ -1,17 +1,12 @@
 # Parano1d ①
 
-> **V2 activation: mainnet block 210537.** These docs describe v2. Before that
-> height, v1.1 applies. The planning estimate is October 10, 2026, 11:59 PM PDT
-> (October 11, 06:59 UTC); height determines activation, not the date.
-> Previous rules and measurements are in the [archive](archive/index.md).
-
-**Proof-native Layer 1 ordered by proof of work. From live value to live rights.**
-
-Parano1d makes current State verifiable without replaying historical
-transactions. The wallet proves authorization, the miner proves public
-execution and the exact State transition, and peers verify the recursive
-`HistoryStep` before applying its proven writes. Each terminal authenticates
-the present and its valid ancestry.
+Parano1d is a live proof-native L1 where the present proves the past. Proofs
+establish validity. PoW sets canonical order. Signatureless authorization,
+execution and recursion share one transparent end-to-end post-quantum stack. V2
+adds proof-native contracts: programmable live rights verifiable after pruning.
+Nodes verify state and rights from genesis without replay or trusted
+checkpoints. Block bodies and transactions are pruned after retention. Receipts
+remain verifiable. Mainnet is live.
 
 ## From live value to live rights
 

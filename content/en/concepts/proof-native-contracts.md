@@ -72,6 +72,6 @@ verifiable, transferable value and precise spending rights, while the network
 continues to authenticate an exact live present. The available instruction and
 block budgets are explicit, and application design can work within them today.
 
-Contracts activate on mainnet at **H210537**. Start with the
+Start with the
 [contract guide](../contracts/index.md), [lifecycle](../contracts/lifecycle.md)
 and [integer core](../contracts/core.md).

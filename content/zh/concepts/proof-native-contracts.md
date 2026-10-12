@@ -59,5 +59,5 @@ ABI 3 提供两个持久化 `u64` 计数器、两个临时寄存器和十六条�
 继续认证准确的活跃现在。指令预算和区块预算都是明确的，应用现在即可在这些
 边界内设计。
 
-合约在主网 **H210537** 激活。请阅读[合约指南](../contracts/index.md)、
+请阅读[合约指南](../contracts/index.md)、
 [生命周期](../contracts/lifecycle.md)和[整数内核](../contracts/core.md)。

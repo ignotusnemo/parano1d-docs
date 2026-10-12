@@ -1,9 +1,8 @@
 # Contract quick reference
 
-Mainnet v2 activates at **H210537**. These instructions describe v2; the earlier
-chain follows v1.1. The public contract ABI is **3**: 16 instructions, two
-persistent u64 counters and two scratch registers. All programs use the shared
-block proof. Small m23 permits 63 pages / 504 inputs / 63 calls; server-opt-in
+The public contract ABI is **3**: 16 instructions, two persistent u64 counters
+and two scratch registers. All programs use the shared block proof.
+Small m23 permits 63 pages / 504 inputs / 63 calls; server-opt-in
 Large m24 permits 206 / 504 / 63. Calls and payments share these budgets.
 
 The six constructors are refundable payment, timelocked vault, allowance

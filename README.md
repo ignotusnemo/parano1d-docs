@@ -1,6 +1,6 @@
 # Parano1d documentation site
 
-The site renders the Markdown documentation maintained in the Parano1d repository. The v2 snapshot is synchronized from canonical main commit `c83c453efbe4b2d235ed1c6d579e3d869e751575`. The copied `content/` directory is the deployable snapshot; the project documentation remains the source of truth.
+The site renders the Markdown documentation maintained in the Parano1d repository. The current v2 snapshot is synchronized from canonical main commit `ee460a8b53f7f1a0d4ec52cfc037623801492e8a`. The copied `content/` directory is the deployable snapshot; the project documentation remains the source of truth.
 
 The site generator maps owned GitHub links to their Forgejo equivalents, preserving file paths, pinned commits and anchors without changing the upstream Markdown snapshot. The Source selector identifies Forgejo as canonical and GitLab and GitHub (`proof-native`) as public mirrors. Third-party research citations are unchanged.
 

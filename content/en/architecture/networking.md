@@ -84,6 +84,20 @@ pages and individually authenticated segments rather than as one unbounded
 message. One immutable plan may obtain different exact objects from different
 peers; losing a source does not discard already verified progress.
 
+State transport advertises both `/sync/segment/6` and `/sync/segment/5`,
+before and after the v2 consensus fork. Peers automatically negotiate one
+version per exchange. Version 5 retains its original wire bytes. Version 6
+uses zstd when it reduces the payload and can combine up to 64 small segments
+within 64 KiB of canonical data; larger segments travel individually. Each
+segment still passes its own immutable descriptor and root checks.
+
+Matching local segments pass the same authentication and durable staging
+before being reused. Root and length metadata are only lookup hints; corrupt
+local bytes fall back to downloading. State keeps one network request in
+flight, one staging worker and one buffered response. Both transport versions
+share the existing serving limits and byte budgets; compressed input,
+decompressed output and batch copies are admitted before allocation.
+
 Mempool reconciliation requests at most 128 intents and 16 MiB per response.
 A partial response can continue through one consumption-paced recovery lane,
 using at most four selected sources. Requests to the same source are at least

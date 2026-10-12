@@ -1,9 +1,9 @@
 # Network economics
 
 V2 separates two responsibilities: **block height determines issuance; live
-State occupancy prices the cost of persistent storage**. The rules on this
-page apply from **H210537**. The reasons for changing the original model are
-explained below; old network profiles are retained in the [archive](../archive/index.md).
+State occupancy prices the cost of persistent storage**. The reasons for
+changing the original model are explained below; old network profiles are
+retained in the [archive](../archive/index.md).
 
 ## Unit
 

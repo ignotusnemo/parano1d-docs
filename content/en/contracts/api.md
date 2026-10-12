@@ -22,10 +22,8 @@ The response contains `tip_height`, `activation_height`, `active_at_next_block`,
 `live_inputs`, `contract_calls`. The v2 values are ABI 3, 16 instructions,
 2 persistent registers, Small 63/504/63 and Large 206/504/63.
 
-Mainnet v2 rules start at **H210537**. The new binary can prepare public terms,
-watch openings and read local metadata before that height. Funding, previews
-and calls require both activation at the **next candidate height** and an
-available authenticated v2 runtime. A pre-v2 binary does not expose these methods.
+Funding, previews and calls require an available authenticated v2 runtime
+(`runtime_available = true`).
 
 ## Methods
 
@@ -126,6 +124,18 @@ before resubmitting: an RPC timeout does not prove that submission failed.
 `getTx` can retain an index pointer after bodies are pruned. That pointer is not
 a body or a proof of current unspentness. Use receipts for retained call evidence
 and State queries for current balances.
+
+## Indexing public calls
+
+An indexer can read pending transaction IDs from `getMempoolInfo`, then call
+`getMempoolEntry(txid)` for each one. A pending contract call includes its
+canonical 699-byte `contract_opening_hex`; ordinary payments return `null` in
+that field. `getBlockDetails(height)` marks retained transactions with
+`contract: "call"`, `"close"` or `null`. See the [RPC reference](../reference/rpc.md).
+
+Capture an opening while its call is pending. The block carries the contract
+flags, but it does not preserve the opening for later RPC retrieval. A missed
+mempool interval cannot be reconstructed from State or a pruned block body.
 
 ## Receipt results and bounds
 
