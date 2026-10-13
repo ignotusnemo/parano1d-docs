@@ -59,6 +59,12 @@ tests complement this analysis; they do not prove its correspondence premises.
 
 The [October 2026 correspondence work](https://git.parano1d.org/ignotusnemo/parano1d/src/branch/main/noid_soundness/docs/v2-correspondence-2026-10.md) independently reconstructs both complete release retirement keys and gives source-linked arguments for complete request closure, the selected recursive parent and exact carried lanes, the conditional v2 all-root specialization and authenticated snapshot installation. It separates those deterministic obligations from fixed-hash instantiation and universal response-price assumptions. The numerical assessment above is unchanged, and the source-level scope is distinct from a proof-assistant verification of the whole implementation.
 
+## October 2026 cryptanalysis
+
+The [October review](https://git.parano1d.org/ignotusnemo/parano1d/src/branch/main/noid_soundness/docs/october-2026-attack-review.md) checks papers and revisions published from October 1 through 13 against v2.0.3. The dimension-preserving CICO-2 branch of the revised Poseidon attack requires width at least eight; production uses width four. The SDitH and MQOM recovery algorithms require seed-share observations from their respective signature constructions. Authorization uses an algebraic bank and authenticated polynomial openings, with no such seed shares.
+
+Honest authorization attempts obtain fresh randomness through `OsRng` and consume private PCS states. Hiding requires independent OS entropy for every attempt. All 23 authorization and PCS tests, all 41 soundness tests and 138 external-matrix and inverse-matrix minor checks passed. The exact mainnet v2 certificate was reproduced byte for byte, preserving its twenty-event inventory and Category 1 assessment under the stated conditions. The report and [noid.network review](https://noid.network/security/october-2026) contain the attack arguments, source hashes and reproduction records.
+
 ## Fork and matrix boundary
 
 The first v2 proof binds to the selected last pre-v2 block. The authenticated
